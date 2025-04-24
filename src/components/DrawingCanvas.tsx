@@ -1,0 +1,110 @@
+
+import React, { useRef, useState, useEffect } from 'react';
+import { calculateAccuracy } from '@/utils/circleUtils';
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface DrawingCanvasProps {
+  onComplete: (accuracy: number) => void;
+  targetCircle: {
+    x: number;
+    y: number;
+    radius: number;
+  };
+}
+
+const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [points, setPoints] = useState<Point[]>([]);
+  const [instructionVisible, setInstructionVisible] = useState(true);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Set canvas size to match screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw the path if there are points
+    if (points.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+      }
+      
+      ctx.strokeStyle = 'hsl(var(--primary) / 0.8)';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+    }
+  }, [points]);
+
+  const handleStart = (x: number, y: number) => {
+    setIsDrawing(true);
+    setPoints([{ x, y }]);
+    setInstructionVisible(false);
+  };
+
+  const handleMove = (x: number, y: number) => {
+    if (!isDrawing) return;
+    setPoints(prevPoints => [...prevPoints, { x, y }]);
+  };
+
+  const handleEnd = () => {
+    if (!isDrawing || points.length < 2) return;
+    
+    setIsDrawing(false);
+    
+    // Calculate accuracy
+    const accuracy = calculateAccuracy(points, targetCircle);
+    
+    // Allow a small delay to see the completed drawing
+    setTimeout(() => {
+      onComplete(accuracy);
+    }, 500);
+  };
+
+  return (
+    <div className="absolute inset-0">
+      {instructionVisible && (
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-background/80 px-4 py-2 rounded-full backdrop-blur-sm animate-fade-in">
+          <span className="text-lg font-medium">Draw the circle</span>
+        </div>
+      )}
+      
+      <canvas
+        ref={canvasRef}
+        className="touch-none"
+        onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
+        onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
+        onTouchStart={(e) => {
+          const touch = e.touches[0];
+          handleStart(touch.clientX, touch.clientY);
+        }}
+        onTouchMove={(e) => {
+          const touch = e.touches[0];
+          handleMove(touch.clientX, touch.clientY);
+        }}
+        onTouchEnd={handleEnd}
+      />
+    </div>
+  );
+};
+
+export default DrawingCanvas;

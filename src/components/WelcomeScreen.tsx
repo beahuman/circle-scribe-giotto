@@ -1,0 +1,44 @@
+
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import { CircleDot } from "lucide-react";
+
+interface WelcomeScreenProps {
+  onStart: () => void;
+}
+
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold">Giotto</h1>
+        <p className="text-muted-foreground">The art of the perfect circle</p>
+      </div>
+      
+      <div className="relative">
+        <div className="w-40 h-40 rounded-full border-4 border-primary opacity-50"></div>
+        <CircleDot className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary" size={48} />
+      </div>
+      
+      <div className="max-w-md space-y-4">
+        <p>
+          Draw a perfect circle with your finger, just like the Renaissance master Giotto.
+        </p>
+        <ol className="text-left space-y-2 text-sm text-muted-foreground">
+          <li>1. You'll be shown a perfect circle for 3 seconds</li>
+          <li>2. Then try to recreate it in the same location</li>
+          <li>3. Your accuracy will be calculated as a percentage</li>
+        </ol>
+      </div>
+      
+      <Button 
+        onClick={onStart}
+        className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
+      >
+        Begin
+      </Button>
+    </div>
+  );
+};
+
+export default WelcomeScreen;
