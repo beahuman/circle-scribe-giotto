@@ -15,6 +15,7 @@ const GiottoGame: React.FC = () => {
   const [accuracy, setAccuracy] = useState(0);
   const [targetCircle, setTargetCircle] = useState(generateRandomCirclePosition());
   const [isGameServiceAvailable, setIsGameServiceAvailable] = useState(false);
+  const [bypassMobileCheck, setBypassMobileCheck] = useState(false);
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -59,6 +60,11 @@ const GiottoGame: React.FC = () => {
   const handleReplay = () => {
     setGameState('welcome');
   };
+
+  const handleBypassMobile = () => {
+    setBypassMobileCheck(true);
+    handleStart();
+  };
   
   const showLeaderboard = async () => {
     if (isGameServiceAvailable) {
@@ -72,13 +78,13 @@ const GiottoGame: React.FC = () => {
   };
   
   // Add warning for non-mobile devices
-  if (!isMobile) {
+  if (!isMobile && !bypassMobileCheck) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
         <h1 className="text-3xl font-bold mb-4">Giotto</h1>
         <p className="text-lg mb-8">This game is designed for touch devices. Please open it on a mobile device for the best experience.</p>
         <button 
-          onClick={handleStart} 
+          onClick={handleBypassMobile} 
           className="px-6 py-3 bg-primary text-white rounded-full"
         >
           Continue Anyway
