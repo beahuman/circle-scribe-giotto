@@ -1,14 +1,15 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleCheck, CircleX } from "lucide-react";
+import { CircleCheck, CircleX, Trophy } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
   onReplay: () => void;
+  showLeaderboard?: () => void;
 }
 
-const ResultScreen: React.FC<ResultScreenProps> = ({ accuracy, onReplay }) => {
+const ResultScreen: React.FC<ResultScreenProps> = ({ accuracy, onReplay, showLeaderboard }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
@@ -44,12 +45,25 @@ const ResultScreen: React.FC<ResultScreenProps> = ({ accuracy, onReplay }) => {
         </p>
       </div>
       
-      <Button 
-        onClick={onReplay}
-        className="px-8 py-6 text-lg rounded-full"
-      >
-        Draw Again
-      </Button>
+      <div className="flex flex-col gap-4 w-full max-w-xs">
+        <Button 
+          onClick={onReplay}
+          className="px-8 py-6 text-lg rounded-full"
+        >
+          Draw Again
+        </Button>
+        
+        {showLeaderboard && (
+          <Button 
+            onClick={showLeaderboard}
+            variant="outline"
+            className="px-8 py-6 text-lg rounded-full"
+          >
+            <Trophy className="mr-2 h-5 w-5" />
+            Leaderboard
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

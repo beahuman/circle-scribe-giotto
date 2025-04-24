@@ -1,13 +1,14 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot } from "lucide-react";
+import { CircleDot, Trophy } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
+  showLeaderboard?: () => void;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
       <div className="space-y-2">
@@ -31,12 +32,25 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
         </ol>
       </div>
       
-      <Button 
-        onClick={onStart}
-        className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
-      >
-        Begin
-      </Button>
+      <div className="flex flex-col gap-4 w-full max-w-xs">
+        <Button 
+          onClick={onStart}
+          className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
+        >
+          Begin
+        </Button>
+        
+        {showLeaderboard && (
+          <Button 
+            onClick={showLeaderboard}
+            variant="outline"
+            className="px-8 py-4 rounded-full"
+          >
+            <Trophy className="mr-2 h-5 w-5" />
+            Leaderboard
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
