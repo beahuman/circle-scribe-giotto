@@ -21,23 +21,27 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
-  // Calculate center position for the visualization
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 3; // Position in upper third of screen
+  // Use fixed dimensions for visualization container
+  const containerSize = 200;
+  const centerX = containerSize / 2;
+  const centerY = containerSize / 2;
   
-  // Transform the points to be centered
-  const transformedTargetCircle = {
-    x: centerX,
-    y: centerY,
-    radius: targetCircle.radius
-  };
+  // Calculate scaling factor to fit the circle in our container
+  const scaleFactor = (containerSize * 0.8) / (targetCircle.radius * 2);
   
-  const translateX = centerX - targetCircle.x;
-  const translateY = centerY - targetCircle.y;
+  // Calculate average position of drawn points (to center them)
+  let sumX = 0, sumY = 0;
+  drawnPoints.forEach(point => {
+    sumX += point.x;
+    sumY += point.y;
+  });
+  const drawnCenterX = drawnPoints.length ? sumX / drawnPoints.length : 0;
+  const drawnCenterY = drawnPoints.length ? sumY / drawnPoints.length : 0;
   
+  // Transform drawn points to be centered over target circle
   const transformedDrawnPoints = drawnPoints.map(point => ({
-    x: point.x + translateX,
-    y: point.y + translateY
+    x: centerX + (point.x - drawnCenterX) * scaleFactor,
+    y: centerY + (point.y - drawnCenterY) * scaleFactor
   }));
   
   return (
@@ -47,32 +51,40 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      <div className="relative flex items-center justify-center w-64 h-64">
-        {/* Target Circle */}
-        <div className="absolute border-2 border-primary/30" style={{
-          width: transformedTargetCircle.radius * 2,
-          height: transformedTargetCircle.radius * 2,
-          borderRadius: '50%',
-          left: transformedTargetCircle.x - transformedTargetCircle.radius,
-          top: transformedTargetCircle.y - transformedTargetCircle.radius,
-          transform: 'translate(-50%, -50%)'
-        }} />
+      {/* Visualization container - positioned between text and score */}
+      <div className="relative w-[200px] h-[200px] mx-auto my-6">
+        {/* Target Circle - positioned absolutely in the center */}
+        <div 
+          className="absolute border-2 border-primary/30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" 
+          style={{
+            width: containerSize * 0.8,
+            height: containerSize * 0.8,
+            borderRadius: '50%',
+          }} 
+        />
         
-        {/* Drawn Circle */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          <path
-            d={`M ${transformedDrawnPoints[0]?.x} ${transformedDrawnPoints[0]?.y} ${transformedDrawnPoints.map(p => `L ${p.x} ${p.y}`).join(' ')}`}
-            fill="none"
-            stroke="hsl(var(--primary))"
-            strokeWidth="2"
-          />
-        </svg>
-        
-        {isGoodScore ? (
-          <CircleCheck className="absolute text-primary animate-pulse-slow" size={60} />
-        ) : (
-          <CircleX className="absolute text-muted-foreground" size={60} />
+        {/* Drawn Circle - positioned on top */}
+        {drawnPoints.length > 0 && (
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+            <path
+              d={transformedDrawnPoints.length > 0 ? 
+                `M ${transformedDrawnPoints[0].x} ${transformedDrawnPoints[0].y} 
+                 ${transformedDrawnPoints.map(p => `L ${p.x} ${p.y}`).join(' ')}` : ''}
+              fill="none"
+              stroke="hsl(var(--primary))"
+              strokeWidth="2"
+            />
+          </svg>
         )}
+        
+        {/* Checkmark or X - positioned on top of both circles */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+          {isGoodScore ? (
+            <CircleCheck className="text-primary animate-pulse-slow" size={60} />
+          ) : (
+            <CircleX className="text-muted-foreground" size={60} />
+          )}
+        </div>
       </div>
       
       <div className="space-y-4">
