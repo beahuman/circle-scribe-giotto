@@ -21,6 +21,25 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
+  // Calculate center position for the visualization
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 3; // Position in upper third of screen
+  
+  // Transform the points to be centered
+  const transformedTargetCircle = {
+    x: centerX,
+    y: centerY,
+    radius: targetCircle.radius
+  };
+  
+  const translateX = centerX - targetCircle.x;
+  const translateY = centerY - targetCircle.y;
+  
+  const transformedDrawnPoints = drawnPoints.map(point => ({
+    x: point.x + translateX,
+    y: point.y + translateY
+  }));
+  
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
       <div className="space-y-2">
@@ -28,20 +47,21 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      <div className="relative flex items-center justify-center w-40 h-40">
+      <div className="relative flex items-center justify-center w-64 h-64">
         {/* Target Circle */}
         <div className="absolute border-2 border-primary/30" style={{
-          width: targetCircle.radius * 2,
-          height: targetCircle.radius * 2,
+          width: transformedTargetCircle.radius * 2,
+          height: transformedTargetCircle.radius * 2,
           borderRadius: '50%',
-          left: targetCircle.x - targetCircle.radius,
-          top: targetCircle.y - targetCircle.radius,
+          left: transformedTargetCircle.x - transformedTargetCircle.radius,
+          top: transformedTargetCircle.y - transformedTargetCircle.radius,
+          transform: 'translate(-50%, -50%)'
         }} />
         
         {/* Drawn Circle */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
           <path
-            d={`M ${drawnPoints[0]?.x} ${drawnPoints[0]?.y} ${drawnPoints.map(p => `L ${p.x} ${p.y}`).join(' ')}`}
+            d={`M ${transformedDrawnPoints[0]?.x} ${transformedDrawnPoints[0]?.y} ${transformedDrawnPoints.map(p => `L ${p.x} ${p.y}`).join(' ')}`}
             fill="none"
             stroke="hsl(var(--primary))"
             strokeWidth="2"
