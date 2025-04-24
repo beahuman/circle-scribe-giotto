@@ -31,7 +31,7 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle): number
   }
   const avgRadius = sumRadius / points.length;
   
-  // Calculate variance in radius (circularity) - Now more strict
+  // Calculate variance in radius (circularity) - Now even more strict
   let sumVariance = 0;
   for (const point of points) {
     const dx = point.x - centerX;
@@ -39,28 +39,27 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle): number
     const radius = Math.sqrt(dx * dx + dy * dy);
     sumVariance += Math.abs(radius - avgRadius) / avgRadius;
   }
-  // Increased penalty for variance (multiplied by 200 instead of 100)
-  const circularityScore = Math.max(0, 100 - (sumVariance / points.length * 200));
+  // Tripled penalty for variance
+  const circularityScore = Math.max(0, 100 - (sumVariance / points.length * 300));
   
-  // Calculate position accuracy - Now more strict
+  // Calculate position accuracy - Even stricter
   const centerDistance = Math.sqrt(
     Math.pow(centerX - targetCircle.x, 2) + 
     Math.pow(centerY - targetCircle.y, 2)
   );
-  // Increased penalty for position (multiplied by 100 instead of 50)
-  const positionScore = Math.max(0, 100 - (centerDistance / targetCircle.radius * 100));
+  // Doubled position penalty
+  const positionScore = Math.max(0, 100 - (centerDistance / targetCircle.radius * 200));
   
-  // Calculate size accuracy - Now more strict
+  // Calculate size accuracy - Even stricter
   const radiusDiff = Math.abs(avgRadius - targetCircle.radius) / targetCircle.radius;
-  // Increased penalty for size difference (multiplied by 200 instead of 100)
-  const sizeScore = Math.max(0, 100 - (radiusDiff * 200));
+  // Tripled size penalty
+  const sizeScore = Math.max(0, 100 - (radiusDiff * 300));
   
-  // Adjusted weights to make perfect scores harder to achieve
-  // Increased weight on circularity (0.7) and reduced tolerance for position and size
-  const finalScore = (circularityScore * 0.7) + (positionScore * 0.15) + (sizeScore * 0.15);
+  // Adjusted weights to make perfect scores even harder
+  const finalScore = (circularityScore * 0.8) + (positionScore * 0.1) + (sizeScore * 0.1);
   
-  // Apply an additional overall penalty to make high scores harder to achieve
-  return Math.min(100, Math.max(0, finalScore * 0.85));
+  // Apply an additional heavy penalty
+  return Math.min(100, Math.max(0, finalScore * 0.65));
 };
 
 // Generate a random position for a circle within the screen bounds

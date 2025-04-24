@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import WelcomeScreen from './WelcomeScreen';
 import CircleDisplay from './CircleDisplay';
@@ -16,6 +15,7 @@ const GiottoGame: React.FC = () => {
   const [targetCircle, setTargetCircle] = useState(generateRandomCirclePosition());
   const [isGameServiceAvailable, setIsGameServiceAvailable] = useState(false);
   const [bypassMobileCheck, setBypassMobileCheck] = useState(false);
+  const [drawnPoints, setDrawnPoints] = useState<Array<{ x: number; y: number }>>([]);
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -42,11 +42,11 @@ const GiottoGame: React.FC = () => {
     setGameState('drawing');
   };
   
-  const handleDrawingComplete = async (score: number) => {
+  const handleDrawingComplete = async (score: number, points: Array<{ x: number; y: number }>) => {
     setAccuracy(score);
+    setDrawnPoints(points);
     setGameState('result');
     
-    // Submit score to game service if available
     if (isGameServiceAvailable) {
       try {
         const service = await getGameService();
@@ -77,7 +77,6 @@ const GiottoGame: React.FC = () => {
     }
   };
   
-  // Add warning for non-mobile devices
   if (!isMobile && !bypassMobileCheck) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
@@ -119,6 +118,8 @@ const GiottoGame: React.FC = () => {
           accuracy={accuracy}
           onReplay={handleReplay}
           showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
+          targetCircle={targetCircle}
+          drawnPoints={drawnPoints}
         />
       )}
     </div>

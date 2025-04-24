@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { calculateAccuracy } from '@/utils/circleUtils';
 
@@ -8,7 +7,7 @@ interface Point {
 }
 
 interface DrawingCanvasProps {
-  onComplete: (accuracy: number) => void;
+  onComplete: (accuracy: number, points: Array<{ x: number; y: number }>) => void;
   targetCircle: {
     x: number;
     y: number;
@@ -74,7 +73,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     
     // Allow a small delay to see the completed drawing
     setTimeout(() => {
-      onComplete(accuracy);
+      onComplete(accuracy, points);
     }, 500);
   };
 
