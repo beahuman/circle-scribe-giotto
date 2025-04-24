@@ -1,16 +1,28 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot, Trophy } from "lucide-react";
+import { CircleDot, Trophy, ArrowLeft } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
   showLeaderboard?: () => void;
+  onBackToHome?: () => void;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard, onBackToHome }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+      {onBackToHome && (
+        <Button 
+          variant="ghost" 
+          onClick={onBackToHome}
+          className="absolute top-4 left-4"
+          size="icon"
+        >
+          <ArrowLeft className="h-6 w-6" />
+        </Button>
+      )}
+
       <div className="space-y-2">
         <h1 className="text-4xl font-bold">Giotto</h1>
         <p className="text-muted-foreground">The art of the perfect circle</p>

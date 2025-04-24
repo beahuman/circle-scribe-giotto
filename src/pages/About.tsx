@@ -1,0 +1,117 @@
+
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, ExternalLink, Github, Heart } from 'lucide-react';
+
+const About = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen p-6 flex flex-col">
+      <div className="flex items-center mb-6">
+        <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <h1 className="text-2xl font-bold">About</h1>
+      </div>
+
+      <div className="flex-1 space-y-6 max-w-md mx-auto w-full">
+        <div className="text-center mb-8">
+          <div className="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-primary/50 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full border-2 border-primary"></div>
+          </div>
+          <h2 className="text-3xl font-bold mb-1">Giotto</h2>
+          <p className="text-muted-foreground">The art of the perfect circle</p>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>The Legend of Giotto's O</CardTitle>
+            <CardDescription>A historical masterpiece</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p>
+              In the late 13th century, Pope Boniface VIII sought to recruit the best artists in Italy.
+              He sent messengers across the country to collect samples of their work.
+            </p>
+            
+            <p>
+              When the messenger reached Giotto di Bondone, the artist took a sheet of paper and, with a brush dipped in red paint, drew a perfect circle in one continuous stroke.
+            </p>
+            
+            <p>
+              "Take this back to His Holiness," Giotto said.
+            </p>
+            
+            <p>
+              The Pope and his courtiers immediately recognized the mastery required to draw such a perfect circle freehand. Giotto was commissioned for the work based on this simple demonstration of skill.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>The Science of Circle Drawing</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p>
+              Drawing a perfect circle freehand is considered one of the most difficult basic tasks in art and design. It requires exceptional hand-eye coordination, muscle memory, and spatial awareness.
+            </p>
+            
+            <p>
+              Studies have shown that the ability to draw circles is linked to fine motor control and can even be used to detect certain neurological conditions. The more you practice, the better your neural pathways adapt to the task.
+            </p>
+            
+            <Button variant="outline" className="w-full" asChild>
+              <a href="https://en.wikipedia.org/wiki/Giotto" target="_blank" rel="noopener noreferrer">
+                Learn more about Giotto
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Credits</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm font-medium">Designed & Developed by</p>
+                <p className="text-sm text-muted-foreground">The Giotto Team</p>
+              </div>
+              
+              <div>
+                <p className="text-sm font-medium">Built with</p>
+                <p className="text-sm text-muted-foreground">React, TypeScript & Shadcn UI</p>
+              </div>
+              
+              <div className="pt-2 flex justify-between">
+                <Button variant="outline" size="sm" asChild>
+                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-2 h-4 w-4" />
+                    GitHub
+                  </a>
+                </Button>
+                
+                <Button size="sm" className="gap-2">
+                  <Heart className="h-4 w-4" />
+                  Support Us
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <div className="text-center text-xs text-muted-foreground pt-4">
+          <p>Version 1.0.0 • © {new Date().getFullYear()} Giotto App</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default About;

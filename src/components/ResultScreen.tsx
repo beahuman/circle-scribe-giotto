@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleCheck, CircleX, Trophy } from "lucide-react";
+import { CircleCheck, CircleX, Trophy, ArrowLeft, Home } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
@@ -9,6 +9,7 @@ interface ResultScreenProps {
   showLeaderboard?: () => void;
   targetCircle: { x: number; y: number; radius: number };
   drawnPoints: { x: number; y: number }[];
+  onBackToHome?: () => void;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({ 
@@ -16,7 +17,8 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   onReplay, 
   showLeaderboard,
   targetCircle,
-  drawnPoints 
+  drawnPoints,
+  onBackToHome
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
@@ -46,6 +48,17 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+      {onBackToHome && (
+        <Button 
+          variant="ghost" 
+          onClick={onBackToHome}
+          className="absolute top-4 left-4"
+          size="icon"
+        >
+          <Home className="h-5 w-5" />
+        </Button>
+      )}
+      
       <div className="space-y-2">
         <h2 className="text-3xl font-bold">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>

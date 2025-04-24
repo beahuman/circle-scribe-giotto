@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import WelcomeScreen from './WelcomeScreen';
 import CircleDisplay from './CircleDisplay';
@@ -9,7 +10,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 type GameState = 'welcome' | 'showing' | 'drawing' | 'result';
 
-const GiottoGame: React.FC = () => {
+interface GiottoGameProps {
+  onReturnToHome?: () => void;
+}
+
+const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
   const [gameState, setGameState] = useState<GameState>('welcome');
   const [accuracy, setAccuracy] = useState(0);
   const [targetCircle, setTargetCircle] = useState(generateRandomCirclePosition());
@@ -95,7 +100,11 @@ const GiottoGame: React.FC = () => {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       {gameState === 'welcome' && (
-        <WelcomeScreen onStart={handleStart} showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined} />
+        <WelcomeScreen 
+          onStart={handleStart} 
+          showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
+          onBackToHome={onReturnToHome}
+        />
       )}
       
       {gameState === 'showing' && (
@@ -120,6 +129,7 @@ const GiottoGame: React.FC = () => {
           showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
           targetCircle={targetCircle}
           drawnPoints={drawnPoints}
+          onBackToHome={onReturnToHome}
         />
       )}
     </div>
