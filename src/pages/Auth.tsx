@@ -1,0 +1,140 @@
+
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import AuthHeader from '@/components/auth/AuthHeader';
+import SocialLoginButtons from '@/components/auth/SocialLoginButtons';
+import EmailSignInForm from '@/components/auth/EmailSignInForm';
+import EmailSignUpForm from '@/components/auth/EmailSignUpForm';
+
+const Auth = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleEmailSignIn = async (values: { email: string; password: string }) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Sign in successful",
+        description: "Welcome back!",
+      });
+      
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEmailSignUp = async (values: { username: string; email: string; password: string }) => {
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (authError) throw authError;
+
+      if (authData.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ username: values.username })
+          .eq('id', authData.user.id);
+
+        if (profileError) throw profileError;
+      }
+
+      toast({
+        title: "Account created",
+        description: "Welcome to the perfect circle challenge!",
+      });
+      
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSocialAuth = async (provider: 'google' | 'apple' | 'facebook') => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: window.location.origin,
+        }
+      });
+
+      if (error) throw error;
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+  
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
+      <div className="w-full max-w-md space-y-8">
+        <AuthHeader 
+          title="Welcome"
+          subtitle="Sign in or create an account to continue"
+        />
+        
+        <Card className="border-primary/20 shadow-md overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
+            <CardTitle className="text-center">Authentication</CardTitle>
+            <CardDescription className="text-center">Choose how you want to continue</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6 space-y-6">
+            <SocialLoginButtons onSocialLogin={handleSocialAuth} />
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                <TabsTrigger value="signup">Create Account</TabsTrigger>
+              </TabsList>
+              <TabsContent value="signin" className="mt-4">
+                <EmailSignInForm onSubmit={handleEmailSignIn} />
+              </TabsContent>
+              <TabsContent value="signup" className="mt-4">
+                <EmailSignUpForm onSubmit={handleEmailSignUp} />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Auth;

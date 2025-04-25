@@ -21,13 +21,13 @@ const UserAvatar = () => {
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuLabel>Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link to="/signin">
+          <Link to="/auth">
             <DropdownMenuItem className="cursor-pointer">
               <i className="ri-login-box-line text-lg mr-2 text-primary" />
               <span>Sign In</span>
             </DropdownMenuItem>
           </Link>
-          <Link to="/signup">
+          <Link to="/auth?tab=signup">
             <DropdownMenuItem className="cursor-pointer">
               <i className="ri-user-add-line text-lg mr-2 text-primary" />
               <span>Create Account</span>
