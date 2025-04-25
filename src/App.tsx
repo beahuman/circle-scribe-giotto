@@ -11,7 +11,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
-import Tutorial from "./pages/Tutorial";
 import About from "./pages/About";
 import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
@@ -36,7 +35,6 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/history" element={<History />} />
-              <Route path="/tutorial" element={<Tutorial />} />
               <Route path="/about" element={<About />} />
               <Route path="/account" element={<Account />} />
               <Route path="/account/edit" element={<EditAccount />} />
