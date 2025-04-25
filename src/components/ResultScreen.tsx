@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleCheck, CircleX, Trophy, Home, Star } from "lucide-react";
+import { CircleCheck, CircleX, Trophy, Home, Star, Share2 } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
@@ -42,6 +42,26 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
     x: centerX + (point.x - drawnCenterX) * scaleFactor,
     y: centerY + (point.y - drawnCenterY) * scaleFactor
   }));
+  
+  const handleShare = async () => {
+    const roundedAccuracy = Math.round(accuracy * 100) / 100;
+    const shareText = `I drew a circle with ${roundedAccuracy}% accuracy in Giotto! Can you beat my score?`;
+    
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'My Giotto Score',
+          text: shareText,
+          url: window.location.href
+        });
+      } else {
+        await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
+        alert('Score and link copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
   
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
@@ -132,6 +152,15 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         </Button>
 
         <Button 
+          onClick={handleShare}
+          variant="secondary"
+          className="px-8 py-6 text-lg rounded-full"
+        >
+          <Share2 className="mr-2 h-5 w-5" />
+          Share Score
+        </Button>
+
+        <Button 
           onClick={onBackToHome}
           variant="secondary"
           className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-muted/50 to-background border border-muted"
@@ -146,7 +175,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
             variant="outline"
             className="px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
           >
-            <i className="ri-trophy-line text-xl mr-2 text-primary" />
+            <Trophy className="mr-2 h-5 w-5" />
             View Leaderboard
           </Button>
         )}

@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Trophy, ArrowLeft, Ghost, Pencil } from "lucide-react";
+import { Trophy, ArrowLeft, Ghost, Pencil, Share2 } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
 
 interface WelcomeScreenProps {
@@ -17,6 +18,24 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onBackToHome,
   isGuestMode 
 }) => {
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Giotto - The Art of the Perfect Circle',
+          text: 'Challenge yourself to draw the perfect circle! Try Giotto, a fun game inspired by Renaissance master Giotto.',
+          url: window.location.href
+        });
+      } else {
+        // Fallback to copy to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
       {onBackToHome && (
@@ -76,6 +95,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             Leaderboard
           </Button>
         )}
+
+        <Button
+          onClick={handleShare}
+          variant="ghost"
+          className="px-8 py-4 text-lg rounded-full text-muted-foreground"
+        >
+          <Share2 className="mr-2 h-5 w-5" />
+          Share App
+        </Button>
       </div>
     </div>
   );
