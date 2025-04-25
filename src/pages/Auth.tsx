@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -136,7 +135,7 @@ const Auth = () => {
             </div>
           </Tabs>
 
-          <div className={`transition-all duration-500 ease-in-out ${activeTab === "signup" ? "pt-6" : "pt-6"}`}>
+          <div className={`transition-all duration-500 ease-in-out pt-6`}>
             <SocialLoginButtons onSocialLogin={handleSocialAuth} />
 
             <Button 
@@ -155,4 +154,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
