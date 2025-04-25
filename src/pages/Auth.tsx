@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { Ghost } from 'lucide-react';
 import AuthHeader from '@/components/auth/AuthHeader';
 import SocialLoginButtons from '@/components/auth/SocialLoginButtons';
 import EmailSignInForm from '@/components/auth/EmailSignInForm';
@@ -88,10 +89,21 @@ const Auth = () => {
       });
     }
   };
-  
+
+  const handleGuestPlay = () => {
+    localStorage.setItem('guestMode', 'true');
+    toast({
+      title: "Playing as Guest",
+      description: "Your scores and progress won't be saved. Create an account anytime to track your progress!",
+      variant: "default",
+      duration: 5000,
+    });
+    navigate('/');
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
-      <div className="w-full max-w-md space-y-12">
+      <div className="w-full max-w-md space-y-8">
         <AuthHeader 
           title="Welcome to Giotto"
           subtitle="Sign in or create an account to continue"
@@ -111,7 +123,25 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
 
-          <SocialLoginButtons onSocialLogin={handleSocialAuth} />
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or try without an account
+              </span>
+            </div>
+          </div>
+
+          <Button 
+            variant="ghost" 
+            onClick={handleGuestPlay}
+            className="w-full px-8 py-6 text-lg rounded-full hover:bg-primary/5"
+          >
+            <Ghost className="mr-2 h-5 w-5" />
+            Continue as Guest
+          </Button>
         </div>
       </div>
     </div>

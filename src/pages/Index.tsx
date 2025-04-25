@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import GiottoGame from "@/components/GiottoGame";
 import HomeScreen from "@/components/HomeScreen";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Ghost } from "lucide-react";
 import { getGameService } from '@/utils/gameServices';
 
 const Index = () => {
