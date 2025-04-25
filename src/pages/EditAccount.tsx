@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -62,7 +61,7 @@ const EditAccount = () => {
   ];
   
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80">
+    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/account')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />

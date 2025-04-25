@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ const BottomNav = () => {
   const isActive = (path: string) => location.pathname === path;
   
   return (
-    <div className="grid grid-cols-5 gap-2 p-4 bg-muted/30 backdrop-blur-sm border-t border-muted fixed bottom-0 left-0 right-0">
+    <div className="grid grid-cols-5 gap-2 p-4 bg-muted/30 backdrop-blur-sm border-t border-muted fixed bottom-0 left-0 right-0 z-50">
       <Button 
         variant={isActive('/history') ? 'default' : 'ghost'}
         onClick={() => navigate('/history')}

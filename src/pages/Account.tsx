@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,13 +6,13 @@ import { ArrowLeft, Trophy, CircleUser, LogOut, Trash2 } from 'lucide-react';
 import AccountDetails from '@/components/AccountDetails';
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 import { useToast } from '@/hooks/use-toast';
+import BottomNav from '@/components/BottomNav';
 
 const Account = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
-  // Mock user data - would come from authentication service in real app
   const userData = {
     username: 'GiottoMaster',
     email: 'artist@example.com',
@@ -24,18 +23,16 @@ const Account = () => {
   };
   
   const handleSignOut = () => {
-    // In a real app, this would call auth service logout method
     toast({
       title: "Signed out",
       description: "You have been signed out successfully",
     });
     
-    // Redirect to home after signing out
     setTimeout(() => navigate('/'), 1000);
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80">
+    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />
