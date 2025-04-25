@@ -11,10 +11,10 @@ const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({ onSocialLogin }
     <div className="grid grid-cols-1 gap-4">
       <Button 
         variant="outline" 
-        className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
+        className="w-full px-8 py-6 text-lg rounded-full border-[#9b87f5] bg-white text-[#9b87f5] hover:bg-[#9b87f5]/5"
         onClick={() => onSocialLogin('apple')}
       >
-        <i className="ri-apple-fill text-2xl mr-2 text-primary" />
+        <i className="ri-apple-fill text-2xl mr-2 text-[#9b87f5]" />
         Continue with Apple
       </Button>
     </div>
@@ -22,3 +22,4 @@ const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({ onSocialLogin }
 };
 
 export default SocialLoginButtons;
+
