@@ -136,7 +136,7 @@ const Auth = () => {
             </div>
           </Tabs>
 
-          <div className={`transition-all duration-500 ease-in-out ${activeTab === "signup" ? "pt-20" : ""}`}>
+          <div className={`transition-all duration-500 ease-in-out ${activeTab === "signup" ? "pt-20" : "pt-6"}`}>
             <SocialLoginButtons onSocialLogin={handleSocialAuth} />
 
             <Button 
