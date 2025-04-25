@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleCheck, CircleX, Trophy, Home } from "lucide-react";
+import { CircleCheck, CircleX, Trophy, Home, Star } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
+  difficultyLevel: number;
   onReplay: () => void;
   showLeaderboard?: () => void;
   targetCircle: { x: number; y: number; radius: number };
@@ -12,9 +12,10 @@ interface ResultScreenProps {
   onBackToHome?: () => void;
 }
 
-const ResultScreen: React.FC<ResultScreenProps> = ({ 
-  accuracy, 
-  onReplay, 
+const ResultScreen: React.FC<ResultScreenProps> = ({
+  accuracy,
+  difficultyLevel,
+  onReplay,
   showLeaderboard,
   targetCircle,
   drawnPoints,
@@ -43,7 +44,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   }));
   
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center bg-gradient-to-b from-background to-background/80">
+    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
       {onBackToHome && (
         <Button 
           variant="ghost" 
@@ -101,6 +102,11 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       <div className="space-y-4">
         <div className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
           {roundedAccuracy}%
+        </div>
+        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <Star className="h-4 w-4" />
+          <span>Difficulty Level: {difficultyLevel}%</span>
+          <Star className="h-4 w-4" />
         </div>
         <p className="text-muted-foreground max-w-xs">
           {roundedAccuracy >= 95 ? "Wow, did you use a compass? That's cheating!" :

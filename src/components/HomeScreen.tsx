@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleDot, Trophy, History, HelpCircle, Info, Settings, Stars } from "lucide-react";
+import { CircleDot, Trophy, History, HelpCircle, Info, Settings, Stars, Star } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import UserAvatar from './UserAvatar';
 import BottomNav from './BottomNav';
@@ -41,7 +40,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
   
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/80">
-      {/* Top Navigation */}
+      {/* Header */}
       <header className="p-4 flex justify-between items-center">
         <Button 
           variant="ghost" 
@@ -60,11 +59,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
           <Stars className="h-4 w-4" />
         </div>
         
-        <UserAvatar 
-          isLoggedIn={isLoggedIn} 
-          username={isLoggedIn ? username : undefined}
-          onSignOut={handleSignOut}
-        />
+        <div className="w-10" /> {/* Spacer to replace avatar */}
       </header>
       
       {/* Main Content */}
@@ -84,12 +79,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
           <p className="text-lg text-muted-foreground">Can you draw the perfect circle?</p>
         </div>
         
-        <div className="space-y-4 w-full max-w-xs">
+        <div className="space-y-8 w-full max-w-xs"> {/* Increased gap between buttons */}
           <Button 
             onClick={onStartGame}
             className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
             size="lg"
           >
+            <Star className="mr-2 h-6 w-6 animate-pulse" /> {/* More playful icon */}
             Play Now
           </Button>
           
@@ -97,21 +93,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
             <Button 
               onClick={showLeaderboard}
               variant="outline"
-              className="w-full px-8 py-4 rounded-full border-primary/30 hover:bg-primary/5"
+              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
             >
-              <Trophy className="mr-2 h-5 w-5 text-primary" />
+              <Trophy className="mr-2 h-6 w-6 text-primary animate-bounce" /> {/* More playful animation */}
               Leaderboard
-            </Button>
-          )}
-          
-          {isLoggedIn && (
-            <Button 
-              onClick={() => navigate('/account')}
-              variant="outline"
-              className="w-full px-8 py-4 rounded-full border-primary/30 hover:bg-primary/5"
-            >
-              <CircleDot className="mr-2 h-5 w-5 text-primary" />
-              My Profile
             </Button>
           )}
         </div>

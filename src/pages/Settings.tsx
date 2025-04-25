@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -28,45 +27,26 @@ const Settings = () => {
     return Number(localStorage.getItem('drawingPrecision')) || 50;
   });
 
-  // Debounced save function to prevent too many toast notifications
-  const [saveTimeoutId, setSaveTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-  const saveSettings = (showToast = false) => {
+  const saveSettings = () => {
     localStorage.setItem('soundEnabled', String(soundEnabled));
     localStorage.setItem('musicEnabled', String(musicEnabled));
     localStorage.setItem('showTime', String(showTime));
     localStorage.setItem('difficultyLevel', String(difficultyLevel));
     localStorage.setItem('drawingPrecision', String(drawingPrecision));
-    
-    if (showToast) {
-      toast({
-        description: "Settings saved",
-        duration: 1000,
-      });
-    }
   };
 
-  // Effect for auto-saving settings with debounce
   useEffect(() => {
-    if (saveTimeoutId) {
-      clearTimeout(saveTimeoutId);
-    }
-    
     const id = setTimeout(() => {
       saveSettings(true);
     }, 500);
     
-    setSaveTimeoutId(id);
-    
     return () => {
-      if (saveTimeoutId) {
-        clearTimeout(saveTimeoutId);
-      }
+      clearTimeout(id);
     };
   }, [soundEnabled, musicEnabled, showTime, difficultyLevel, drawingPrecision]);
 
   return (
-    <div className="min-h-screen p-6 flex flex-col bg-gradient-to-b from-background to-background/80">
+    <div className="min-h-screen p-6 flex flex-col bg-gradient-to-b from-background to-background/80 pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />
@@ -164,9 +144,9 @@ const Settings = () => {
               </div>
               <Slider 
                 id="precision"
-                min={10}
-                max={90}
-                step={10}
+                min={5}
+                max={100}
+                step={5}
                 value={[drawingPrecision]} 
                 onValueChange={(value) => setDrawingPrecision(value[0])}
               />

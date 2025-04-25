@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,6 @@ import { ArrowLeft, ChevronRight, Award, TrendingUp, Calendar, Star } from 'luci
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 
-// Mock data for the history page
 const mockAttempts = [
   { id: 1, date: new Date(2025, 3, 23), score: 72 },
   { id: 2, date: new Date(2025, 3, 23), score: 45 },
@@ -23,7 +21,6 @@ const achievements = [
   { id: 4, name: 'Circle Marathon', description: 'Draw 50 circles in total', earned: false },
 ];
 
-// Chart data formatted for recharts
 const chartData = [
   { name: 'Apr 20', score: 45 },
   { name: 'Apr 21', score: 58 },
@@ -37,7 +34,7 @@ const History = () => {
   const bestScore = Math.max(...mockAttempts.map(attempt => attempt.score));
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 flex flex-col">
+    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 flex flex-col pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />
@@ -51,7 +48,7 @@ const History = () => {
         <Card className="overflow-hidden border-2 border-primary/20 shadow-lg shadow-primary/10">
           <CardHeader className="pb-2 text-center bg-gradient-to-r from-primary/10 to-purple-400/10">
             <CardTitle className="flex items-center justify-center gap-2">
-              <Award size={28} className="text-primary animate-pulse-slow" />
+              <Star size={28} className="text-primary animate-spin-slow" />
               <span>Personal Best</span>
             </CardTitle>
           </CardHeader>
@@ -65,10 +62,10 @@ const History = () => {
         <Card className="overflow-hidden border border-primary/20 shadow-md">
           <CardHeader className="pb-2 bg-gradient-to-r from-primary/10 to-purple-400/10">
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp size={20} className="text-primary" />
-              Progress
+              <Award size={20} className="text-primary animate-bounce" />
+              Your Journey
             </CardTitle>
-            <CardDescription>Your circle-drawing journey</CardDescription>
+            <CardDescription>Watch your skills grow!</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[200px] w-full">
@@ -86,8 +83,13 @@ const History = () => {
                     dataKey="score"
                     stroke="hsl(var(--primary))"
                     strokeWidth={3}
-                    dot={{ r: 4, strokeWidth: 2 }}
-                    activeDot={{ r: 6, strokeWidth: 2 }}
+                    dot={{ r: 6, fill: "hsl(var(--primary))", strokeWidth: 2 }}
+                    activeDot={{ 
+                      r: 8,
+                      strokeWidth: 2,
+                      fill: "hsl(var(--primary))",
+                      className: "animate-pulse"
+                    }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -154,6 +156,8 @@ const History = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <BottomNav />
     </div>
   );
 };
