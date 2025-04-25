@@ -109,7 +109,7 @@ const Auth = () => {
           subtitle="Sign in or create an account to continue"
         />
         
-        <div className="space-y-8">
+        <div className="space-y-6">
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2 rounded-full">
               <TabsTrigger value="signin" className="rounded-full">Sign In</TabsTrigger>
@@ -123,21 +123,12 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or try without an account
-              </span>
-            </div>
-          </div>
+          <SocialLoginButtons onSocialLogin={handleSocialAuth} />
 
           <Button 
-            variant="ghost" 
+            variant="outline" 
             onClick={handleGuestPlay}
-            className="w-full px-8 py-6 text-lg rounded-full hover:bg-primary/5"
+            className="w-full px-8 py-6 text-lg rounded-full border-[#7E69AB] hover:bg-primary/5 text-[#9b87f5]"
           >
             <Ghost className="mr-2 h-5 w-5" />
             Continue as Guest
