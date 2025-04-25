@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CircleDot, Trophy, ArrowLeft, Ghost, Pencil } from "lucide-react";
+import LogoAnimation from './LogoAnimation';
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -31,6 +31,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       )}
 
       <div className="space-y-2">
+        <div className="w-32 h-32 mx-auto">
+          <LogoAnimation />
+        </div>
         <h1 className="text-7xl font-bold bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 bg-clip-text text-transparent">
           Giotto
         </h1>
@@ -87,4 +90,3 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 };
 
 export default WelcomeScreen;
-
