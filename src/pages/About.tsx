@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -26,6 +25,22 @@ const About = () => {
           <h2 className="text-3xl font-bold mb-1">Giotto</h2>
           <p className="text-muted-foreground">The art of the perfect circle</p>
         </div>
+
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">Try the Tutorial</h3>
+          <div className="space-y-4">
+            <p>
+              Learn how to draw perfect circles with our step-by-step tutorial. Practice makes perfect!
+            </p>
+            
+            <Button variant="outline" className="w-full" onClick={() => navigate('/tutorial')}>
+              <HelpCircle className="mr-2 h-4 w-4" />
+              Start Tutorial
+            </Button>
+          </div>
+        </div>
+
+        <Separator className="bg-[#D6BCFA]" />
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold">The Legend of Giotto's O</h3>
@@ -68,22 +83,6 @@ const About = () => {
                 Learn more about Giotto
                 <ExternalLink className="ml-2 h-4 w-4" />
               </a>
-            </Button>
-          </div>
-        </div>
-
-        <Separator className="bg-[#D6BCFA]" />
-
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold">Try the Tutorial</h3>
-          <div className="space-y-4">
-            <p>
-              Learn how to draw perfect circles with our step-by-step tutorial. Practice makes perfect!
-            </p>
-            
-            <Button variant="outline" className="w-full" onClick={() => navigate('/tutorial')}>
-              <HelpCircle className="mr-2 h-4 w-4" />
-              Start Tutorial
             </Button>
           </div>
         </div>
