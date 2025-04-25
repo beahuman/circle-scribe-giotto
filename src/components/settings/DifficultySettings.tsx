@@ -10,12 +10,12 @@ interface DifficultySettingsProps {
 
 const DifficultySettings = ({ difficultyLevel, onDifficultyChange }: DifficultySettingsProps) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg font-medium">
         <SlidersHorizontal size={18} className="text-primary" />
         Game Difficulty
       </div>
-      <p className="text-sm text-muted-foreground mb-4">Adjust how challenging the game is</p>
+      <p className="text-sm text-muted-foreground -mt-2">Adjust how challenging the game is</p>
       <div className="space-y-4">
         <div className="flex justify-between">
           <span>Difficulty Level</span>
@@ -28,7 +28,7 @@ const DifficultySettings = ({ difficultyLevel, onDifficultyChange }: DifficultyS
           step={5}
           onValueChange={onDifficultyChange}
         />
-        <div className="flex justify-between text-xs text-muted-foreground mt-2">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>Easy</span>
           <span>Hard</span>
         </div>

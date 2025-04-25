@@ -10,12 +10,12 @@ interface DisplaySettingsProps {
 
 const DisplaySettings = ({ displayDuration, onDurationChange }: DisplaySettingsProps) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg font-medium">
         <Timer size={18} className="text-primary" />
         Display Duration
       </div>
-      <p className="text-sm text-muted-foreground mb-4">Seconds to display the target circle</p>
+      <p className="text-sm text-muted-foreground -mt-2">Seconds to display the target circle</p>
       <div className="space-y-4">
         <div className="flex justify-between">
           <span>Duration (seconds)</span>
@@ -28,7 +28,7 @@ const DisplaySettings = ({ displayDuration, onDurationChange }: DisplaySettingsP
           step={1}
           onValueChange={onDurationChange}
         />
-        <div className="flex justify-between text-xs text-muted-foreground mt-2">
+        <div className="flex justify-between text-xs text-muted-foreground">
           <span>Shorter</span>
           <span>Longer</span>
         </div>

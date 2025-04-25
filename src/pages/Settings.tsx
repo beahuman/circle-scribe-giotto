@@ -26,41 +26,41 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
-      <div className="flex items-center mb-8">
+      <div className="flex items-center mb-6">
         <SettingsIcon size={24} className="mr-2 text-primary" />
         <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-          App Settings
+          Game Settings
         </h1>
       </div>
 
-      <div className="max-w-md mx-auto space-y-10">
+      <div className="max-w-md mx-auto space-y-6">
         <DifficultySettings 
           difficultyLevel={difficultyLevel}
           onDifficultyChange={handleDifficultyChange}
         />
 
-        <Separator className="bg-purple-300/20 my-6" />
+        <Separator className="bg-purple-300/20" />
 
         <DrawingSettings 
           drawingPrecision={drawingPrecision}
           onPrecisionChange={handlePrecisionChange}
         />
 
-        <Separator className="bg-purple-300/20 my-6" />
+        <Separator className="bg-purple-300/20" />
 
         <DisplaySettings 
           displayDuration={displayDuration}
           onDurationChange={handleDurationChange}
         />
 
-        <Separator className="bg-purple-300/20 my-6" />
+        <Separator className="bg-purple-300/20" />
 
         <NotificationSettings 
           notifications={notifications}
           onNotificationsChange={handleNotificationToggle}
         />
 
-        <Separator className="bg-purple-300/20 my-6" />
+        <Separator className="bg-purple-300/20" />
 
         <AppearanceSettings 
           darkMode={darkMode}
