@@ -1,65 +1,85 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { useNavigate } from 'react-router-dom';
-import BottomNav from './BottomNav';
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CircleDot, Trophy, ArrowLeft, Ghost } from "lucide-react";
 
-interface HomeScreenProps {
-  onStartGame: () => void;
+interface WelcomeScreenProps {
+  onStart: () => void;
   showLeaderboard?: () => void;
+  onBackToHome?: () => void;
+  isGuestMode?: boolean;
 }
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard }) => {
-  const navigate = useNavigate();
-  
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
+  onStart, 
+  showLeaderboard, 
+  onBackToHome,
+  isGuestMode 
+}) => {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/80">
-      <header className="p-4 flex justify-between items-center">
-        <div className="w-10" /> {/* Placeholder to maintain layout */}
-        <div className="w-10" /> {/* Placeholder to maintain layout */}
-      </header>
-      
-      <div className="flex-1 flex flex-col items-center justify-center gap-12 p-6 text-center pb-24">
-        <div className="space-y-4 max-w-xs text-center">
-          <h1 className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-            Giotto
-          </h1>
-          <p className="text-lg text-muted-foreground">Can you draw a perfect circle?</p>
-        </div>
-        
-        <div className="relative mb-8">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-4 border-primary/20 animate-pulse-slow"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-dashed border-2 border-primary/40"></div>
-          <div className="w-44 h-44 rounded-full border-4 border-primary/30 bg-gradient-to-br from-primary/10 to-transparent flex items-center justify-center">
-            <i className="ri-focus-3-line text-5xl text-primary animate-pulse-slow" />
-          </div>
-        </div>
-        
-        <div className="space-y-8 w-full max-w-xs">
-          <Button 
-            onClick={onStartGame}
-            className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
-            size="lg"
-          >
-            <i className="ri-star-line text-2xl mr-2" />
-            Play Now
-          </Button>
-          
-          {showLeaderboard && (
-            <Button 
-              onClick={showLeaderboard}
-              variant="outline"
-              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20 text-primary"
-            >
-              <i className="ri-trophy-line text-2xl mr-2 text-primary" />
-              Leaderboard
-            </Button>
-          )}
-        </div>
+    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+      {onBackToHome && (
+        <Button 
+          variant="ghost" 
+          onClick={onBackToHome}
+          className="absolute top-4 left-4"
+          size="icon"
+        >
+          <ArrowLeft className="h-6 w-6" />
+        </Button>
+      )}
+
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold">Giotto</h1>
+        <p className="text-muted-foreground">The art of the perfect circle</p>
       </div>
       
-      <BottomNav />
+      <div className="relative">
+        <div className="w-40 h-40 rounded-full border-4 border-primary opacity-50"></div>
+        <CircleDot className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary" size={48} />
+      </div>
+      
+      {isGuestMode && (
+        <Alert>
+          <AlertDescription className="flex items-center gap-2">
+            <Ghost className="h-4 w-4" />
+            Playing as guest - scores won't be saved
+          </AlertDescription>
+        </Alert>
+      )}
+      
+      <div className="max-w-md space-y-4">
+        <p>
+          Draw a perfect circle with your finger, just like the Renaissance master Giotto.
+        </p>
+        <ol className="text-left space-y-2 text-sm text-muted-foreground">
+          <li>1. You'll be shown a perfect circle for 3 seconds</li>
+          <li>2. Then try to recreate it in the same location</li>
+          <li>3. Your accuracy will be calculated as a percentage</li>
+        </ol>
+      </div>
+      
+      <div className="flex flex-col gap-4 w-full max-w-xs">
+        <Button 
+          onClick={onStart}
+          className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
+        >
+          Begin
+        </Button>
+        
+        {showLeaderboard && !isGuestMode && (
+          <Button 
+            onClick={showLeaderboard}
+            variant="outline"
+            className="px-8 py-4 rounded-full text-primary"
+          >
+            <Trophy className="mr-2 h-5 w-5" />
+            Leaderboard
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
 
-export default HomeScreen;
+export default WelcomeScreen;

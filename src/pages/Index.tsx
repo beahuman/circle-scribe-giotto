@@ -20,7 +20,10 @@ const Index = () => {
       }
     };
     
-    initializeGameCenter();
+    // Only try to initialize Game Center if we're not in guest mode
+    if (!localStorage.getItem('guestMode')) {
+      initializeGameCenter();
+    }
   }, []);
   
   const handleStartGame = () => {
@@ -44,6 +47,7 @@ const Index = () => {
     <HomeScreen 
       onStartGame={handleStartGame}
       showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
+      isGuestMode={Boolean(localStorage.getItem('guestMode'))}
     />
   );
 };
