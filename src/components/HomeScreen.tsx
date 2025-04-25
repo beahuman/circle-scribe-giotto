@@ -18,7 +18,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   isGuestMode 
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
       {onBackToHome && (
         <Button 
           variant="ghost" 
@@ -31,7 +31,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       )}
 
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold">Giotto</h1>
+        <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 bg-clip-text text-transparent">
+          Giotto
+        </h1>
         <p className="text-muted-foreground">The art of the perfect circle</p>
       </div>
       
@@ -65,7 +67,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           onClick={onStart}
           className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
         >
-          Begin
+          Draw Now
         </Button>
         
         {showLeaderboard && !isGuestMode && (
