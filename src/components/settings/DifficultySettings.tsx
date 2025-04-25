@@ -2,7 +2,6 @@
 import React from 'react';
 import { Slider } from "@/components/ui/slider";
 import { SlidersHorizontal } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
 
 interface DifficultySettingsProps {
   difficultyLevel: number;
@@ -11,13 +10,13 @@ interface DifficultySettingsProps {
 
 const DifficultySettings = ({ difficultyLevel, onDifficultyChange }: DifficultySettingsProps) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center gap-2 text-lg font-medium">
         <SlidersHorizontal size={18} className="text-primary" />
         Game Difficulty
       </div>
-      <p className="text-sm text-muted-foreground">Adjust how challenging the game is</p>
-      <div className="space-y-2">
+      <p className="text-sm text-muted-foreground mb-4">Adjust how challenging the game is</p>
+      <div className="space-y-4">
         <div className="flex justify-between">
           <span>Difficulty Level</span>
           <span className="font-medium">{difficultyLevel}%</span>
@@ -29,7 +28,7 @@ const DifficultySettings = ({ difficultyLevel, onDifficultyChange }: DifficultyS
           step={5}
           onValueChange={onDifficultyChange}
         />
-        <div className="flex justify-between text-xs text-muted-foreground">
+        <div className="flex justify-between text-xs text-muted-foreground mt-2">
           <span>Easy</span>
           <span>Hard</span>
         </div>

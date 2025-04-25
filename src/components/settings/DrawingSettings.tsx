@@ -10,13 +10,13 @@ interface DrawingSettingsProps {
 
 const DrawingSettings = ({ drawingPrecision, onPrecisionChange }: DrawingSettingsProps) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center gap-2 text-lg font-medium">
         <Circle size={18} className="text-primary" />
         Drawing Precision
       </div>
-      <p className="text-sm text-muted-foreground">Adjust the smoothness of circle drawing</p>
-      <div className="space-y-2">
+      <p className="text-sm text-muted-foreground mb-4">Adjust the smoothness of circle drawing</p>
+      <div className="space-y-4">
         <div className="flex justify-between">
           <span>Precision Level</span>
           <span className="font-medium">{drawingPrecision}%</span>
@@ -28,7 +28,7 @@ const DrawingSettings = ({ drawingPrecision, onPrecisionChange }: DrawingSetting
           step={5}
           onValueChange={onPrecisionChange}
         />
-        <div className="flex justify-between text-xs text-muted-foreground">
+        <div className="flex justify-between text-xs text-muted-foreground mt-2">
           <span>More Detail</span>
           <span>Smoother</span>
         </div>
