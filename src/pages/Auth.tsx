@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -109,13 +110,13 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6 bg-gradient-to-b from-background to-background/80 pb-24">
-      <div className="w-full max-w-md space-y-8 pt-4">
-        <div className="text-center space-y-6 mb-12">
+    <div className="min-h-[100dvh] flex flex-col items-center p-6 bg-gradient-to-b from-background to-background/80">
+      <div className="w-full max-w-md space-y-8 pt-4 pb-24">
+        <div className="text-center space-y-6 mb-8">
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             Welcome To
           </h1>
-          <div className="w-[240px] mx-auto">
+          <div className="w-[200px] mx-auto">
             <LogoAnimation />
           </div>
         </div>

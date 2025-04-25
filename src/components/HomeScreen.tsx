@@ -36,7 +36,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+    <div className="min-h-[100dvh] flex flex-col items-center justify-center gap-6 animate-fade-in p-6 pb-24">
       {onBackToHome && (
         <Button 
           variant="ghost" 
