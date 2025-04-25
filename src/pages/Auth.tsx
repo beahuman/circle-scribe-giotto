@@ -10,6 +10,7 @@ import AuthHeader from '@/components/auth/AuthHeader';
 import SocialLoginButtons from '@/components/auth/SocialLoginButtons';
 import EmailSignInForm from '@/components/auth/EmailSignInForm';
 import EmailSignUpForm from '@/components/auth/EmailSignUpForm';
+import LogoAnimation from '@/components/LogoAnimation';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -105,10 +106,14 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
       <div className="w-full max-w-md space-y-8">
-        <AuthHeader 
-          title="Welcome to Giotto"
-          subtitle="Sign in or create an account to continue"
-        />
+        <div className="text-center space-y-6">
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+            Welcome To
+          </h1>
+          <div className="w-[240px] mx-auto">
+            <LogoAnimation />
+          </div>
+        </div>
         
         <div className="space-y-6">
           <Tabs defaultValue="signin" className="w-full">
