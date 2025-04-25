@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -80,7 +81,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
             className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
             size="lg"
           >
-            <i className="ri-star-line text-2xl mr-2 animate-pulse" />
+            <i className="ri-star-line text-2xl mr-2" />
             Play Now
           </Button>
           
@@ -88,9 +89,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
             <Button 
               onClick={showLeaderboard}
               variant="outline"
-              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
+              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20"
             >
-              <i className="ri-trophy-line text-2xl mr-2 text-primary animate-bounce" />
+              <i className="ri-trophy-line text-2xl mr-2 text-primary" />
               Leaderboard
             </Button>
           )}
