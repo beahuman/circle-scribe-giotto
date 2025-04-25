@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Trophy, ArrowLeft, Ghost, Pencil, Share2 } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
 
@@ -57,10 +57,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       </div>
       
       {isGuestMode && (
-        <Alert>
-          <AlertDescription className="flex items-center gap-2">
-            <Ghost className="h-4 w-4" />
-            Playing as guest - scores won't be saved
+        <Alert style={{ backgroundColor: '#D7B1FF' }}>
+          <Ghost className="h-5 w-5" style={{ color: '#765ED8' }} />
+          <AlertTitle className="text-sm font-semibold mt-2">Guest Mode</AlertTitle>
+          <AlertDescription className="text-sm mt-1">
+            Your scores and history won't be saved and you can't connect to Game Center.
           </AlertDescription>
         </Alert>
       )}
