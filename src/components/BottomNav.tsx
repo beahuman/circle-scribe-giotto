@@ -1,7 +1,7 @@
+
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { History, Home, Settings, CircleUser, Info } from "lucide-react";
 
 const BottomNav = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const BottomNav = () => {
         onClick={() => navigate('/history')}
         className="flex flex-col items-center py-2 h-auto text-xs"
       >
-        <History size={20} />
+        <i className="ri-history-line text-2xl" />
         <span className="mt-1">History</span>
       </Button>
       
@@ -25,7 +25,7 @@ const BottomNav = () => {
         onClick={() => navigate('/about')}
         className="flex flex-col items-center py-2 h-auto text-xs"
       >
-        <Info size={20} />
+        <i className="ri-information-line text-2xl" />
         <span className="mt-1">About</span>
       </Button>
       
@@ -34,7 +34,7 @@ const BottomNav = () => {
         onClick={() => navigate('/')}
         className="flex flex-col items-center py-2 h-auto text-xs"
       >
-        <Home size={20} />
+        <i className="ri-home-line text-2xl" />
         <span className="mt-1">Home</span>
       </Button>
       
@@ -43,7 +43,7 @@ const BottomNav = () => {
         onClick={() => navigate('/account')}
         className="flex flex-col items-center py-2 h-auto text-xs"
       >
-        <CircleUser size={20} />
+        <i className="ri-user-line text-2xl" />
         <span className="mt-1">Account</span>
       </Button>
       
@@ -52,7 +52,7 @@ const BottomNav = () => {
         onClick={() => navigate('/settings')}
         className="flex flex-col items-center py-2 h-auto text-xs"
       >
-        <Settings size={20} />
+        <i className="ri-settings-line text-2xl" />
         <span className="mt-1">Settings</span>
       </Button>
     </div>
@@ -60,3 +60,4 @@ const BottomNav = () => {
 };
 
 export default BottomNav;
+
