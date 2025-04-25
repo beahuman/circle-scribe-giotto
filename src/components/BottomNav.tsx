@@ -14,15 +14,16 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/history')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
       >
         <div className="relative mb-1">
           {isActive('/history') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
           <i className={cn(
             "ri-history-line text-2xl relative z-10", 
-            isActive('/history') ? "text-white" : "text-primary"
+            isActive('/history') ? "text-white" : "text-primary group-hover:text-primary"
           )} />
         </div>
         <span className="mt-1">History</span>
@@ -31,15 +32,16 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/about')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
       >
         <div className="relative mb-1">
           {isActive('/about') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
           <i className={cn(
             "ri-information-line text-2xl relative z-10", 
-            isActive('/about') ? "text-white" : "text-primary"
+            isActive('/about') ? "text-white" : "text-primary group-hover:text-primary"
           )} />
         </div>
         <span className="mt-1">About</span>
@@ -48,15 +50,16 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
       >
         <div className="relative mb-1">
           {isActive('/') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
           <i className={cn(
             "ri-home-line text-2xl relative z-10", 
-            isActive('/') ? "text-white" : "text-primary"
+            isActive('/') ? "text-white" : "text-primary group-hover:text-primary"
           )} />
         </div>
         <span className="mt-1">Home</span>
@@ -65,15 +68,16 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/account')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
       >
         <div className="relative mb-1">
           {isActive('/account') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
           <i className={cn(
             "ri-user-line text-2xl relative z-10", 
-            isActive('/account') ? "text-white" : "text-primary"
+            isActive('/account') ? "text-white" : "text-primary group-hover:text-primary"
           )} />
         </div>
         <span className="mt-1">Account</span>
@@ -82,15 +86,16 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/settings')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
       >
         <div className="relative mb-1">
           {isActive('/settings') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
           <i className={cn(
             "ri-settings-line text-2xl relative z-10", 
-            isActive('/settings') ? "text-white" : "text-primary"
+            isActive('/settings') ? "text-white" : "text-primary group-hover:text-primary"
           )} />
         </div>
         <span className="mt-1">Settings</span>
