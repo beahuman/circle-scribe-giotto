@@ -57,7 +57,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       </div>
       
       {isGuestMode && (
-        <Alert style={{ backgroundColor: '#D7B1FF' }}>
+        <Alert style={{ 
+          backgroundColor: '#D7B1FF', 
+          opacity: 0.6 
+        }}>
           <div className="flex flex-col items-center">
             <Ghost className="h-6 w-6 mb-2" style={{ color: '#765ED8' }} />
             <AlertTitle className="text-lg font-semibold">Guest Mode</AlertTitle>
