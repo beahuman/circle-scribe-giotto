@@ -31,32 +31,6 @@ const History = () => {
         <Card className="border-primary/20 shadow-md overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
             <CardTitle className="flex items-center gap-2">
-              <Clock size={18} className="text-primary" />
-              Recent Attempts
-            </CardTitle>
-            <CardDescription>Your most recent drawing scores</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              {historyData.map((item) => (
-                <div key={item.id} className="flex items-center justify-between border-b border-muted pb-3 last:border-0 last:pb-0">
-                  <div>
-                    <p className="font-medium">{new Date(item.date).toLocaleDateString()}</p>
-                    <p className="text-sm text-muted-foreground">Difficulty: {item.difficulty}</p>
-                  </div>
-                  <div className="bg-secondary/50 px-3 py-1 rounded-full flex items-center gap-1">
-                    <Trophy size={14} className="text-primary" />
-                    <span className="font-bold">{item.score}%</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
               <Trophy size={18} className="text-primary" />
               Statistics
             </CardTitle>
@@ -80,6 +54,32 @@ const History = () => {
                 <p className="text-sm text-muted-foreground">Favorite Difficulty</p>
                 <p className="text-2xl font-bold">Medium</p>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-primary/20 shadow-md overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
+            <CardTitle className="flex items-center gap-2">
+              <Clock size={18} className="text-primary" />
+              Recent Attempts
+            </CardTitle>
+            <CardDescription>Your most recent drawing scores</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              {historyData.map((item) => (
+                <div key={item.id} className="flex items-center justify-between border-b border-muted pb-3 last:border-0 last:pb-0">
+                  <div>
+                    <p className="font-medium">{new Date(item.date).toLocaleDateString()}</p>
+                    <p className="text-sm text-muted-foreground">Difficulty: {item.difficulty}</p>
+                  </div>
+                  <div className="bg-secondary/50 px-3 py-1 rounded-full flex items-center gap-1">
+                    <Trophy size={14} className="text-primary" />
+                    <span className="font-bold">{item.score}%</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
