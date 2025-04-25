@@ -33,7 +33,11 @@ const About = () => {
               Learn how to draw perfect circles with our step-by-step tutorial. Practice makes perfect!
             </p>
             
-            <Button variant="outline" className="w-full" onClick={() => navigate('/tutorial')}>
+            <Button 
+              className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+              size="lg"
+              onClick={() => navigate('/tutorial')}
+            >
               <HelpCircle className="mr-2 h-4 w-4" />
               Start Tutorial
             </Button>
@@ -78,7 +82,11 @@ const About = () => {
               Studies have shown that the ability to draw circles is linked to fine motor control and can even be used to detect certain neurological conditions. The more you practice, the better your neural pathways adapt to the task.
             </p>
             
-            <Button variant="outline" className="w-full" asChild>
+            <Button 
+              variant="outline"
+              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20"
+              asChild
+            >
               <a href="https://en.wikipedia.org/wiki/Giotto" target="_blank" rel="noopener noreferrer">
                 Learn more about Giotto
                 <ExternalLink className="ml-2 h-4 w-4" />
@@ -103,15 +111,21 @@ const About = () => {
             </div>
             
             <div className="pt-2 flex justify-between">
-              <Button variant="outline" size="sm" asChild>
+              <Button 
+                variant="outline"
+                className="px-6 py-4 rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20"
+                asChild
+              >
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-4 w-4" />
                   GitHub
                 </a>
               </Button>
               
-              <Button size="sm" className="gap-2">
-                <Heart className="h-4 w-4" />
+              <Button 
+                className="px-6 py-4 rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+              >
+                <Heart className="h-4 w-4 mr-2" />
                 Support Us
               </Button>
             </div>
