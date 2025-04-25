@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, ExternalLink, Github, Heart, HelpCircle } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 
@@ -27,12 +27,10 @@ const About = () => {
           <p className="text-muted-foreground">The art of the perfect circle</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>The Legend of Giotto's O</CardTitle>
-            <CardDescription>A historical masterpiece</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">The Legend of Giotto's O</h3>
+          <p className="text-muted-foreground text-sm">A historical masterpiece</p>
+          <div className="space-y-4">
             <p>
               In the late 13th century, Pope Boniface VIII sought to recruit the best artists in Italy.
               He sent messengers across the country to collect samples of their work.
@@ -49,14 +47,14 @@ const About = () => {
             <p>
               The Pope and his courtiers immediately recognized the mastery required to draw such a perfect circle freehand. Giotto was commissioned for the work based on this simple demonstration of skill.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>The Science of Circle Drawing</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <Separator className="bg-[#D6BCFA]" />
+
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">The Science of Circle Drawing</h3>
+          <div className="space-y-4">
             <p>
               Drawing a perfect circle freehand is considered one of the most difficult basic tasks in art and design. It requires exceptional hand-eye coordination, muscle memory, and spatial awareness.
             </p>
@@ -71,14 +69,14 @@ const About = () => {
                 <ExternalLink className="ml-2 h-4 w-4" />
               </a>
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Try the Tutorial</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <Separator className="bg-[#D6BCFA]" />
+
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">Try the Tutorial</h3>
+          <div className="space-y-4">
             <p>
               Learn how to draw perfect circles with our step-by-step tutorial. Practice makes perfect!
             </p>
@@ -87,41 +85,39 @@ const About = () => {
               <HelpCircle className="mr-2 h-4 w-4" />
               Start Tutorial
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Credits</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm font-medium">Designed & Developed by</p>
-                <p className="text-sm text-muted-foreground">The Giotto Team</p>
-              </div>
-              
-              <div>
-                <p className="text-sm font-medium">Built with</p>
-                <p className="text-sm text-muted-foreground">React, TypeScript & Shadcn UI</p>
-              </div>
-              
-              <div className="pt-2 flex justify-between">
-                <Button variant="outline" size="sm" asChild>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                    <Github className="mr-2 h-4 w-4" />
-                    GitHub
-                  </a>
-                </Button>
-                
-                <Button size="sm" className="gap-2">
-                  <Heart className="h-4 w-4" />
-                  Support Us
-                </Button>
-              </div>
+        <Separator className="bg-[#D6BCFA]" />
+
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold">Credits</h3>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-medium">Designed & Developed by</p>
+              <p className="text-sm text-muted-foreground">The Giotto Team</p>
             </div>
-          </CardContent>
-        </Card>
+            
+            <div>
+              <p className="text-sm font-medium">Built with</p>
+              <p className="text-sm text-muted-foreground">React, TypeScript & Shadcn UI</p>
+            </div>
+            
+            <div className="pt-2 flex justify-between">
+              <Button variant="outline" size="sm" asChild>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                  <Github className="mr-2 h-4 w-4" />
+                  GitHub
+                </a>
+              </Button>
+              
+              <Button size="sm" className="gap-2">
+                <Heart className="h-4 w-4" />
+                Support Us
+              </Button>
+            </div>
+          </div>
+        </div>
         
         <div className="text-center text-xs text-muted-foreground pt-4">
           <p>Version 1.0.0 • © {new Date().getFullYear()} Giotto App</p>
