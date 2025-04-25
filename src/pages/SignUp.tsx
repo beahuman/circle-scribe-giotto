@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CircleDot, UserPlus } from 'lucide-react';
+import { CircleDot, UserPlus, Apple, Facebook, Google } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   Form,
@@ -53,7 +53,6 @@ const SignUp = () => {
 
       if (authError) throw authError;
 
-      // Update the user's profile with their username
       if (authData.user) {
         const { error: profileError } = await supabase
           .from('profiles')
@@ -77,6 +76,25 @@ const SignUp = () => {
       });
     }
   }
+
+  const handleSocialSignUp = async (provider: 'google' | 'apple' | 'facebook') => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: window.location.origin,
+        }
+      });
+
+      if (error) throw error;
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
   
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
@@ -94,9 +112,47 @@ const SignUp = () => {
         <Card className="border-primary/20 shadow-md overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
             <CardTitle className="text-center">Create Account</CardTitle>
-            <CardDescription className="text-center">Fill out the form below to get started</CardDescription>
+            <CardDescription className="text-center">Choose how you want to join</CardDescription>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-6 space-y-6">
+            <div className="grid grid-cols-1 gap-4">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => handleSocialSignUp('google')}
+              >
+                <Google className="mr-2 h-4 w-4" />
+                Continue with Google
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => handleSocialSignUp('apple')}
+              >
+                <Apple className="mr-2 h-4 w-4" />
+                Continue with Apple
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => handleSocialSignUp('facebook')}
+              >
+                <Facebook className="mr-2 h-4 w-4" />
+                Continue with Facebook
+              </Button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -143,7 +199,7 @@ const SignUp = () => {
                 
                 <Button 
                   type="submit" 
-                  className="w-full flex items-center justify-center gap-2 p-6 animate-pulse-slow"
+                  className="w-full flex items-center justify-center gap-2 p-6"
                 >
                   <UserPlus className="h-5 w-5" />
                   Create Account
