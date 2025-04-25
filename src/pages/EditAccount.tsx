@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CircleUser, Save } from 'lucide-react';
+import { ArrowLeft, CircleUser, Save, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   Form,
@@ -31,6 +31,7 @@ const formSchema = z.object({
 const EditAccount = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   
   const userData = {
     username: 'GiottoMaster',
@@ -54,6 +55,17 @@ const EditAccount = () => {
     
     setTimeout(() => navigate('/account'), 1000);
   }
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setAvatarPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   
   const avatarColors = [
     '#9b87f5', '#F97316', '#33C3F0', '#8B5CF6', '#D3E4FD', '#FFDEE2'
@@ -80,19 +92,37 @@ const EditAccount = () => {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="flex justify-center mb-8">
-                  <div 
-                    className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-lg"
-                    style={{ backgroundColor: userData.avatarColor }}
-                  >
-                    {userData.username.charAt(0).toUpperCase()}
+                  <div className="relative group">
+                    <div 
+                      className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-lg overflow-hidden"
+                      style={{ backgroundColor: avatarPreview ? 'transparent' : userData.avatarColor }}
+                    >
+                      {avatarPreview ? (
+                        <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
+                      ) : (
+                        userData.username.charAt(0).toUpperCase()
+                      )}
+                    </div>
+                    <label htmlFor="avatar-upload" className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 cursor-pointer rounded-full transition-opacity">
+                      <Upload className="h-6 w-6 text-white" />
+                    </label>
+                    <input 
+                      id="avatar-upload" 
+                      type="file" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
                   </div>
                 </div>
                 
                 <div className="flex justify-center gap-2 mb-6">
                   {avatarColors.map((color) => (
-                    <div 
+                    <button 
                       key={color} 
-                      className="w-8 h-8 rounded-full cursor-pointer transform hover:scale-110 transition-transform"
+                      type="button"
+                      onClick={() => setAvatarPreview(null)}
+                      className="w-8 h-8 rounded-full cursor-pointer transform hover:scale-110 transition-transform ring-offset-2 ring-primary focus:ring-2"
                       style={{ backgroundColor: color }}
                     />
                   ))}
@@ -105,7 +135,7 @@ const EditAccount = () => {
                     <FormItem>
                       <FormLabel>Username</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your username" {...field} />
+                        <Input className="rounded-full" placeholder="Your username" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -119,7 +149,7 @@ const EditAccount = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your email" {...field} />
+                        <Input className="rounded-full" placeholder="Your email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -128,9 +158,9 @@ const EditAccount = () => {
                 
                 <Button 
                   type="submit" 
-                  className="w-full flex items-center justify-center gap-2 p-6"
+                  className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity"
                 >
-                  <Save className="h-5 w-5" />
+                  <Save className="h-5 w-5 mr-2" />
                   Save Changes
                 </Button>
               </form>
@@ -145,3 +175,4 @@ const EditAccount = () => {
 };
 
 export default EditAccount;
+
