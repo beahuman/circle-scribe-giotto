@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Trophy, CircleUser, LogOut, Trash2 } from 'lucide-react';
+import { ArrowLeft, Trophy, CircleUser, LogOut, Trash2, Star } from 'lucide-react';
 import AccountDetails from '@/components/AccountDetails';
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 import { useToast } from '@/hooks/use-toast';
@@ -70,27 +70,27 @@ const Account = () => {
           <Button 
             variant="outline" 
             onClick={() => navigate('/account/edit')}
-            className="flex items-center justify-center gap-2 p-6 animate-pulse-slow"
+            className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 flex items-center justify-center gap-2"
           >
-            <CircleUser className="h-5 w-5" />
+            <CircleUser className="h-6 w-6 animate-pulse" />
             Edit Profile
           </Button>
           
           <Button 
             variant="outline" 
             onClick={handleSignOut}
-            className="flex items-center justify-center gap-2 p-6"
+            className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 flex items-center justify-center gap-2"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-6 w-6" />
             Sign Out
           </Button>
           
           <Button 
             variant="outline" 
             onClick={() => setShowDeleteDialog(true)}
-            className="flex items-center justify-center gap-2 p-6 border-destructive/30 text-destructive hover:bg-destructive/10"
+            className="w-full px-8 py-6 text-lg rounded-full border-destructive/30 text-destructive hover:bg-destructive/10 flex items-center justify-center gap-2"
           >
-            <Trash2 className="h-5 w-5" />
+            <Trash2 className="h-6 w-6" />
             Delete Account
           </Button>
         </div>
@@ -107,3 +107,4 @@ const Account = () => {
 };
 
 export default Account;
+
