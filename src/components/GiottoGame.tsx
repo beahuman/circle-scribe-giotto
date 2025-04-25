@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import WelcomeScreen from './WelcomeScreen';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
 import ResultScreen from './ResultScreen';
@@ -8,14 +7,14 @@ import { generateRandomCirclePosition } from '@/utils/circleUtils';
 import { getGameService } from '@/utils/gameServices';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-type GameState = 'welcome' | 'showing' | 'drawing' | 'result';
+type GameState = 'showing' | 'drawing' | 'result';
 
 interface GiottoGameProps {
   onReturnToHome?: () => void;
 }
 
 const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
-  const [gameState, setGameState] = useState<GameState>('welcome');
+  const [gameState, setGameState] = useState<GameState>('showing');
   const [accuracy, setAccuracy] = useState(0);
   const [targetCircle, setTargetCircle] = useState(generateRandomCirclePosition());
   const [isGameServiceAvailable, setIsGameServiceAvailable] = useState(false);
@@ -41,11 +40,6 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
     initializeGameService();
   }, []);
   
-  const handleStart = () => {
-    setTargetCircle(generateRandomCirclePosition());
-    setGameState('showing');
-  };
-  
   const handleCircleMemorized = () => {
     setGameState('drawing');
   };
@@ -66,12 +60,14 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
   };
   
   const handleReplay = () => {
-    setGameState('welcome');
+    // Reset the game state and generate a new circle
+    setTargetCircle(generateRandomCirclePosition());
+    setGameState('showing');
   };
 
   const handleBypassMobile = () => {
     setBypassMobileCheck(true);
-    handleStart();
+    setGameState('showing');
   };
   
   const showLeaderboard = async () => {
@@ -102,14 +98,6 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
   
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {gameState === 'welcome' && (
-        <WelcomeScreen 
-          onStart={handleStart} 
-          showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
-          onBackToHome={onReturnToHome}
-        />
-      )}
-      
       {gameState === 'showing' && (
         <CircleDisplay 
           duration={3} 
