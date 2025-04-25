@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import {
   Form,
   FormControl,
@@ -69,6 +70,8 @@ const EmailSignInForm: React.FC<EmailSignInFormProps> = ({ onSubmit }) => {
           )}
         />
         
+        <Separator className="my-6 bg-[#9b87f5]" />
+        
         <Button 
           type="submit" 
           className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity"
@@ -82,3 +85,4 @@ const EmailSignInForm: React.FC<EmailSignInFormProps> = ({ onSubmit }) => {
 };
 
 export default EmailSignInForm;
+
