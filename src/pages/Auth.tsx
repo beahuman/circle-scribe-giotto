@@ -106,7 +106,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
       <div className="w-full max-w-md space-y-8">
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-6 mb-12">
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             Welcome To
           </h1>
@@ -117,16 +117,18 @@ const Auth = () => {
         
         <div className="space-y-6">
           <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 rounded-full">
+            <TabsList className="grid w-full grid-cols-2 rounded-full mb-6">
               <TabsTrigger value="signin" className="rounded-full">Sign In</TabsTrigger>
               <TabsTrigger value="signup" className="rounded-full">Create Account</TabsTrigger>
             </TabsList>
-            <TabsContent value="signin" className="mt-6">
-              <EmailSignInForm onSubmit={handleEmailSignIn} />
-            </TabsContent>
-            <TabsContent value="signup" className="mt-6">
-              <EmailSignUpForm onSubmit={handleEmailSignUp} />
-            </TabsContent>
+            <div className="relative">
+              <TabsContent value="signin" className="mt-0 transition-all duration-300 ease-in-out">
+                <EmailSignInForm onSubmit={handleEmailSignIn} />
+              </TabsContent>
+              <TabsContent value="signup" className="mt-0 transition-all duration-300 ease-in-out">
+                <EmailSignUpForm onSubmit={handleEmailSignUp} />
+              </TabsContent>
+            </div>
           </Tabs>
 
           <SocialLoginButtons onSocialLogin={handleSocialAuth} />
