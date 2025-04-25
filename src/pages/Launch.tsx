@@ -6,23 +6,19 @@ import Lottie from 'lottie-react';
 const Launch = () => {
   const navigate = useNavigate();
   const [animationData, setAnimationData] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
     fetch('/GiottoAnimatedLogo.json')
       .then(response => response.json())
       .then(data => {
         setAnimationData(data);
-        setIsLoaded(true);
       })
       .catch(error => console.error('Error loading animation:', error));
   }, []);
 
-  useEffect(() => {
-    if (isLoaded) {
-      navigate('/auth');
-    }
-  }, [isLoaded, navigate]);
+  const handleAnimationComplete = () => {
+    navigate('/auth');
+  };
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6">
@@ -32,8 +28,9 @@ const Launch = () => {
             <div className="w-[400px]">
               <Lottie 
                 animationData={animationData}
-                loop={true}
+                loop={false}
                 autoplay={true}
+                onComplete={handleAnimationComplete}
               />
             </div>
           </div>
