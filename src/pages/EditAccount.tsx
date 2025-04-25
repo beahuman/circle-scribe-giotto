@@ -1,12 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CircleUser, Save, Upload, Edit } from 'lucide-react';
+import { ArrowLeft, CircleUser, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
 import {
   Form,
   FormControl,
@@ -19,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import BottomNav from '@/components/BottomNav';
+import { useAvatarEditor } from '@/hooks/useAvatarEditor';
+import { AvatarEditor } from '@/components/profile/AvatarEditor';
 
 const formSchema = z.object({
   username: z.string().min(3, {
@@ -32,7 +33,6 @@ const formSchema = z.object({
 const EditAccount = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   
   // Get data from localStorage if available, otherwise use default values
   const storedUserData = localStorage.getItem('userData');
@@ -43,15 +43,13 @@ const EditAccount = () => {
     avatarImage: null
   };
   
-  // Load any existing avatar image
-  const [selectedColor, setSelectedColor] = useState(parsedUserData.avatarColor);
-  
-  // Initialize the avatar preview with the saved image if it exists
-  React.useEffect(() => {
-    if (parsedUserData.avatarImage) {
-      setAvatarPreview(parsedUserData.avatarImage);
-    }
-  }, []);
+  const {
+    selectedColor,
+    avatarPreview,
+    handleColorSelect,
+    handleImageUpload,
+    getAvatarStyle
+  } = useAvatarEditor(parsedUserData);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,13 +60,12 @@ const EditAccount = () => {
   });
   
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Save form data, selected color and avatar image to localStorage
     const updatedUserData = {
       ...parsedUserData,
       username: values.username,
       email: values.email,
       avatarColor: selectedColor,
-      avatarImage: avatarPreview  // Save the avatar image
+      avatarImage: avatarPreview
     };
     
     localStorage.setItem('userData', JSON.stringify(updatedUserData));
@@ -81,26 +78,6 @@ const EditAccount = () => {
     setTimeout(() => navigate('/account'), 1000);
   }
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setAvatarPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  
-  const avatarColors = [
-    '#9b87f5', '#F97316', '#33C3F0', '#8B5CF6', '#D3E4FD', '#FFDEE2'
-  ];
-
-  const handleColorSelect = (color: string) => {
-    setSelectedColor(color);
-    setAvatarPreview(null); // Clear any uploaded image when selecting a color
-  };
-  
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
       <div className="flex items-center mb-6">
@@ -121,46 +98,14 @@ const EditAccount = () => {
           <CardContent className="p-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="flex justify-center mb-8">
-                  <div className="relative group">
-                    <div 
-                      className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white shadow-lg overflow-hidden"
-                      style={{ backgroundColor: avatarPreview ? 'transparent' : selectedColor }}
-                    >
-                      {avatarPreview ? (
-                        <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
-                      ) : (
-                        form.getValues().username.charAt(0).toUpperCase()
-                      )}
-                    </div>
-                    <label htmlFor="avatar-upload" className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 cursor-pointer rounded-full transition-opacity">
-                      <Upload className="h-6 w-6 text-white" />
-                    </label>
-                    <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-primary shadow-lg">
-                      <Edit className="h-4 w-4 text-white" />
-                    </div>
-                    <input 
-                      id="avatar-upload" 
-                      type="file" 
-                      className="hidden" 
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex justify-center gap-2 mb-6">
-                  {avatarColors.map((color) => (
-                    <button 
-                      key={color} 
-                      type="button"
-                      onClick={() => handleColorSelect(color)}
-                      className={`w-8 h-8 rounded-full cursor-pointer transform hover:scale-110 transition-transform ${selectedColor === color ? 'ring-2 ring-offset-2 ring-primary' : ''}`}
-                      style={{ backgroundColor: color }}
-                      aria-label={`Select ${color} as avatar background color`}
-                    />
-                  ))}
-                </div>
+                <AvatarEditor
+                  username={form.getValues().username}
+                  selectedColor={selectedColor}
+                  avatarPreview={avatarPreview}
+                  onColorSelect={handleColorSelect}
+                  onImageUpload={handleImageUpload}
+                  style={getAvatarStyle()}
+                />
                 
                 <FormField
                   control={form.control}
