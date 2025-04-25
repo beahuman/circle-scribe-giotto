@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -93,24 +94,11 @@ const Auth = () => {
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
       <div className="w-full max-w-md space-y-12">
         <AuthHeader 
-          title="Welcome"
+          title="Welcome to Giotto"
           subtitle="Sign in or create an account to continue"
         />
         
         <div className="space-y-8">
-          <SocialLoginButtons onSocialLogin={handleSocialAuth} />
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with email
-              </span>
-            </div>
-          </div>
-
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2 rounded-full">
               <TabsTrigger value="signin" className="rounded-full">Sign In</TabsTrigger>
@@ -123,6 +111,19 @@ const Auth = () => {
               <EmailSignUpForm onSubmit={handleEmailSignUp} />
             </TabsContent>
           </Tabs>
+
+          <SocialLoginButtons onSocialLogin={handleSocialAuth} />
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with email
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
