@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/about') && (
-            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-information-line text-2xl relative z-10", 
@@ -52,7 +53,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/') && (
-            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-home-line text-2xl relative z-10", 
@@ -69,7 +70,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/account') && (
-            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-user-line text-2xl relative z-10", 
@@ -86,7 +87,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/settings') && (
-            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-settings-line text-2xl relative z-10", 
