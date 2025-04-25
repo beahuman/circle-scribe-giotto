@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleCheck, CircleX, Trophy, Home, Star, Share2 } from "lucide-react";
@@ -64,8 +65,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   };
   
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
-      
+    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 pt-12 text-center">
       
       <div className="space-y-2">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
