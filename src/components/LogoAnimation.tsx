@@ -1,8 +1,7 @@
 
 import React from 'react';
 import Lottie from 'lottie-react';
-// Import the animation data properly - assuming the file is in the public folder
-import logoAnimationData from '../assets/logo-animation.json';
+import logoAnimationData from '/GiottoAnimatedLogo.json';
 
 interface LogoAnimationProps {
   className?: string;
