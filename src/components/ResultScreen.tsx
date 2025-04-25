@@ -145,7 +145,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <Button 
           onClick={onBackToHome}
           variant="secondary"
-          className="px-8 py-6 text-lg rounded-full border-[#765ED8] text-[#765ED8] bg-white hover:bg-[#765ED8]/10"
+          className="px-8 py-6 text-lg rounded-full border border-[#765ED8] text-[#765ED8] bg-white hover:bg-[#765ED8]/10"
         >
           <Home className="mr-2 h-5 w-5" />
           Return to Home
@@ -155,7 +155,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           <Button 
             onClick={showLeaderboard}
             variant="secondary"
-            className="px-8 py-6 text-lg rounded-full border-[#765ED8] text-[#765ED8] bg-white hover:bg-[#765ED8]/10"
+            className="px-8 py-6 text-lg rounded-full border border-[#765ED8] text-[#765ED8] bg-white hover:bg-[#765ED8]/10"
           >
             <Trophy className="mr-2 h-5 w-5" />
             View Leaderboard
@@ -176,3 +176,4 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
 };
 
 export default ResultScreen;
+
