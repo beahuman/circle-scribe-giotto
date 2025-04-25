@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CircleUser, Save } from 'lucide-react';
+import { ArrowLeft, CircleUser } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   Form,
@@ -62,7 +62,7 @@ const EditAccount = () => {
     <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/account')} size="icon" className="mr-2">
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-6 w-6 text-primary" />
         </Button>
         <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Edit Profile</h1>
       </div>

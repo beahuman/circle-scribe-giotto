@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -12,9 +13,9 @@ const About = () => {
     <div className="min-h-screen p-6 flex flex-col pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-6 w-6 text-primary" />
         </Button>
-        <h1 className="text-2xl font-bold">About</h1>
+        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">About</h1>
       </div>
 
       <div className="flex-1 space-y-6 max-w-md mx-auto w-full">
