@@ -6,20 +6,16 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, CircleUser, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import BottomNav from '@/components/BottomNav';
 import { useAvatarEditor } from '@/hooks/useAvatarEditor';
 import { AvatarEditor } from '@/components/profile/AvatarEditor';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const formSchema = z.object({
   username: z.string().min(3, {
@@ -33,49 +29,89 @@ const formSchema = z.object({
 const EditAccount = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
-  // Get data from localStorage if available, otherwise use default values
-  const storedUserData = localStorage.getItem('userData');
-  const parsedUserData = storedUserData ? JSON.parse(storedUserData) : {
-    username: 'GiottoMaster',
-    email: 'artist@example.com',
-    avatarColor: '#9b87f5',
-    avatarImage: null
-  };
-  
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user
+  });
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (values: {
+      username: string;
+      avatarColor: string;
+      avatarImage: string | null;
+    }) => {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          username: values.username,
+          avatar_color: values.avatarColor,
+          avatar_image: values.avatarImage,
+        })
+        .eq('id', user?.id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been updated successfully",
+      });
+      navigate('/account');
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
+
   const {
     selectedColor,
     avatarPreview,
     handleColorSelect,
     handleImageUpload,
     getAvatarStyle
-  } = useAvatarEditor(parsedUserData);
-  
+  } = useAvatarEditor({
+    username: profile?.username || 'User',
+    email: user?.email || '',
+    avatarColor: profile?.avatar_color || '#9b87f5',
+    avatarImage: profile?.avatar_image
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: parsedUserData.username,
-      email: parsedUserData.email,
+      username: profile?.username || '',
+      email: user?.email || '',
     },
   });
-  
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const updatedUserData = {
-      ...parsedUserData,
+    updateProfileMutation.mutate({
       username: values.username,
-      email: values.email,
       avatarColor: selectedColor,
-      avatarImage: avatarPreview
-    };
-    
-    localStorage.setItem('userData', JSON.stringify(updatedUserData));
-    
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been updated successfully",
+      avatarImage: avatarPreview,
     });
-    
-    setTimeout(() => navigate('/account'), 1000);
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (

@@ -4,29 +4,47 @@ import { CircleUser } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
-
-interface UserData {
-  username: string;
-  email: string;
-  createdAt: string;
-  avatarColor: string;
-  avatarImage?: string | null;
-  totalGames: number;
-  bestScore: number;
-}
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AccountDetailsProps {
-  userData: UserData;
+  userId: string;
 }
 
-const AccountDetails = ({ userData }: AccountDetailsProps) => {
+const AccountDetails = ({ userId }: AccountDetailsProps) => {
   const navigate = useNavigate();
-  const formattedDate = new Date(userData.createdAt).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
   
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ['profile', userId],
+    queryFn: async () => {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (profileError) throw profileError;
+
+      const { data: scores, error: scoresError } = await supabase
+        .from('game_scores')
+        .select('score')
+        .eq('user_id', userId)
+        .order('score', { ascending: false });
+
+      if (scoresError) throw scoresError;
+
+      return {
+        ...profile,
+        bestScore: scores?.[0]?.score || 0,
+        totalGames: scores?.length || 0
+      };
+    }
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -39,26 +57,28 @@ const AccountDetails = ({ userData }: AccountDetailsProps) => {
           <div className="flex items-center gap-4">
             <div 
               className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold text-white overflow-hidden"
-              style={{ backgroundColor: userData.avatarImage ? 'transparent' : userData.avatarColor }}
+              style={{ 
+                backgroundColor: userData?.avatar_image ? 'transparent' : userData?.avatar_color || '#9b87f5'
+              }}
             >
-              {userData.avatarImage ? (
+              {userData?.avatar_image ? (
                 <img 
-                  src={userData.avatarImage} 
+                  src={userData.avatar_image} 
                   alt={`${userData.username}'s avatar`}
                   className="w-full h-full object-cover"
                 />
               ) : (
-                userData.username.charAt(0).toUpperCase()
+                userData?.username?.charAt(0).toUpperCase()
               )}
             </div>
             <div>
-              <h3 className="text-xl font-bold">{userData.username}</h3>
-              <p className="text-sm text-muted-foreground">{userData.email}</p>
+              <h3 className="text-xl font-bold">{userData?.username}</h3>
+              <p className="text-sm text-muted-foreground">{userData?.email}</p>
             </div>
           </div>
           
           <div className="text-sm text-muted-foreground">
-            Member since {formattedDate}
+            Member since {new Date(userData?.created_at).toLocaleDateString()}
           </div>
 
           <Button 

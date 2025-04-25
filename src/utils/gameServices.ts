@@ -1,3 +1,4 @@
+import { supabase } from '@/integrations/supabase/client';
 
 interface GameService {
   initialize: () => Promise<void>;
@@ -9,31 +10,52 @@ interface GameService {
 
 class GameCenterService implements GameService {
   async initialize(): Promise<void> {
-    // Game Center initialization would go here
     console.log("Game Center initialization");
     return Promise.resolve();
   }
 
   async signIn(): Promise<boolean> {
-    // Game Center authentication would go here
     console.log("Game Center sign in");
     return Promise.resolve(true);
   }
 
   async submitScore(score: number): Promise<void> {
-    // Submit score to Game Center
     console.log(`Submitting score ${score} to Game Center`);
+    
+    // Save score to Supabase
+    const { error } = await supabase.from('game_scores').insert({
+      score,
+      game_center_synced: true
+    });
+
+    if (error) {
+      console.error('Error saving score:', error);
+      throw error;
+    }
+    
     return Promise.resolve();
   }
 
   async showLeaderboard(): Promise<void> {
-    // Show Game Center leaderboard
     console.log("Showing Game Center leaderboard");
+    
+    // Fetch scores from Supabase
+    const { data, error } = await supabase
+      .from('game_scores')
+      .select('*')
+      .order('score', { ascending: false })
+      .limit(10);
+
+    if (error) {
+      console.error('Error fetching leaderboard:', error);
+      throw error;
+    }
+
+    console.log('Leaderboard data:', data);
     return Promise.resolve();
   }
 
   async isAvailable(): Promise<boolean> {
-    // Check if Game Center is available on iOS
     const isIOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
     return Promise.resolve(isIOS);
   }
