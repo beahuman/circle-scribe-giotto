@@ -45,7 +45,7 @@ const Index = () => {
     <GiottoGame onReturnToHome={() => setGameStarted(false)} />
   ) : (
     <HomeScreen 
-      onStartGame={handleStartGame}
+      onStart={handleStartGame}
       showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
       isGuestMode={Boolean(localStorage.getItem('guestMode'))}
     />
