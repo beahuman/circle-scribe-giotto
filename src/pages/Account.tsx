@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Trophy } from 'lucide-react';
@@ -13,7 +14,8 @@ const Account = () => {
   const { toast } = useToast();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
-  const userData = {
+  // Default user data
+  const defaultUserData = {
     username: 'GiottoMaster',
     email: 'artist@example.com',
     createdAt: '2023-10-15',
@@ -21,6 +23,20 @@ const Account = () => {
     bestScore: 92.7,
     avatarColor: '#9b87f5'
   };
+  
+  // Get user data from localStorage if available
+  const [userData, setUserData] = useState(defaultUserData);
+  
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      // Merge stored data with default data to ensure all properties exist
+      setUserData({
+        ...defaultUserData,
+        ...JSON.parse(storedUserData)
+      });
+    }
+  }, []);
   
   const handleSignOut = () => {
     toast({

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, CircleUser, Save, Upload, Edit } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   Form,
   FormControl,
@@ -32,23 +33,36 @@ const EditAccount = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState('#9b87f5');
   
-  const userData = {
+  // Get data from localStorage if available, otherwise use default values
+  const storedUserData = localStorage.getItem('userData');
+  const parsedUserData = storedUserData ? JSON.parse(storedUserData) : {
     username: 'GiottoMaster',
     email: 'artist@example.com',
     avatarColor: '#9b87f5'
   };
   
+  const [selectedColor, setSelectedColor] = useState(parsedUserData.avatarColor);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: userData.username,
-      email: userData.email,
+      username: parsedUserData.username,
+      email: parsedUserData.email,
     },
   });
   
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // Save form data and selected color to localStorage
+    const updatedUserData = {
+      ...parsedUserData,
+      username: values.username,
+      email: values.email,
+      avatarColor: selectedColor,
+    };
+    
+    localStorage.setItem('userData', JSON.stringify(updatedUserData));
+    
     toast({
       title: "Profile Updated",
       description: "Your profile has been updated successfully",
@@ -106,7 +120,7 @@ const EditAccount = () => {
                       {avatarPreview ? (
                         <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
                       ) : (
-                        userData.username.charAt(0).toUpperCase()
+                        form.getValues().username.charAt(0).toUpperCase()
                       )}
                     </div>
                     <label htmlFor="avatar-upload" className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 cursor-pointer rounded-full transition-opacity">
