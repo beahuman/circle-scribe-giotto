@@ -57,12 +57,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       </div>
       
       {isGuestMode && (
-        <Alert style={{ backgroundColor: '#D7B1FF' }}>
-          <Ghost className="h-5 w-5" style={{ color: '#765ED8' }} />
-          <AlertTitle className="text-sm font-semibold mt-2">Guest Mode</AlertTitle>
-          <AlertDescription className="text-sm mt-1">
-            Your scores and history won't be saved and you can't connect to Game Center.
-          </AlertDescription>
+        <Alert style={{ backgroundColor: '#9B87F5' }}>
+          <div className="flex flex-col items-center">
+            <Ghost className="h-6 w-6 mb-2" style={{ color: '#765ED8' }} />
+            <AlertTitle className="text-lg font-semibold">Guest Mode</AlertTitle>
+            <AlertDescription className="text-sm mt-1">
+              Your scores and history won't be saved and you can't connect to Game Center.
+            </AlertDescription>
+          </div>
         </Alert>
       )}
       
