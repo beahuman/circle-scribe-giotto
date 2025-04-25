@@ -6,21 +6,23 @@ import Lottie from 'lottie-react';
 const Launch = () => {
   const navigate = useNavigate();
   const [animationData, setAnimationData] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
-    // Fetch the JSON file
     fetch('/GiottoAnimatedLogo.json')
       .then(response => response.json())
-      .then(data => setAnimationData(data))
+      .then(data => {
+        setAnimationData(data);
+        setIsLoaded(true);
+      })
       .catch(error => console.error('Error loading animation:', error));
+  }, []);
 
-    // Navigation timer - updated to 5 seconds
-    const timer = setTimeout(() => {
+  useEffect(() => {
+    if (isLoaded) {
       navigate('/auth');
-    }, 5000);
-    
-    return () => clearTimeout(timer);
-  }, [navigate]);
+    }
+  }, [isLoaded, navigate]);
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6">
