@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import GiottoGame from "@/components/GiottoGame";
 import HomeScreen from "@/components/HomeScreen";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Ghost } from "lucide-react";
 import { getGameService } from '@/utils/gameServices';
 
@@ -46,11 +46,22 @@ const Index = () => {
   return gameStarted ? (
     <GiottoGame onReturnToHome={() => setGameStarted(false)} />
   ) : (
-    <HomeScreen 
-      onStart={handleStartGame}
-      showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
-      isGuestMode={Boolean(localStorage.getItem('guestMode'))}
-    />
+    <>
+      {localStorage.getItem('guestMode') && (
+        <Alert className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50" style={{ backgroundColor: '#D7B1FF' }}>
+          <Ghost className="h-5 w-5" style={{ color: '#765ED8' }} />
+          <AlertTitle className="text-sm font-semibold mt-2">Guest Mode</AlertTitle>
+          <AlertDescription className="text-sm mt-1">
+            Your scores and history won't be saved and you can't connect to Game Center.
+          </AlertDescription>
+        </Alert>
+      )}
+      <HomeScreen 
+        onStart={handleStartGame}
+        showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
+        isGuestMode={Boolean(localStorage.getItem('guestMode'))}
+      />
+    </>
   );
 };
 
