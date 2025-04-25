@@ -1,9 +1,7 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Trophy, CircleUser, LogOut, Trash2, Star } from 'lucide-react';
 import AccountDetails from '@/components/AccountDetails';
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 import { useToast } from '@/hooks/use-toast';
@@ -36,7 +34,7 @@ const Account = () => {
     <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
-          <ArrowLeft className="h-5 w-5" />
+          <i className="ri-arrow-left-line text-xl text-primary" />
         </Button>
         <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Account</h1>
       </div>
@@ -47,7 +45,7 @@ const Account = () => {
         <Card className="border-primary/20 shadow-md overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
             <CardTitle className="flex items-center gap-2">
-              <Trophy size={18} className="text-primary" />
+              <i className="ri-trophy-line text-xl text-primary" />
               Game Statistics
             </CardTitle>
             <CardDescription>Your performance so far</CardDescription>
@@ -72,7 +70,7 @@ const Account = () => {
             onClick={() => navigate('/account/edit')}
             className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 flex items-center justify-center gap-2"
           >
-            <CircleUser className="h-6 w-6 animate-pulse" />
+            <i className="ri-user-settings-line text-2xl text-primary animate-pulse" />
             Edit Profile
           </Button>
           
@@ -81,7 +79,7 @@ const Account = () => {
             onClick={handleSignOut}
             className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 flex items-center justify-center gap-2"
           >
-            <LogOut className="h-6 w-6" />
+            <i className="ri-logout-box-line text-2xl text-primary" />
             Sign Out
           </Button>
           
@@ -90,7 +88,7 @@ const Account = () => {
             onClick={() => setShowDeleteDialog(true)}
             className="w-full px-8 py-6 text-lg rounded-full border-destructive/30 text-destructive hover:bg-destructive/10 flex items-center justify-center gap-2"
           >
-            <Trash2 className="h-6 w-6" />
+            <i className="ri-delete-bin-line text-2xl" />
             Delete Account
           </Button>
         </div>
@@ -107,4 +105,3 @@ const Account = () => {
 };
 
 export default Account;
-

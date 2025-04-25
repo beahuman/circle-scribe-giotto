@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { LogIn, UserPlus, CircleUser, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const UserAvatar = () => {
@@ -15,7 +14,7 @@ const UserAvatar = () => {
         <DropdownMenuTrigger asChild>
           <Avatar className="cursor-pointer h-9 w-9 hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all">
             <AvatarFallback className="bg-muted">
-              <CircleUser className="h-5 w-5 text-muted-foreground" />
+              <i className="ri-user-line text-lg text-muted-foreground" />
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
@@ -24,13 +23,13 @@ const UserAvatar = () => {
           <DropdownMenuSeparator />
           <Link to="/signin">
             <DropdownMenuItem className="cursor-pointer">
-              <LogIn className="h-4 w-4 mr-2" />
+              <i className="ri-login-box-line text-lg mr-2 text-primary" />
               <span>Sign In</span>
             </DropdownMenuItem>
           </Link>
           <Link to="/signup">
             <DropdownMenuItem className="cursor-pointer">
-              <UserPlus className="h-4 w-4 mr-2" />
+              <i className="ri-user-add-line text-lg mr-2 text-primary" />
               <span>Create Account</span>
             </DropdownMenuItem>
           </Link>
@@ -53,19 +52,19 @@ const UserAvatar = () => {
         <DropdownMenuSeparator />
         <Link to="/account">
           <DropdownMenuItem className="cursor-pointer">
-            <CircleUser className="h-4 w-4 mr-2" />
+            <i className="ri-user-line text-lg mr-2 text-primary" />
             <span>My Account</span>
           </DropdownMenuItem>
         </Link>
         <Link to="/settings">
           <DropdownMenuItem className="cursor-pointer">
-            <Settings className="h-4 w-4 mr-2" />
+            <i className="ri-settings-line text-lg mr-2 text-primary" />
             <span>Settings</span>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut} className="cursor-pointer">
-          <LogOut className="h-4 w-4 mr-2" />
+          <i className="ri-logout-box-line text-lg mr-2 text-primary" />
           <span>Sign Out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

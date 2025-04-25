@@ -52,7 +52,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           className="absolute top-4 left-4"
           size="icon"
         >
-          <Home className="h-5 w-5" />
+          <i className="ri-home-line text-xl text-primary" />
         </Button>
       )}
       
@@ -92,9 +92,9 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
           {isGoodScore ? (
-            <CircleCheck className="text-primary animate-pulse-slow drop-shadow-md" size={60} />
+            <i className="ri-checkbox-circle-line text-5xl text-primary animate-pulse-slow" />
           ) : (
-            <CircleX className="text-muted-foreground drop-shadow-md" size={60} />
+            <i className="ri-close-circle-line text-5xl text-muted-foreground" />
           )}
         </div>
       </div>
@@ -136,7 +136,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           variant="secondary"
           className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-muted/50 to-background border border-muted"
         >
-          <Home className="mr-2 h-5 w-5" />
+          <i className="ri-home-line text-xl mr-2 text-primary" />
           Return to Home
         </Button>
         
@@ -146,7 +146,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
             variant="outline"
             className="px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
           >
-            <Trophy className="mr-2 h-5 w-5 text-primary" />
+            <i className="ri-trophy-line text-xl mr-2 text-primary" />
             View Leaderboard
           </Button>
         )}
