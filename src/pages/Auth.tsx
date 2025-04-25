@@ -127,9 +127,9 @@ const Auth = () => {
           <SocialLoginButtons onSocialLogin={handleSocialAuth} />
 
           <Button 
-            variant="secondary" 
+            variant="outline" 
             onClick={handleGuestPlay}
-            className="w-full px-8 py-6 text-lg rounded-full border-[#9b87f5] text-[#9b87f5] hover:bg-[#9b87f5]/5"
+            className="w-full px-8 py-6 text-lg rounded-full border-[#9b87f5] bg-white text-[#9b87f5] hover:bg-[#9b87f5]/5"
           >
             <Ghost className="mr-2 h-5 w-5 text-[#9b87f5]" />
             Play as Guest
