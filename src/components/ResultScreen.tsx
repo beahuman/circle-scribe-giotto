@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleCheck, CircleX, Trophy, ArrowLeft, Home } from "lucide-react";
+import { CircleCheck, CircleX, Trophy, Home } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
@@ -23,15 +22,12 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
-  // Use fixed dimensions for visualization container
   const containerSize = 200;
   const centerX = containerSize / 2;
   const centerY = containerSize / 2;
   
-  // Calculate scaling factor to fit the circle in our container
   const scaleFactor = (containerSize * 0.8) / (targetCircle.radius * 2);
   
-  // Calculate average position of drawn points (to center them)
   let sumX = 0, sumY = 0;
   drawnPoints.forEach(point => {
     sumX += point.x;
@@ -40,7 +36,6 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const drawnCenterX = drawnPoints.length ? sumX / drawnPoints.length : 0;
   const drawnCenterY = drawnPoints.length ? sumY / drawnPoints.length : 0;
   
-  // Transform drawn points to be centered over target circle
   const transformedDrawnPoints = drawnPoints.map(point => ({
     x: centerX + (point.x - drawnCenterX) * scaleFactor,
     y: centerY + (point.y - drawnCenterY) * scaleFactor
@@ -64,9 +59,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      {/* Visualization container - positioned between text and score */}
       <div className="relative w-[200px] h-[200px] mx-auto my-6">
-        {/* Target Circle - positioned absolutely in the center */}
         <div 
           className="absolute border-2 border-primary/30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" 
           style={{
@@ -76,7 +69,6 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           }} 
         />
         
-        {/* Drawn Circle - positioned on top */}
         {drawnPoints.length > 0 && (
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
             <path
@@ -93,7 +85,6 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           </svg>
         )}
         
-        {/* Checkmark or X - positioned on top of both circles */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
           {isGoodScore ? (
             <CircleCheck className="text-primary animate-pulse-slow" size={60} />
@@ -124,6 +115,15 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           className="px-8 py-6 text-lg rounded-full"
         >
           Try Again (Please!)
+        </Button>
+
+        <Button 
+          onClick={onBackToHome}
+          variant="secondary"
+          className="px-8 py-6 text-lg rounded-full"
+        >
+          <Home className="mr-2 h-5 w-5" />
+          Return to Home
         </Button>
         
         {showLeaderboard && (

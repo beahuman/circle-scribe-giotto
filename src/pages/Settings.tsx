@@ -1,31 +1,44 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@radix-ui/react-label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, VolumeX, Volume2, Clock, Target, Palette, PenTool } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Settings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [musicEnabled, setMusicEnabled] = useState(true);
-  const [showTime, setShowTime] = useState(3);
-  const [difficultyLevel, setDifficultyLevel] = useState(50);
-  const [drawingPrecision, setDrawingPrecision] = useState(50);
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    return localStorage.getItem('soundEnabled') === 'true';
+  });
+  const [musicEnabled, setMusicEnabled] = useState(() => {
+    return localStorage.getItem('musicEnabled') === 'true';
+  });
+  const [showTime, setShowTime] = useState(() => {
+    return Number(localStorage.getItem('showTime')) || 3;
+  });
+  const [difficultyLevel, setDifficultyLevel] = useState(() => {
+    return Number(localStorage.getItem('difficultyLevel')) || 50;
+  });
+  const [drawingPrecision, setDrawingPrecision] = useState(() => {
+    return Number(localStorage.getItem('drawingPrecision')) || 50;
+  });
 
-  const handleSave = () => {
-    // Here we would save settings to local storage or a database
-    // For now, just show a toast notification
+  useEffect(() => {
+    localStorage.setItem('soundEnabled', String(soundEnabled));
+    localStorage.setItem('musicEnabled', String(musicEnabled));
+    localStorage.setItem('showTime', String(showTime));
+    localStorage.setItem('difficultyLevel', String(difficultyLevel));
+    localStorage.setItem('drawingPrecision', String(drawingPrecision));
+    
     toast({
-      title: "Settings saved",
-      description: "Your preferences have been updated.",
+      description: "Settings saved",
+      duration: 1000,
     });
-  };
+  }, [soundEnabled, musicEnabled, showTime, difficultyLevel, drawingPrecision, toast]);
 
   return (
     <div className="min-h-screen p-6 flex flex-col bg-gradient-to-b from-background to-background/80">
@@ -157,13 +170,6 @@ const Settings = () => {
             </div>
           </CardContent>
         </Card>
-
-        <Button 
-          onClick={handleSave} 
-          className="w-full bg-gradient-to-r from-primary to-purple-400 hover:from-primary/90 hover:to-purple-500"
-        >
-          Save Settings
-        </Button>
       </div>
     </div>
   );
