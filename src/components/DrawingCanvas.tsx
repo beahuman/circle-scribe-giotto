@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { calculateAccuracy } from '@/utils/circleUtils';
+import { calculateAccuracy, smoothPoints } from '@/utils/circleUtils';
 
 interface Point {
   x: number;

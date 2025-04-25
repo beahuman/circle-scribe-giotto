@@ -1,3 +1,4 @@
+
 interface Point {
   x: number;
   y: number;
@@ -42,6 +43,15 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficu
     const radius = Math.sqrt(dx * dx + dy * dy);
     sumVariance += Math.abs(radius - avgRadius) / avgRadius;
   }
+  
+  // Calculate center distance between drawn and target circles
+  const centerDistance = Math.sqrt(
+    Math.pow(centerX - targetCircle.x, 2) + 
+    Math.pow(centerY - targetCircle.y, 2)
+  );
+  
+  // Calculate radius difference between drawn and target circles
+  const radiusDiff = Math.abs(avgRadius - targetCircle.radius) / targetCircle.radius;
   
   // Apply difficulty scaling to all score components
   const circularityScore = Math.max(0, 100 - (sumVariance / points.length * 300 * difficultyScaling));
