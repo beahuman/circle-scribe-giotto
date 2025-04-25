@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircleCheck, CircleX, Trophy, Home, Star, Share2 } from "lucide-react";
+import { Trophy, Home, Star, Share2 } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
@@ -144,7 +144,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <Button 
           onClick={onBackToHome}
           variant="secondary"
-          className="px-8 py-6 text-lg rounded-full border-[#D7B1FF] text-[#D7B1FF] hover:bg-[#D7B1FF]/10"
+          className="px-8 py-6 text-lg rounded-full border-[#D71BFF] text-[#D71BFF] bg-white hover:bg-[#D71BFF]/10"
         >
           <Home className="mr-2 h-5 w-5" />
           Return to Home
@@ -154,7 +154,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           <Button 
             onClick={showLeaderboard}
             variant="secondary"
-            className="px-8 py-6 text-lg rounded-full border-[#D7B1FF] text-[#D7B1FF] hover:bg-[#D7B1FF]/10"
+            className="px-8 py-6 text-lg rounded-full border-[#D71BFF] text-[#D71BFF] bg-white hover:bg-[#D71BFF]/10"
           >
             <Trophy className="mr-2 h-5 w-5" />
             View Leaderboard
