@@ -16,6 +16,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import BottomNav from '@/components/BottomNav';
 
 const formSchema = z.object({
   username: z.string().min(3, {
@@ -30,7 +31,6 @@ const EditAccount = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Mock user data - would come from authentication service in real app
   const userData = {
     username: 'GiottoMaster',
     email: 'artist@example.com',
@@ -46,13 +46,11 @@ const EditAccount = () => {
   });
   
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, this would call auth service to update the account
     toast({
       title: "Profile Updated",
       description: "Your profile has been updated successfully",
     });
     
-    // Navigate back to account page
     setTimeout(() => navigate('/account'), 1000);
   }
   
@@ -139,6 +137,8 @@ const EditAccount = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <BottomNav />
     </div>
   );
 };
