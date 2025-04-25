@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -58,8 +57,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       
       {isGuestMode && (
         <Alert style={{ 
-          backgroundColor: '#D7B1FF', 
-          opacity: 0.6 
+          backgroundColor: '#D7B1FF'
         }}>
           <div className="flex flex-col items-center">
             <Ghost className="h-6 w-6 mb-2" style={{ color: '#765ED8' }} />
