@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -53,7 +52,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <div className="w-full max-w-xs mx-auto">
           <LogoAnimation />
         </div>
-        <p className="text-lg font-bold text-[#765ED8]">The art of the perfect circle</p>
+        <p className="text-2xl font-bold text-[#765ED8]">The art of the perfect circle</p>
       </div>
       
       {isGuestMode && (
