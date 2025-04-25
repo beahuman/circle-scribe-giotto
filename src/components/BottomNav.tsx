@@ -19,7 +19,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/history') && (
-            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-[12px] -left-[12px] -right-[12px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-history-line text-2xl relative z-10", 
@@ -36,7 +36,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/about') && (
-            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-[12px] -left-[12px] -right-[12px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-information-line text-2xl relative z-10", 
@@ -53,7 +53,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/') && (
-            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-[12px] -left-[12px] -right-[12px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-home-line text-2xl relative z-10", 
@@ -70,7 +70,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/account') && (
-            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-[12px] -left-[12px] -right-[12px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-user-line text-2xl relative z-10", 
@@ -87,7 +87,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/settings') && (
-            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-[12px] -left-[12px] -right-[12px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-settings-line text-2xl relative z-10", 
@@ -101,3 +101,4 @@ const BottomNav = () => {
 };
 
 export default BottomNav;
+
