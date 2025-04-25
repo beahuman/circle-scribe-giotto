@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -108,17 +109,17 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col pt-12 items-center p-6 bg-gradient-to-b from-background to-background/80">
-      <div className="fixed top-12 left-0 right-0 text-center space-y-6 mb-8 z-10">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-          Welcome To
-        </h1>
-        <div className="w-[240px] mx-auto">
-          <LogoAnimation />
+    <div className="min-h-screen flex flex-col items-center p-6 bg-gradient-to-b from-background to-background/80">
+      <div className="w-full max-w-md space-y-8 pt-4">
+        <div className="text-center space-y-6 mb-12">
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+            Welcome To
+          </h1>
+          <div className="w-[240px] mx-auto">
+            <LogoAnimation />
+          </div>
         </div>
-      </div>
 
-      <div className={`w-full max-w-md space-y-8 transition-all duration-500 ease-in-out mt-48`}>
         <div className="space-y-6">
           <Tabs defaultValue="signin" value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 rounded-full mb-6">
