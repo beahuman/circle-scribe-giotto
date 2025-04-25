@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Trophy, History, HelpCircle, Info, Settings, Stars } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import UserAvatar from './UserAvatar';
+import BottomNav from './BottomNav';
 import { useToast } from '@/hooks/use-toast';
 
 interface HomeScreenProps {

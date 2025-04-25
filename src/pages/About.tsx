@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, ExternalLink, Github, Heart, HelpCircle } from 'lucide-react';
-import BottomNav from '@/components/ui/bottom-nav';
+import BottomNav from '@/components/BottomNav';
 
 const About = () => {
   const navigate = useNavigate();
@@ -69,6 +70,22 @@ const About = () => {
                 Learn more about Giotto
                 <ExternalLink className="ml-2 h-4 w-4" />
               </a>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Try the Tutorial</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p>
+              Learn how to draw perfect circles with our step-by-step tutorial. Practice makes perfect!
+            </p>
+            
+            <Button variant="outline" className="w-full" onClick={() => navigate('/tutorial')}>
+              <HelpCircle className="mr-2 h-4 w-4" />
+              Start Tutorial
             </Button>
           </CardContent>
         </Card>
