@@ -64,4 +64,3 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
 };
 
 export default HomeScreen;
-
