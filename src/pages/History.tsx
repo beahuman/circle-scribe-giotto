@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import BottomNav from '@/components/BottomNav';
 import { ArrowLeft, Clock, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -28,48 +27,44 @@ const History = () => {
       </div>
 
       <div className="max-w-md mx-auto space-y-6">
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              <Trophy size={18} className="text-primary" />
-              Statistics
-            </CardTitle>
-            <CardDescription>Your overall performance</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-secondary/50 p-4 text-center">
-                <p className="text-sm text-muted-foreground">Average Score</p>
-                <p className="text-2xl font-bold">81.9%</p>
-              </div>
-              <div className="rounded-lg bg-secondary/50 p-4 text-center">
-                <p className="text-sm text-muted-foreground">Best Score</p>
-                <p className="text-2xl font-bold">95.7%</p>
-              </div>
-              <div className="rounded-lg bg-secondary/50 p-4 text-center">
-                <p className="text-sm text-muted-foreground">Total Attempts</p>
-                <p className="text-2xl font-bold">5</p>
-              </div>
-              <div className="rounded-lg bg-secondary/50 p-4 text-center">
-                <p className="text-sm text-muted-foreground">Favorite Difficulty</p>
-                <p className="text-2xl font-bold">Medium</p>
-              </div>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Trophy size={18} className="text-primary" />
+            <h2 className="text-lg font-medium">Statistics</h2>
+          </div>
+          <p className="text-sm text-muted-foreground -mt-2">Your overall performance</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="rounded-lg bg-secondary/50 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Average Score</p>
+              <p className="text-2xl font-bold">81.9%</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="rounded-lg bg-secondary/50 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Best Score</p>
+              <p className="text-2xl font-bold">95.7%</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Total Attempts</p>
+              <p className="text-2xl font-bold">5</p>
+            </div>
+            <div className="rounded-lg bg-secondary/50 p-4 text-center">
+              <p className="text-sm text-muted-foreground">Favorite Difficulty</p>
+              <p className="text-2xl font-bold">Medium</p>
+            </div>
+          </div>
+        </div>
 
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              <Clock size={18} className="text-primary" />
-              Recent Attempts
-            </CardTitle>
-            <CardDescription>Your most recent drawing scores</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              {historyData.map((item) => (
-                <div key={item.id} className="flex items-center justify-between border-b border-muted pb-3 last:border-0 last:pb-0">
+        <Separator className="bg-[#D6BCFA]" />
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Clock size={18} className="text-primary" />
+            <h2 className="text-lg font-medium">Recent Attempts</h2>
+          </div>
+          <p className="text-sm text-muted-foreground -mt-2">Your most recent drawing scores</p>
+          <div className="space-y-4">
+            {historyData.map((item, index) => (
+              <React.Fragment key={item.id}>
+                <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{new Date(item.date).toLocaleDateString()}</p>
                     <p className="text-sm text-muted-foreground">Difficulty: {item.difficulty}</p>
@@ -79,10 +74,11 @@ const History = () => {
                     <span className="font-bold">{item.score}%</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                {index < historyData.length - 1 && <Separator className="bg-[#D6BCFA] my-2" />}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
       </div>
       
       <BottomNav />
