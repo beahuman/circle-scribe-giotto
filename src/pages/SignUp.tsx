@@ -17,6 +17,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   username: z.string().min(3, {
@@ -43,15 +44,38 @@ const SignUp = () => {
     },
   });
   
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, this would call auth service to create account
-    toast({
-      title: "Account created",
-      description: "Welcome to the perfect circle challenge!",
-    });
-    
-    // Navigate to home page
-    setTimeout(() => navigate('/'), 1000);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (authError) throw authError;
+
+      // Update the user's profile with their username
+      if (authData.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ username: values.username })
+          .eq('id', authData.user.id);
+
+        if (profileError) throw profileError;
+      }
+
+      toast({
+        title: "Account created",
+        description: "Welcome to the perfect circle challenge!",
+      });
+      
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   }
   
   return (

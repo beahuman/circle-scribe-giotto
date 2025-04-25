@@ -4,16 +4,12 @@ import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { LogIn, UserPlus, CircleUser, Settings, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
-interface UserAvatarProps {
-  isLoggedIn: boolean;
-  username?: string;
-  avatarColor?: string;
-  onSignOut?: () => void;
-}
-
-const UserAvatar = ({ isLoggedIn, username, avatarColor = '#9b87f5', onSignOut }: UserAvatarProps) => {
-  if (!isLoggedIn) {
+const UserAvatar = () => {
+  const { user, signOut } = useAuth();
+  
+  if (!user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -43,19 +39,17 @@ const UserAvatar = ({ isLoggedIn, username, avatarColor = '#9b87f5', onSignOut }
     );
   }
 
-  const initials = username ? username.charAt(0).toUpperCase() : '?';
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer h-9 w-9 hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all">
-          <AvatarFallback style={{ backgroundColor: avatarColor }} className="text-white font-bold">
-            {initials}
+          <AvatarFallback className="text-white font-bold bg-primary">
+            {user.email?.[0].toUpperCase()}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        {username && <DropdownMenuLabel>Hi, {username}!</DropdownMenuLabel>}
+        <DropdownMenuLabel>Hi, {user.email?.split('@')[0]}!</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Link to="/account">
           <DropdownMenuItem className="cursor-pointer">
@@ -70,7 +64,7 @@ const UserAvatar = ({ isLoggedIn, username, avatarColor = '#9b87f5', onSignOut }
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onSignOut} className="cursor-pointer">
+        <DropdownMenuItem onClick={signOut} className="cursor-pointer">
           <LogOut className="h-4 w-4 mr-2" />
           <span>Sign Out</span>
         </DropdownMenuItem>

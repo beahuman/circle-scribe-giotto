@@ -17,6 +17,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -39,15 +40,28 @@ const SignIn = () => {
     },
   });
   
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, this would call auth service to sign in
-    toast({
-      title: "Sign in successful",
-      description: "Welcome back, artist!",
-    });
-    
-    // Navigate to home page
-    setTimeout(() => navigate('/'), 1000);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Sign in successful",
+        description: "Welcome back!",
+      });
+      
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   }
   
   return (
