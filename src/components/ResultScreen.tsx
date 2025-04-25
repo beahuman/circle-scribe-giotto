@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleCheck, CircleX, Trophy, Home, Star, Share2 } from "lucide-react";
@@ -143,33 +142,33 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         </Button>
 
         <Button 
-          onClick={handleShare}
-          variant="secondary"
-          className="px-8 py-6 text-lg rounded-full"
-        >
-          <Share2 className="mr-2 h-5 w-5" />
-          Share Score
-        </Button>
-
-        <Button 
           onClick={onBackToHome}
           variant="secondary"
-          className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-muted/50 to-background border border-muted"
+          className="px-8 py-6 text-lg rounded-full border-[#D7B1FF] text-[#D7B1FF] hover:bg-[#D7B1FF]/10"
         >
-          <i className="ri-home-line text-xl mr-2 text-primary" />
+          <Home className="mr-2 h-5 w-5" />
           Return to Home
         </Button>
         
         {showLeaderboard && (
           <Button 
             onClick={showLeaderboard}
-            variant="outline"
-            className="px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
+            variant="secondary"
+            className="px-8 py-6 text-lg rounded-full border-[#D7B1FF] text-[#D7B1FF] hover:bg-[#D7B1FF]/10"
           >
             <Trophy className="mr-2 h-5 w-5" />
             View Leaderboard
           </Button>
         )}
+
+        <Button 
+          onClick={handleShare}
+          variant="ghost"
+          className="px-8 py-6 text-lg rounded-full text-[#765ED8] hover:bg-[#765ED8]/10"
+        >
+          <Share2 className="mr-2 h-5 w-5" />
+          Share Score
+        </Button>
       </div>
     </div>
   );
