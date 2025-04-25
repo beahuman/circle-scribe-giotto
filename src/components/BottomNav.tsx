@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ const BottomNav = () => {
           {isActive('/history') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
-          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
           <i className={cn(
             "ri-history-line text-2xl relative z-10", 
             isActive('/history') ? "text-white" : "text-primary group-hover:text-primary"
@@ -38,7 +39,7 @@ const BottomNav = () => {
           {isActive('/about') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
-          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
           <i className={cn(
             "ri-information-line text-2xl relative z-10", 
             isActive('/about') ? "text-white" : "text-primary group-hover:text-primary"
@@ -56,7 +57,7 @@ const BottomNav = () => {
           {isActive('/') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
-          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
           <i className={cn(
             "ri-home-line text-2xl relative z-10", 
             isActive('/') ? "text-white" : "text-primary group-hover:text-primary"
@@ -74,7 +75,7 @@ const BottomNav = () => {
           {isActive('/account') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
-          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
           <i className={cn(
             "ri-user-line text-2xl relative z-10", 
             isActive('/account') ? "text-white" : "text-primary group-hover:text-primary"
@@ -92,7 +93,7 @@ const BottomNav = () => {
           {isActive('/settings') && (
             <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-primary rounded-full flex items-center justify-center" />
           )}
-          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="absolute -top-[12px] -left-[16px] -right-[16px] -bottom-[12px] bg-purple-200 opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
           <i className={cn(
             "ri-settings-line text-2xl relative z-10", 
             isActive('/settings') ? "text-white" : "text-primary group-hover:text-primary"
@@ -105,3 +106,4 @@ const BottomNav = () => {
 };
 
 export default BottomNav;
+
