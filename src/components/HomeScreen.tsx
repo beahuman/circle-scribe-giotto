@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Trophy, History, HelpCircle, Info, Settings, Stars } from "lucide-react";
@@ -67,7 +66,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
       </header>
       
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-8 p-6 text-center">
+      <div className="flex-1 flex flex-col items-center justify-center gap-8 p-6 text-center pb-24">
         <div className="relative">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-4 border-primary/20 animate-pulse-slow"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-dashed border-2 border-primary/40"></div>
@@ -117,43 +116,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
       </div>
       
       {/* Bottom Navigation */}
-      <div className="grid grid-cols-4 gap-2 p-4 bg-muted/30 backdrop-blur-sm border-t border-muted">
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate('/history')}
-          className="flex flex-col items-center py-2 h-auto text-xs"
-        >
-          <History size={20} />
-          <span className="mt-1">History</span>
-        </Button>
-        
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate('/tutorial')}
-          className="flex flex-col items-center py-2 h-auto text-xs"
-        >
-          <HelpCircle size={20} />
-          <span className="mt-1">Tutorial</span>
-        </Button>
-        
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate('/about')}
-          className="flex flex-col items-center py-2 h-auto text-xs"
-        >
-          <Info size={20} />
-          <span className="mt-1">About</span>
-        </Button>
-        
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate('/settings')}
-          className="flex flex-col items-center py-2 h-auto text-xs"
-        >
-          <Settings size={20} />
-          <span className="mt-1">Settings</span>
-        </Button>
-      </div>
+      <BottomNav />
     </div>
   );
 };

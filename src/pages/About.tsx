@@ -1,15 +1,15 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, ExternalLink, Github, Heart } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Github, Heart, HelpCircle } from 'lucide-react';
+import BottomNav from '@/components/ui/bottom-nav';
 
 const About = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen p-6 flex flex-col">
+    <div className="min-h-screen p-6 flex flex-col pb-24">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />
@@ -110,6 +110,8 @@ const About = () => {
           <p>Version 1.0.0 • © {new Date().getFullYear()} Giotto App</p>
         </div>
       </div>
+      
+      <BottomNav />
     </div>
   );
 };
