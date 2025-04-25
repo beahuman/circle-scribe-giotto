@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogIn, CircleDot, Apple, Facebook, Google } from 'lucide-react';
+import { LogIn, CircleDot, Mail, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   Form,
@@ -108,7 +108,7 @@ const SignIn = () => {
                 className="w-full"
                 onClick={() => handleSocialLogin('google')}
               >
-                <Google className="mr-2 h-4 w-4" />
+                <Mail className="mr-2 h-4 w-4" />
                 Continue with Google
               </Button>
               <Button 
@@ -116,7 +116,7 @@ const SignIn = () => {
                 className="w-full"
                 onClick={() => handleSocialLogin('apple')}
               >
-                <Apple className="mr-2 h-4 w-4" />
+                <CircleDot className="mr-2 h-4 w-4" />
                 Continue with Apple
               </Button>
               <Button 
@@ -124,7 +124,7 @@ const SignIn = () => {
                 className="w-full"
                 onClick={() => handleSocialLogin('facebook')}
               >
-                <Facebook className="mr-2 h-4 w-4" />
+                <MessageSquare className="mr-2 h-4 w-4" />
                 Continue with Facebook
               </Button>
             </div>
