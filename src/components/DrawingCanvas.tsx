@@ -28,6 +28,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
+    // Get current drawing precision from localStorage
+    const drawingPrecision = Number(localStorage.getItem('drawingPrecision')) || 50;
+    
     // Set canvas size to match screen
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -37,11 +40,14 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     
     // Draw the path if there are points
     if (points.length > 1) {
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
+      // Apply smoothing based on current precision setting
+      const smoothedPoints = smoothPoints(points, drawingPrecision);
       
-      for (let i = 1; i < points.length; i++) {
-        ctx.lineTo(points[i].x, points[i].y);
+      ctx.beginPath();
+      ctx.moveTo(smoothedPoints[0].x, smoothedPoints[0].y);
+      
+      for (let i = 1; i < smoothedPoints.length; i++) {
+        ctx.lineTo(smoothedPoints[i].x, smoothedPoints[i].y);
       }
       
       ctx.strokeStyle = 'hsl(var(--primary) / 0.8)';

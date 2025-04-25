@@ -100,13 +100,17 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       </div>
       
       <div className="space-y-4">
-        <div className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-          {roundedAccuracy}%
-        </div>
-        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-          <Star className="h-4 w-4" />
-          <span>Difficulty Level: {difficultyLevel}%</span>
-          <Star className="h-4 w-4" />
+        <div>
+          <div className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+            {roundedAccuracy}%
+          </div>
+          <div className="flex items-center justify-center gap-2 mt-2 text-sm">
+            <Star className="h-4 w-4 text-primary animate-pulse" />
+            <span className="text-muted-foreground">
+              Difficulty Level: {difficultyLevel}%
+            </span>
+            <Star className="h-4 w-4 text-primary animate-pulse" />
+          </div>
         </div>
         <p className="text-muted-foreground max-w-xs">
           {roundedAccuracy >= 95 ? "Wow, did you use a compass? That's cheating!" :

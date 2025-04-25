@@ -34,7 +34,7 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficu
   }
   const avgRadius = sumRadius / points.length;
   
-  // Calculate variance in radius (circularity) - Now even more strict
+  // Calculate variance in radius (circularity) - Adjusted for difficulty
   let sumVariance = 0;
   for (const point of points) {
     const dx = point.x - centerX;
@@ -42,26 +42,19 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficu
     const radius = Math.sqrt(dx * dx + dy * dy);
     sumVariance += Math.abs(radius - avgRadius) / avgRadius;
   }
-  // Tripled penalty for variance
+  
+  // Apply difficulty scaling to all score components
   const circularityScore = Math.max(0, 100 - (sumVariance / points.length * 300 * difficultyScaling));
-  
-  // Calculate position accuracy - Even stricter
-  const centerDistance = Math.sqrt(
-    Math.pow(centerX - targetCircle.x, 2) + 
-    Math.pow(centerY - targetCircle.y, 2)
-  );
-  // Doubled position penalty
   const positionScore = Math.max(0, 100 - (centerDistance / targetCircle.radius * 200 * difficultyScaling));
-  
-  // Calculate size accuracy - Even stricter
-  const radiusDiff = Math.abs(avgRadius - targetCircle.radius) / targetCircle.radius;
-  // Tripled size penalty
   const sizeScore = Math.max(0, 100 - (radiusDiff * 300 * difficultyScaling));
   
-  // Adjusted weights to make perfect scores even harder
-  const finalScore = (circularityScore * 0.8) + (positionScore * 0.1) + (sizeScore * 0.1);
+  // Final score calculation with difficulty consideration
+  const finalScore = (
+    (circularityScore * 0.8) + 
+    (positionScore * 0.1) + 
+    (sizeScore * 0.1)
+  ) * (1 + (1 - difficultyScaling) * 0.3); // Bonus for lower difficulty
   
-  // Apply an additional heavy penalty
   return Math.min(100, Math.max(0, finalScore * 0.65));
 };
 
@@ -78,30 +71,44 @@ export const generateRandomCirclePosition = (padding: number = 100): Circle => {
   return { x, y, radius };
 };
 
-// Function to smooth points based on drawing precision
+// Enhanced smoothPoints function with more aggressive smoothing for lower precision
 export const smoothPoints = (points: Point[], precision: number = 50): Point[] => {
   if (points.length < 3) return points;
   
   // Convert precision to smoothing factor (5% = max smoothing, 100% = no smoothing)
-  const smoothingFactor = Math.max(0.1, (precision / 100));
+  // Enhanced smoothing for lower precision values
+  const smoothingFactor = Math.max(0.1, Math.pow(precision / 100, 1.5));
   
   let smoothedPoints: Point[] = [];
-  const windowSize = Math.floor((1 - smoothingFactor) * 10) + 1;
+  // Increase window size for lower precision values
+  const windowSize = Math.floor((1 - smoothingFactor) * 20) + 1;
   
   for (let i = 0; i < points.length; i++) {
     let sumX = 0, sumY = 0;
-    let count = 0;
+    let weightSum = 0;
     
     for (let j = Math.max(0, i - windowSize); j < Math.min(points.length, i + windowSize + 1); j++) {
-      sumX += points[j].x;
-      sumY += points[j].y;
-      count++;
+      // Apply gaussian-like weighting for smoother results
+      const distance = Math.abs(i - j);
+      const weight = Math.exp(-distance * distance / (windowSize * windowSize));
+      
+      sumX += points[j].x * weight;
+      sumY += points[j].y * weight;
+      weightSum += weight;
     }
     
     smoothedPoints.push({
-      x: sumX / count,
-      y: sumY / count
+      x: sumX / weightSum,
+      y: sumY / weightSum
     });
+  }
+  
+  // Additional smoothing passes for very low precision
+  if (precision <= 25) {
+    const passes = Math.floor((25 - precision) / 5) + 1;
+    for (let pass = 0; pass < passes; pass++) {
+      smoothedPoints = smoothPoints(smoothedPoints, precision + 25);
+    }
   }
   
   return smoothedPoints;
