@@ -19,15 +19,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
         <div className="w-10" /> {/* Placeholder to maintain layout */}
       </header>
       
-      <div className="flex-1 flex flex-col items-center justify-center gap-8 p-6 text-center pb-24">
-        <div className="space-y-2 max-w-xs text-center">
+      <div className="flex-1 flex flex-col items-center justify-center gap-12 p-6 text-center pb-24">
+        <div className="space-y-4 max-w-xs text-center">
           <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             Giotto
           </h1>
           <p className="text-lg text-muted-foreground">Can you draw a perfect circle?</p>
         </div>
         
-        <div className="relative">
+        <div className="relative mb-8">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full border-4 border-primary/20 animate-pulse-slow"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-dashed border-2 border-primary/40"></div>
           <div className="w-44 h-44 rounded-full border-4 border-primary/30 bg-gradient-to-br from-primary/10 to-transparent flex items-center justify-center">
@@ -64,3 +64,4 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
 };
 
 export default HomeScreen;
+
