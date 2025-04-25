@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Check, PenTool } from 'lucide-react';
 
 const tutorialSteps = [
   {
@@ -145,6 +145,27 @@ const tutorialSteps = [
       </>
     )
   },
+  {
+    title: "Customize Your Experience",
+    description: "Adjust settings to your preference",
+    content: (
+      <>
+        <div className="flex justify-center mb-6">
+          <PenTool size={60} className="text-primary" />
+        </div>
+        <p className="mb-4">
+          Visit the Settings screen to customize your experience:
+        </p>
+        <ul className="list-disc pl-5 space-y-2">
+          <li><strong>Circle Display Time</strong>: Adjust how long you see the target circle</li>
+          <li><strong>Scoring Strictness</strong>: Make scoring more forgiving or stricter</li>
+          <li><strong>Drawing Precision</strong>: Control how smooth or detailed your drawn line appears</li>
+          <li className="text-sm text-muted-foreground mt-2">Higher precision captures more detail but may look less smooth</li>
+          <li className="text-sm text-muted-foreground">Lower precision creates smoother lines but may miss subtle movements</li>
+        </ul>
+      </>
+    )
+  }
 ];
 
 const Tutorial = () => {
@@ -167,18 +188,18 @@ const Tutorial = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 flex flex-col">
+    <div className="min-h-screen p-6 flex flex-col bg-gradient-to-b from-background to-background/80">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-2xl font-bold">Tutorial</h1>
+        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Tutorial</h1>
       </div>
 
       <div className="flex-1 flex flex-col max-w-md mx-auto w-full">
         <div className="flex-1">
-          <Card className="h-full flex flex-col">
-            <CardHeader>
+          <Card className="h-full flex flex-col border-primary/20 shadow-md">
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
               <CardTitle>{tutorialSteps[currentStep].title}</CardTitle>
               <CardDescription>{tutorialSteps[currentStep].description}</CardDescription>
             </CardHeader>
@@ -204,7 +225,11 @@ const Tutorial = () => {
                 ))}
               </div>
               
-              <Button onClick={handleNext}>
+              <Button 
+                onClick={handleNext}
+                className={currentStep === totalSteps - 1 ? 
+                  "bg-gradient-to-r from-primary to-purple-400" : ""}
+              >
                 {currentStep === totalSteps - 1 ? (
                   <>
                     <Check className="mr-2 h-4 w-4" />

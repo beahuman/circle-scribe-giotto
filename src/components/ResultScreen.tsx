@@ -86,6 +86,9 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
               fill="none"
               stroke="hsl(var(--primary))"
               strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ filter: "blur(0.5px)" }}
             />
           </svg>
         )}

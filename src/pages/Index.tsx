@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GiottoGame from "@/components/GiottoGame";
 import HomeScreen from "@/components/HomeScreen";
 import { getGameService } from '@/utils/gameServices';
@@ -8,7 +8,7 @@ const Index = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [isGameServiceAvailable, setIsGameServiceAvailable] = useState(false);
   
-  useState(() => {
+  useEffect(() => {
     const initializeGameService = async () => {
       try {
         const service = await getGameService();
@@ -21,7 +21,7 @@ const Index = () => {
     };
     
     initializeGameService();
-  });
+  }, []);
   
   const handleStartGame = () => {
     setGameStarted(true);

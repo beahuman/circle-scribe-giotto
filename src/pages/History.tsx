@@ -3,16 +3,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, ChevronRight, Award, TrendingUp } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Award, TrendingUp, Calendar, Star } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { format } from 'date-fns';
 
 // Mock data for the history page
 const mockAttempts = [
-  { id: 1, date: '2025-04-23', score: 72, time: '12:30 PM' },
-  { id: 2, date: '2025-04-23', score: 45, time: '2:15 PM' },
-  { id: 3, date: '2025-04-23', score: 87, time: '5:45 PM' },
-  { id: 4, date: '2025-04-24', score: 62, time: '9:10 AM' },
-  { id: 5, date: '2025-04-24', score: 91, time: '3:20 PM' },
+  { id: 1, date: new Date(2025, 3, 23), score: 72 },
+  { id: 2, date: new Date(2025, 3, 23), score: 45 },
+  { id: 3, date: new Date(2025, 3, 23), score: 87 },
+  { id: 4, date: new Date(2025, 3, 24), score: 62 },
+  { id: 5, date: new Date(2025, 3, 24), score: 91 },
 ];
 
 const achievements = [
@@ -36,36 +37,38 @@ const History = () => {
   const bestScore = Math.max(...mockAttempts.map(attempt => attempt.score));
 
   return (
-    <div className="min-h-screen p-6 flex flex-col">
+    <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 flex flex-col">
       <div className="flex items-center mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-2xl font-bold">History & Stats</h1>
+        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+          Circle History
+        </h1>
       </div>
 
       <div className="flex-1 space-y-6 max-w-md mx-auto w-full">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2">
-              <Award size={18} />
-              Personal Best
+        <Card className="overflow-hidden border-2 border-primary/20 shadow-lg shadow-primary/10">
+          <CardHeader className="pb-2 text-center bg-gradient-to-r from-primary/10 to-purple-400/10">
+            <CardTitle className="flex items-center justify-center gap-2">
+              <Award size={28} className="text-primary animate-pulse-slow" />
+              <span>Personal Best</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-center py-4">
-              <div className="text-5xl font-bold">{bestScore}%</div>
+            <div className="flex items-center justify-center py-8">
+              <div className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">{bestScore}%</div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
+        <Card className="overflow-hidden border border-primary/20 shadow-md">
+          <CardHeader className="pb-2 bg-gradient-to-r from-primary/10 to-purple-400/10">
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp size={18} />
+              <TrendingUp size={20} className="text-primary" />
               Progress
             </CardTitle>
-            <CardDescription>Your circle-drawing improvement</CardDescription>
+            <CardDescription>Your circle-drawing journey</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[200px] w-full">
@@ -77,14 +80,14 @@ const History = () => {
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
                   <XAxis dataKey="name" fontSize={12} tickMargin={10} />
                   <YAxis domain={[0, 100]} fontSize={12} />
-                  <Tooltip />
+                  <Tooltip contentStyle={{ borderRadius: '8px' }} />
                   <Line
                     type="monotone"
                     dataKey="score"
                     stroke="hsl(var(--primary))"
-                    strokeWidth={2}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
+                    strokeWidth={3}
+                    dot={{ r: 4, strokeWidth: 2 }}
+                    activeDot={{ r: 6, strokeWidth: 2 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -92,39 +95,50 @@ const History = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Recent Attempts</CardTitle>
+        <Card className="overflow-hidden border border-primary/20 shadow-md">
+          <CardHeader className="pb-2 bg-gradient-to-r from-primary/10 to-purple-400/10">
+            <CardTitle className="flex items-center gap-2">
+              <Calendar size={20} className="text-primary" />
+              Recent Attempts
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
               {mockAttempts.map(attempt => (
-                <li key={attempt.id} className="flex items-center justify-between py-2 border-b last:border-0">
+                <li key={attempt.id} className="flex items-center justify-between py-3 px-2 border-b last:border-0 hover:bg-primary/5 rounded-md transition-colors">
                   <div>
-                    <p className="text-sm font-medium">{attempt.date} • {attempt.time}</p>
-                    <p className={`text-sm ${attempt.score >= 80 ? 'text-primary' : 'text-muted-foreground'}`}>
+                    <p className="text-sm font-medium">{format(attempt.date, 'EEEE, MMMM d, yyyy')}</p>
+                    <p className={`text-sm ${attempt.score >= 80 ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
                       Score: {attempt.score}%
                     </p>
                   </div>
-                  <ChevronRight size={16} className="text-muted-foreground" />
+                  <Button variant="ghost" size="sm" className="rounded-full">
+                    <ChevronRight size={16} className="text-muted-foreground" />
+                  </Button>
                 </li>
               ))}
             </ul>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Achievements</CardTitle>
+        <Card className="overflow-hidden border border-primary/20 shadow-md">
+          <CardHeader className="pb-2 bg-gradient-to-r from-primary/10 to-purple-400/10">
+            <CardTitle className="flex items-center gap-2">
+              <Star size={20} className="text-primary" />
+              Achievements
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
+          <CardContent className="pt-4">
+            <ul className="space-y-3">
               {achievements.map(achievement => (
-                <li key={achievement.id} className="flex items-center gap-3 py-2 border-b last:border-0">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                <li key={achievement.id} className="flex items-center gap-3 py-2 px-2 rounded-md border-b last:border-0 hover:bg-primary/5 transition-colors">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                     achievement.earned ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'
                   }`}>
-                    {achievement.earned ? '✓' : '?'}
+                    {achievement.earned ? 
+                      <Star className="h-5 w-5" fill="currentColor" /> : 
+                      <Star className="h-5 w-5" />
+                    }
                   </div>
                   <div>
                     <p className={`text-sm font-medium ${!achievement.earned && 'text-muted-foreground'}`}>
