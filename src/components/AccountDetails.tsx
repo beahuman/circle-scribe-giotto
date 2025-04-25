@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AccountDetailsProps {
   userId: string;
@@ -17,6 +18,7 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
   const { data: userData, isLoading } = useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
+      // Fetch user profile
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
@@ -25,6 +27,7 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
       
       if (profileError) throw profileError;
 
+      // Fetch user's game scores
       const { data: scores, error: scoresError } = await supabase
         .from('game_scores')
         .select('score')
@@ -33,10 +36,14 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
 
       if (scoresError) throw scoresError;
 
+      // Get user data to access email
+      const { data: { user } } = await supabase.auth.getUser();
+
       return {
         ...profile,
-        bestScore: scores?.[0]?.score || 0,
-        totalGames: scores?.length || 0
+        email: user?.email || '',
+        bestScore: scores && scores.length > 0 ? scores[0].score : 0,
+        totalGames: scores ? scores.length : 0
       };
     }
   });

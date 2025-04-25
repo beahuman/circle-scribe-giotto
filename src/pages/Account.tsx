@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Trophy } from 'lucide-react';
@@ -8,45 +8,52 @@ import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 import { useToast } from '@/hooks/use-toast';
 import BottomNav from '@/components/BottomNav';
 import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/contexts/AuthContext';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const Account = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { user } = useAuth();
   
-  // Default user data
-  const defaultUserData = {
-    username: 'GiottoMaster',
-    email: 'artist@example.com',
-    createdAt: '2023-10-15',
-    totalGames: 42,
-    bestScore: 92.7,
-    avatarColor: '#9b87f5',
-    avatarImage: null
-  };
-  
-  // Get user data from localStorage if available
-  const [userData, setUserData] = useState(defaultUserData);
-  
-  useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      // Merge stored data with default data to ensure all properties exist
-      setUserData({
-        ...defaultUserData,
-        ...JSON.parse(storedUserData)
-      });
-    }
-  }, []);
+  const { data: gameStats, isLoading } = useQuery({
+    queryKey: ['gameStats', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return { totalGames: 0, bestScore: 0 };
+      
+      const { data, error } = await supabase
+        .from('game_scores')
+        .select('score')
+        .eq('user_id', user.id)
+        .order('score', { ascending: false });
+        
+      if (error) throw error;
+      
+      return {
+        totalGames: data?.length || 0,
+        bestScore: data && data.length > 0 ? data[0].score : 0
+      };
+    },
+    enabled: !!user
+  });
   
   const handleSignOut = () => {
-    toast({
-      title: "Signed out",
-      description: "You have been signed out successfully",
+    supabase.auth.signOut().then(() => {
+      toast({
+        title: "Signed out",
+        description: "You have been signed out successfully",
+      });
+      
+      setTimeout(() => navigate('/'), 1000);
     });
-    
-    setTimeout(() => navigate('/'), 1000);
   };
+
+  if (!user) {
+    navigate('/auth');
+    return null;
+  }
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-background to-background/80 pb-24">
@@ -58,7 +65,7 @@ const Account = () => {
       </div>
 
       <div className="max-w-md mx-auto space-y-6">
-        <AccountDetails userData={userData} />
+        {user?.id && <AccountDetails userId={user.id} />}
         
         <Separator className="bg-purple-300/20" />
         
@@ -70,11 +77,11 @@ const Account = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-lg bg-secondary/50 p-4 text-center">
               <p className="text-sm text-muted-foreground">Total Games</p>
-              <p className="text-2xl font-bold">{userData.totalGames}</p>
+              <p className="text-2xl font-bold">{isLoading ? '...' : gameStats?.totalGames}</p>
             </div>
             <div className="rounded-lg bg-secondary/50 p-4 text-center">
               <p className="text-sm text-muted-foreground">Best Score</p>
-              <p className="text-2xl font-bold">{userData.bestScore}%</p>
+              <p className="text-2xl font-bold">{isLoading ? '...' : `${gameStats?.bestScore}%`}</p>
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 interface GameService {
@@ -23,10 +24,13 @@ class GameCenterService implements GameService {
     console.log(`Submitting score ${score} to Game Center`);
     
     // Save score to Supabase
-    const { error } = await supabase.from('game_scores').insert({
-      score,
-      game_center_synced: true
-    });
+    const { error } = await supabase
+      .from('game_scores')
+      .insert({
+        user_id: supabase.auth.getUser().then(res => res.data.user?.id),
+        score,
+        game_center_synced: true
+      });
 
     if (error) {
       console.error('Error saving score:', error);

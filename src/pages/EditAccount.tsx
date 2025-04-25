@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +31,13 @@ const EditAccount = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+    }
+  }, [user, navigate]);
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
@@ -81,6 +88,9 @@ const EditAccount = () => {
     }
   });
 
+  const defaultAvatarColor = profile?.avatar_color || '#9b87f5';
+  const defaultAvatarImage = profile?.avatar_image || null;
+
   const {
     selectedColor,
     avatarPreview,
@@ -90,17 +100,24 @@ const EditAccount = () => {
   } = useAvatarEditor({
     username: profile?.username || 'User',
     email: user?.email || '',
-    avatarColor: profile?.avatar_color || '#9b87f5',
-    avatarImage: profile?.avatar_image
+    avatarColor: defaultAvatarColor,
+    avatarImage: defaultAvatarImage
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: profile?.username || '',
+      username: '',
       email: user?.email || '',
     },
   });
+
+  // Update form values when profile is loaded
+  useEffect(() => {
+    if (profile?.username) {
+      form.setValue('username', profile.username);
+    }
+  }, [profile, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     updateProfileMutation.mutate({
@@ -164,7 +181,7 @@ const EditAccount = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input className="rounded-full" placeholder="Your email" {...field} />
+                        <Input className="rounded-full" placeholder="Your email" disabled {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
