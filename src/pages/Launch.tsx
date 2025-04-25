@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import { preloadAnimation } from '@/utils/animationLoader';
+import BottomNav from '@/components/BottomNav';
 
 const Launch = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Launch = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6 pb-24">
       <div className="w-full max-w-md space-y-8 animate-fade-in">
         {launchAnimationData && (
           <div className="flex justify-center">
@@ -48,6 +48,7 @@ const Launch = () => {
           Experience the art of drawing perfect circles
         </p>
       </div>
+      <BottomNav />
     </div>
   );
 };
