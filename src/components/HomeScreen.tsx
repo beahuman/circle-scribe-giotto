@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CircleDot, Trophy, ArrowLeft, Ghost } from "lucide-react";
+import { CircleDot, Trophy, ArrowLeft, Ghost, Pencil } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -31,7 +31,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       )}
 
       <div className="space-y-2">
-        <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 bg-clip-text text-transparent">
+        <h1 className="text-7xl font-bold bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 bg-clip-text text-transparent">
           Giotto
         </h1>
         <p className="text-muted-foreground">The art of the perfect circle</p>
@@ -67,6 +67,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           onClick={onStart}
           className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
         >
+          <Pencil className="mr-2" size={20} />
           Draw Now
         </Button>
         
@@ -74,7 +75,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           <Button 
             onClick={showLeaderboard}
             variant="outline"
-            className="px-8 py-4 rounded-full text-primary"
+            className="px-8 py-6 text-lg rounded-full text-primary"
           >
             <Trophy className="mr-2 h-5 w-5" />
             Leaderboard
@@ -86,3 +87,4 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 };
 
 export default WelcomeScreen;
+
