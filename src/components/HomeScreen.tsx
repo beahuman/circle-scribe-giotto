@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +48,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
             <Button 
               onClick={showLeaderboard}
               variant="outline"
-              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20 text-[hsl(250,10%,25%)]"
+              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20 text-primary"
             >
               <i className="ri-trophy-line text-2xl mr-2 text-primary" />
               Leaderboard
