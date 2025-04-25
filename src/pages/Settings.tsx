@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+
+import React, { useState } from 'react';
+import { Settings as SettingsIcon } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
-import { Settings as SettingsIcon, Bell, Palette, Moon, Sun, Timer, Circle, SlidersHorizontal } from 'lucide-react';
-import { Slider } from "@/components/ui/slider";
-import BottomNav from '@/components/BottomNav';
 import { useToast } from "@/hooks/use-toast";
+import BottomNav from '@/components/BottomNav';
+import DifficultySettings from '@/components/settings/DifficultySettings';
+import DrawingSettings from '@/components/settings/DrawingSettings';
+import DisplaySettings from '@/components/settings/DisplaySettings';
+import NotificationSettings from '@/components/settings/NotificationSettings';
+import AppearanceSettings from '@/components/settings/AppearanceSettings';
 
 const Settings = () => {
   const [notifications, setNotifications] = useState(true);
@@ -77,123 +80,38 @@ const Settings = () => {
       </div>
 
       <div className="max-w-md mx-auto space-y-8">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-medium">
-            <SlidersHorizontal size={18} className="text-primary" />
-            Game Difficulty
-          </div>
-          <p className="text-sm text-muted-foreground">Adjust how challenging the game is</p>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Difficulty Level</span>
-              <span className="font-medium">{difficultyLevel}%</span>
-            </div>
-            <Slider
-              value={[difficultyLevel]}
-              min={10}
-              max={100}
-              step={5}
-              onValueChange={handleDifficultyChange}
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Easy</span>
-              <span>Hard</span>
-            </div>
-          </div>
-        </div>
+        <DifficultySettings 
+          difficultyLevel={difficultyLevel}
+          onDifficultyChange={handleDifficultyChange}
+        />
 
         <Separator className="bg-purple-300/20" />
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-medium">
-            <Circle size={18} className="text-primary" />
-            Drawing Precision
-          </div>
-          <p className="text-sm text-muted-foreground">Adjust the smoothness of circle drawing</p>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Precision Level</span>
-              <span className="font-medium">{drawingPrecision}%</span>
-            </div>
-            <Slider
-              value={[drawingPrecision]}
-              min={10}
-              max={100}
-              step={5}
-              onValueChange={handlePrecisionChange}
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>More Detail</span>
-              <span>Smoother</span>
-            </div>
-          </div>
-        </div>
+        <DrawingSettings 
+          drawingPrecision={drawingPrecision}
+          onPrecisionChange={handlePrecisionChange}
+        />
 
         <Separator className="bg-purple-300/20" />
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-medium">
-            <Timer size={18} className="text-primary" />
-            Display Duration
-          </div>
-          <p className="text-sm text-muted-foreground">Seconds to display the target circle</p>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Duration (seconds)</span>
-              <span className="font-medium">{displayDuration}s</span>
-            </div>
-            <Slider
-              value={[displayDuration]}
-              min={1}
-              max={10}
-              step={1}
-              onValueChange={handleDurationChange}
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Shorter</span>
-              <span>Longer</span>
-            </div>
-          </div>
-        </div>
+        <DisplaySettings 
+          displayDuration={displayDuration}
+          onDurationChange={handleDurationChange}
+        />
 
         <Separator className="bg-purple-300/20" />
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-medium">
-            <Bell size={18} className="text-primary" />
-            Notifications
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Enable Notifications</span>
-            <Switch 
-              checked={notifications}
-              onCheckedChange={handleNotificationToggle}
-            />
-          </div>
-        </div>
+        <NotificationSettings 
+          notifications={notifications}
+          onNotificationsChange={handleNotificationToggle}
+        />
 
         <Separator className="bg-purple-300/20" />
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-lg font-medium">
-            {darkMode ? <Moon size={18} className="text-primary" /> : <Sun size={18} className="text-primary" />}
-            Appearance
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Dark Mode</span>
-            <Switch 
-              checked={darkMode}
-              onCheckedChange={handleDarkModeToggle}
-            />
-          </div>
-        </div>
-
-        <Separator className="bg-purple-300/20" />
-
-        <Button variant="outline" className="w-full rounded-full">
-          <Palette size={18} className="mr-2" />
-          Customize Theme
-        </Button>
+        <AppearanceSettings 
+          darkMode={darkMode}
+          onDarkModeChange={handleDarkModeToggle}
+        />
       </div>
       
       <BottomNav />
