@@ -21,6 +21,9 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
   const [isGameServiceAvailable, setIsGameServiceAvailable] = useState(false);
   const [bypassMobileCheck, setBypassMobileCheck] = useState(false);
   const [drawnPoints, setDrawnPoints] = useState<Array<{ x: number; y: number }>>([]);
+  const [difficultyLevel, setDifficultyLevel] = useState(() => {
+    return Number(localStorage.getItem('difficultyLevel')) || 50;
+  });
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -125,6 +128,7 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
       {gameState === 'result' && (
         <ResultScreen 
           accuracy={accuracy}
+          difficultyLevel={difficultyLevel}
           onReplay={handleReplay}
           showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
           targetCircle={targetCircle}

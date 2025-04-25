@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ArrowLeft, ChevronRight, Award, TrendingUp, Calendar, Star } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
+import BottomNav from '@/components/BottomNav';
 
 const mockAttempts = [
   { id: 1, date: new Date(2025, 3, 23), score: 72 },

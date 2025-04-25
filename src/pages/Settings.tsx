@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Label } from '@radix-ui/react-label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, VolumeX, Volume2, Clock, Target, Palette, PenTool } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import BottomNav from '@/components/BottomNav';
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ const Settings = () => {
 
   useEffect(() => {
     const id = setTimeout(() => {
-      saveSettings(true);
+      saveSettings();
     }, 500);
     
     return () => {
