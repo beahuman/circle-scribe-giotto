@@ -99,10 +99,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <Button
           onClick={handleShare}
           variant="ghost"
-          className="px-8 py-4 text-lg rounded-full text-muted-foreground"
+          className="px-8 py-4 text-lg rounded-full text-primary hover:bg-primary/10"
         >
-          <Share2 className="mr-2 h-5 w-5" />
-          Share App
+          <Share2 className="mr-2 h-5 w-5 text-primary" />
+          Share Giotto
         </Button>
       </div>
     </div>
