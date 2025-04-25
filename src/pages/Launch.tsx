@@ -38,7 +38,7 @@ const Launch = () => {
         )}
         
         <p 
-          className="text-[#765ED8] text-xl font-bold text-center animate-in fade-in slide-in-from-bottom duration-1000 delay-300"
+          className="text-[#765ED8] text-xl font-bold text-center"
         >
           Experience the art of drawing perfect circles
         </p>
