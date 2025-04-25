@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,7 +45,7 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="animate-in fade-in duration-300 slide-in-from-top-2">
+        <div className="animate-in fade-in duration-300 slide-in-from-top-2 transition-all">
           <FormField
             control={form.control}
             name="username"
@@ -60,7 +61,7 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
           />
         </div>
         
-        <div className="animate-in fade-in duration-500 slide-in-from-top-1">
+        <div className="animate-in fade-in duration-500 slide-in-from-top-1 transition-all">
           <FormField
             control={form.control}
             name="email"
@@ -79,7 +80,7 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mt-4">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input className="rounded-full" type="password" placeholder="••••••••" {...field} />
