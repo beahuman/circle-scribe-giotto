@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
 import BottomNav from '@/components/BottomNav';
 import { ArrowLeft, Clock, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 
 const History = () => {
   const navigate = useNavigate();
@@ -66,7 +68,9 @@ const History = () => {
               <React.Fragment key={item.id}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium">{new Date(item.date).toLocaleDateString()}</p>
+                    <p className="font-medium">
+                      {format(new Date(item.date), 'EEEE, MMMM d, yyyy')}
+                    </p>
                     <p className="text-sm text-muted-foreground">Difficulty: {item.difficulty}</p>
                   </div>
                   <div className="bg-secondary/50 px-3 py-1 rounded-full flex items-center gap-1">
