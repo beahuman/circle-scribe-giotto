@@ -15,75 +15,85 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/history')}
-        className={cn(
-          "flex flex-col items-center py-2 h-auto text-xs text-primary",
-          isActive('/history') && "relative"
-        )}
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
       >
-        {isActive('/history') && (
-          <span className="absolute inset-0 bg-primary/10 rounded-full" />
-        )}
-        <i className="ri-history-line text-2xl" />
+        <div className="relative mb-1">
+          {isActive('/history') && (
+            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+          )}
+          <i className={cn(
+            "ri-history-line text-2xl relative z-10", 
+            isActive('/history') ? "text-white" : "text-primary"
+          )} />
+        </div>
         <span className="mt-1">History</span>
       </Button>
       
       <Button 
         variant="ghost"
         onClick={() => navigate('/about')}
-        className={cn(
-          "flex flex-col items-center py-2 h-auto text-xs text-primary",
-          isActive('/about') && "relative"
-        )}
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
       >
-        {isActive('/about') && (
-          <span className="absolute inset-0 bg-primary/10 rounded-full" />
-        )}
-        <i className="ri-information-line text-2xl" />
+        <div className="relative mb-1">
+          {isActive('/about') && (
+            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+          )}
+          <i className={cn(
+            "ri-information-line text-2xl relative z-10", 
+            isActive('/about') ? "text-white" : "text-primary"
+          )} />
+        </div>
         <span className="mt-1">About</span>
       </Button>
       
       <Button 
         variant="ghost"
         onClick={() => navigate('/')}
-        className={cn(
-          "flex flex-col items-center py-2 h-auto text-xs text-primary",
-          isActive('/') && "relative"
-        )}
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
       >
-        {isActive('/') && (
-          <span className="absolute inset-0 bg-primary/10 rounded-full" />
-        )}
-        <i className="ri-home-line text-2xl" />
+        <div className="relative mb-1">
+          {isActive('/') && (
+            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+          )}
+          <i className={cn(
+            "ri-home-line text-2xl relative z-10", 
+            isActive('/') ? "text-white" : "text-primary"
+          )} />
+        </div>
         <span className="mt-1">Home</span>
       </Button>
       
       <Button 
         variant="ghost"
         onClick={() => navigate('/account')}
-        className={cn(
-          "flex flex-col items-center py-2 h-auto text-xs text-primary",
-          isActive('/account') && "relative"
-        )}
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
       >
-        {isActive('/account') && (
-          <span className="absolute inset-0 bg-primary/10 rounded-full" />
-        )}
-        <i className="ri-user-line text-2xl" />
+        <div className="relative mb-1">
+          {isActive('/account') && (
+            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+          )}
+          <i className={cn(
+            "ri-user-line text-2xl relative z-10", 
+            isActive('/account') ? "text-white" : "text-primary"
+          )} />
+        </div>
         <span className="mt-1">Account</span>
       </Button>
       
       <Button 
         variant="ghost"
         onClick={() => navigate('/settings')}
-        className={cn(
-          "flex flex-col items-center py-2 h-auto text-xs text-primary",
-          isActive('/settings') && "relative"
-        )}
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary"
       >
-        {isActive('/settings') && (
-          <span className="absolute inset-0 bg-primary/10 rounded-full" />
-        )}
-        <i className="ri-settings-line text-2xl" />
+        <div className="relative mb-1">
+          {isActive('/settings') && (
+            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+          )}
+          <i className={cn(
+            "ri-settings-line text-2xl relative z-10", 
+            isActive('/settings') ? "text-white" : "text-primary"
+          )} />
+        </div>
         <span className="mt-1">Settings</span>
       </Button>
     </div>
