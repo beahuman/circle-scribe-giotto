@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Trophy } from 'lucide-react';
 import AccountDetails from '@/components/AccountDetails';
 import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 import { useToast } from '@/hooks/use-toast';
@@ -46,8 +46,8 @@ const Account = () => {
         <Separator className="bg-purple-300/20" />
         
         <div>
-          <h2 className="text-xl font-semibold mb-4">
-            <i className="ri-trophy-line text-xl text-primary" />
+          <h2 className="flex items-center gap-2 text-xl font-semibold mb-4">
+            <Trophy size={18} className="text-primary" />
             Game Statistics
           </h2>
           <div className="grid grid-cols-2 gap-4">
