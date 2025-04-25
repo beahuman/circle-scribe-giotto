@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleCheck, CircleX, Trophy, Home } from "lucide-react";
@@ -42,7 +43,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   }));
   
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center bg-gradient-to-b from-background to-background/80">
       {onBackToHome && (
         <Button 
           variant="ghost" 
@@ -55,13 +56,13 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       )}
       
       <div className="space-y-2">
-        <h2 className="text-3xl font-bold">Your Result</h2>
+        <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      <div className="relative w-[200px] h-[200px] mx-auto my-6">
+      <div className="relative w-[200px] h-[200px] mx-auto my-6 rounded-full shadow-lg bg-gradient-to-br from-background to-muted/20">
         <div 
-          className="absolute border-2 border-primary/30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" 
+          className="absolute border-2 border-primary/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow" 
           style={{
             width: containerSize * 0.8,
             height: containerSize * 0.8,
@@ -77,28 +78,31 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
                  ${transformedDrawnPoints.map(p => `L ${p.x} ${p.y}`).join(' ')}` : ''}
               fill="none"
               stroke="hsl(var(--primary))"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ filter: "blur(0.5px)" }}
+              style={{ 
+                filter: "drop-shadow(0 0 2px hsla(var(--primary), 0.5))",
+                strokeDasharray: "1, 0"
+              }}
             />
           </svg>
         )}
         
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
           {isGoodScore ? (
-            <CircleCheck className="text-primary animate-pulse-slow" size={60} />
+            <CircleCheck className="text-primary animate-pulse-slow drop-shadow-md" size={60} />
           ) : (
-            <CircleX className="text-muted-foreground" size={60} />
+            <CircleX className="text-muted-foreground drop-shadow-md" size={60} />
           )}
         </div>
       </div>
       
       <div className="space-y-4">
-        <div className="text-5xl font-bold">
+        <div className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
           {roundedAccuracy}%
         </div>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground max-w-xs">
           {roundedAccuracy >= 95 ? "Wow, did you use a compass? That's cheating!" :
            roundedAccuracy >= 85 ? "Almost perfect! But Giotto is still laughing." :
            roundedAccuracy >= 75 ? "Not bad... for a kindergartener." :
@@ -112,15 +116,15 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       <div className="flex flex-col gap-4 w-full max-w-xs">
         <Button 
           onClick={onReplay}
-          className="px-8 py-6 text-lg rounded-full"
+          className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
         >
-          Try Again (Please!)
+          Try Again
         </Button>
 
         <Button 
           onClick={onBackToHome}
           variant="secondary"
-          className="px-8 py-6 text-lg rounded-full"
+          className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-muted/50 to-background border border-muted"
         >
           <Home className="mr-2 h-5 w-5" />
           Return to Home
@@ -130,10 +134,10 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           <Button 
             onClick={showLeaderboard}
             variant="outline"
-            className="px-8 py-6 text-lg rounded-full"
+            className="px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
           >
-            <Trophy className="mr-2 h-5 w-5" />
-            View Better Artists
+            <Trophy className="mr-2 h-5 w-5 text-primary" />
+            View Leaderboard
           </Button>
         )}
       </div>

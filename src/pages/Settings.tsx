@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -27,18 +28,42 @@ const Settings = () => {
     return Number(localStorage.getItem('drawingPrecision')) || 50;
   });
 
-  useEffect(() => {
+  // Debounced save function to prevent too many toast notifications
+  const [saveTimeoutId, setSaveTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  const saveSettings = (showToast = false) => {
     localStorage.setItem('soundEnabled', String(soundEnabled));
     localStorage.setItem('musicEnabled', String(musicEnabled));
     localStorage.setItem('showTime', String(showTime));
     localStorage.setItem('difficultyLevel', String(difficultyLevel));
     localStorage.setItem('drawingPrecision', String(drawingPrecision));
     
-    toast({
-      description: "Settings saved",
-      duration: 1000,
-    });
-  }, [soundEnabled, musicEnabled, showTime, difficultyLevel, drawingPrecision, toast]);
+    if (showToast) {
+      toast({
+        description: "Settings saved",
+        duration: 1000,
+      });
+    }
+  };
+
+  // Effect for auto-saving settings with debounce
+  useEffect(() => {
+    if (saveTimeoutId) {
+      clearTimeout(saveTimeoutId);
+    }
+    
+    const id = setTimeout(() => {
+      saveSettings(true);
+    }, 500);
+    
+    setSaveTimeoutId(id);
+    
+    return () => {
+      if (saveTimeoutId) {
+        clearTimeout(saveTimeoutId);
+      }
+    };
+  }, [soundEnabled, musicEnabled, showTime, difficultyLevel, drawingPrecision]);
 
   return (
     <div className="min-h-screen p-6 flex flex-col bg-gradient-to-b from-background to-background/80">
