@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ const BottomNav = () => {
       >
         <div className="relative mb-1">
           {isActive('/history') && (
-            <span className="absolute inset-0 bg-primary rounded-full flex items-center justify-center" />
+            <span className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-primary rounded-full flex items-center justify-center" />
           )}
           <i className={cn(
             "ri-history-line text-2xl relative z-10", 
