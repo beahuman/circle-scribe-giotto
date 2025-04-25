@@ -65,16 +65,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
-      {onBackToHome && (
-        <Button 
-          variant="ghost" 
-          onClick={onBackToHome}
-          className="absolute top-4 left-4"
-          size="icon"
-        >
-          <i className="ri-home-line text-xl text-primary" />
-        </Button>
-      )}
+      
       
       <div className="space-y-2">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
