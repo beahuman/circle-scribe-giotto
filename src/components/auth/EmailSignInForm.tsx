@@ -48,7 +48,7 @@ const EmailSignInForm: React.FC<EmailSignInFormProps> = ({ onSubmit }) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="your.email@example.com" {...field} />
+                <Input className="rounded-full" placeholder="your.email@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -62,7 +62,7 @@ const EmailSignInForm: React.FC<EmailSignInFormProps> = ({ onSubmit }) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
+                <Input className="rounded-full" type="password" placeholder="••••••••" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,9 +71,9 @@ const EmailSignInForm: React.FC<EmailSignInFormProps> = ({ onSubmit }) => {
         
         <Button 
           type="submit" 
-          className="w-full flex items-center justify-center gap-2 p-6"
+          className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity"
         >
-          <i className="ri-login-box-line text-lg" />
+          <i className="ri-login-box-line text-2xl mr-2" />
           Sign In
         </Button>
       </form>

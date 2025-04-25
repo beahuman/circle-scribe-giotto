@@ -11,26 +11,26 @@ const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({ onSocialLogin }
     <div className="grid grid-cols-1 gap-4">
       <Button 
         variant="outline" 
-        className="w-full"
+        className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
         onClick={() => onSocialLogin('google')}
       >
-        <i className="ri-mail-line text-lg mr-2 text-primary" />
+        <i className="ri-google-fill text-2xl mr-2 text-primary" />
         Continue with Google
       </Button>
       <Button 
         variant="outline" 
-        className="w-full"
+        className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
         onClick={() => onSocialLogin('apple')}
       >
-        <i className="ri-apple-line text-lg mr-2 text-primary" />
+        <i className="ri-apple-fill text-2xl mr-2 text-primary" />
         Continue with Apple
       </Button>
       <Button 
         variant="outline" 
-        className="w-full"
+        className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
         onClick={() => onSocialLogin('facebook')}
       >
-        <i className="ri-facebook-circle-line text-lg mr-2 text-primary" />
+        <i className="ri-facebook-circle-fill text-2xl mr-2 text-primary" />
         Continue with Facebook
       </Button>
     </div>

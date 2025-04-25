@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -93,45 +91,39 @@ const Auth = () => {
   
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-background to-background/80">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-12">
         <AuthHeader 
           title="Welcome"
           subtitle="Sign in or create an account to continue"
         />
         
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="text-center">Authentication</CardTitle>
-            <CardDescription className="text-center">Choose how you want to continue</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 space-y-6">
-            <SocialLoginButtons onSocialLogin={handleSocialAuth} />
+        <div className="space-y-8">
+          <SocialLoginButtons onSocialLogin={handleSocialAuth} />
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with email
-                </span>
-              </div>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
             </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with email
+              </span>
+            </div>
+          </div>
 
-            <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Create Account</TabsTrigger>
-              </TabsList>
-              <TabsContent value="signin" className="mt-4">
-                <EmailSignInForm onSubmit={handleEmailSignIn} />
-              </TabsContent>
-              <TabsContent value="signup" className="mt-4">
-                <EmailSignUpForm onSubmit={handleEmailSignUp} />
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+          <Tabs defaultValue="signin" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 rounded-full">
+              <TabsTrigger value="signin" className="rounded-full">Sign In</TabsTrigger>
+              <TabsTrigger value="signup" className="rounded-full">Create Account</TabsTrigger>
+            </TabsList>
+            <TabsContent value="signin" className="mt-6">
+              <EmailSignInForm onSubmit={handleEmailSignIn} />
+            </TabsContent>
+            <TabsContent value="signup" className="mt-6">
+              <EmailSignUpForm onSubmit={handleEmailSignUp} />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );

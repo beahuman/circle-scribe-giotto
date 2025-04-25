@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { UserPlus } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -53,7 +51,7 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="GiottoMaster" {...field} />
+                <Input className="rounded-full" placeholder="GiottoMaster" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -67,7 +65,7 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="your.email@example.com" {...field} />
+                <Input className="rounded-full" placeholder="your.email@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,7 +79,7 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
+                <Input className="rounded-full" type="password" placeholder="••••••••" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,9 +88,9 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
         
         <Button 
           type="submit" 
-          className="w-full flex items-center justify-center gap-2 p-6"
+          className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity"
         >
-          <UserPlus className="h-5 w-5" />
+          <i className="ri-user-add-line text-2xl mr-2" />
           Create Account
         </Button>
       </form>
@@ -101,4 +99,3 @@ const EmailSignUpForm: React.FC<EmailSignUpFormProps> = ({ onSubmit }) => {
 };
 
 export default EmailSignUpForm;
-
