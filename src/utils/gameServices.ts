@@ -33,41 +33,9 @@ class GameCenterService implements GameService {
   }
 
   async isAvailable(): Promise<boolean> {
-    // Check if Game Center is available
+    // Check if Game Center is available on iOS
     const isIOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
     return Promise.resolve(isIOS);
-  }
-}
-
-class GooglePlayGamesService implements GameService {
-  async initialize(): Promise<void> {
-    // Google Play Games initialization would go here
-    console.log("Google Play Games initialization");
-    return Promise.resolve();
-  }
-
-  async signIn(): Promise<boolean> {
-    // Google Play Games authentication would go here
-    console.log("Google Play Games sign in");
-    return Promise.resolve(true);
-  }
-
-  async submitScore(score: number): Promise<void> {
-    // Submit score to Google Play Games
-    console.log(`Submitting score ${score} to Google Play Games`);
-    return Promise.resolve();
-  }
-
-  async showLeaderboard(): Promise<void> {
-    // Show Google Play Games leaderboard
-    console.log("Showing Google Play Games leaderboard");
-    return Promise.resolve();
-  }
-
-  async isAvailable(): Promise<boolean> {
-    // Check if Google Play Games is available
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    return Promise.resolve(isAndroid);
   }
 }
 
@@ -102,19 +70,13 @@ let gameService: GameService;
 
 export const getGameService = async (): Promise<GameService> => {
   if (!gameService) {
-    // Try Game Center first for iOS
+    // Try Game Center for iOS
     const gameCenterService = new GameCenterService();
     if (await gameCenterService.isAvailable()) {
       gameService = gameCenterService;
     } else {
-      // Try Google Play Games for Android
-      const googlePlayService = new GooglePlayGamesService();
-      if (await googlePlayService.isAvailable()) {
-        gameService = googlePlayService;
-      } else {
-        // Fall back to mock service for web
-        gameService = new WebMockGameService();
-      }
+      // Fall back to mock service for web
+      gameService = new WebMockGameService();
     }
     
     // Initialize the selected service

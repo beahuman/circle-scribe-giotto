@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 
 interface SocialLoginButtonsProps {
-  onSocialLogin: (provider: 'google' | 'apple' | 'facebook') => Promise<void>;
+  onSocialLogin: (provider: 'apple') => Promise<void>;
 }
 
 const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({ onSocialLogin }) => {
@@ -12,26 +12,10 @@ const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({ onSocialLogin }
       <Button 
         variant="outline" 
         className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
-        onClick={() => onSocialLogin('google')}
-      >
-        <i className="ri-google-fill text-2xl mr-2 text-primary" />
-        Continue with Google
-      </Button>
-      <Button 
-        variant="outline" 
-        className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
         onClick={() => onSocialLogin('apple')}
       >
         <i className="ri-apple-fill text-2xl mr-2 text-primary" />
         Continue with Apple
-      </Button>
-      <Button 
-        variant="outline" 
-        className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5"
-        onClick={() => onSocialLogin('facebook')}
-      >
-        <i className="ri-facebook-circle-fill text-2xl mr-2 text-primary" />
-        Continue with Facebook
       </Button>
     </div>
   );

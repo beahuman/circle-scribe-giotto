@@ -11,7 +11,11 @@ const config: CapacitorConfig = {
     cleartext: true
   },
   plugins: {
-    // Configuration for plugins would go here
+    // iOS-specific configuration would go here
+  },
+  ios: {
+    // iOS-specific configuration
+    contentInset: "always"
   }
 };
 

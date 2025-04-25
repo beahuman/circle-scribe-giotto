@@ -70,7 +70,7 @@ const Auth = () => {
     }
   };
 
-  const handleSocialAuth = async (provider: 'google' | 'apple' | 'facebook') => {
+  const handleSocialAuth = async (provider: 'apple') => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,

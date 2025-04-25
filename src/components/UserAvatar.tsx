@@ -33,6 +33,12 @@ const UserAvatar = () => {
               <span>Create Account</span>
             </DropdownMenuItem>
           </Link>
+          <Link to="/auth">
+            <DropdownMenuItem className="cursor-pointer">
+              <i className="ri-apple-fill text-lg mr-2 text-primary" />
+              <span>Sign in with Apple</span>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuContent>
       </DropdownMenu>
     );
