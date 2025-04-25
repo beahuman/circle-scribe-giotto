@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Settings as SettingsIcon, Bell, Palette, Moon, Sun, Timer, Circle, SlidersHorizontal } from 'lucide-react';
 import { Slider } from "@/components/ui/slider";
 import BottomNav from '@/components/BottomNav';
@@ -77,127 +76,121 @@ const Settings = () => {
         </h1>
       </div>
 
-      <div className="max-w-md mx-auto space-y-6">
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              <SlidersHorizontal size={18} className="text-primary" />
-              Game Difficulty
-            </CardTitle>
-            <CardDescription>Adjust how challenging the game is</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>Difficulty Level</span>
-                <span className="font-medium">{difficultyLevel}%</span>
-              </div>
-              <Slider
-                value={[difficultyLevel]}
-                min={10}
-                max={100}
-                step={5}
-                onValueChange={handleDifficultyChange}
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Easy</span>
-                <span>Hard</span>
-              </div>
+      <div className="max-w-md mx-auto space-y-8">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-medium">
+            <SlidersHorizontal size={18} className="text-primary" />
+            Game Difficulty
+          </div>
+          <p className="text-sm text-muted-foreground">Adjust how challenging the game is</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span>Difficulty Level</span>
+              <span className="font-medium">{difficultyLevel}%</span>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              <Circle size={18} className="text-primary" />
-              Drawing Precision
-            </CardTitle>
-            <CardDescription>Adjust the smoothness of circle drawing</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>Precision Level</span>
-                <span className="font-medium">{drawingPrecision}%</span>
-              </div>
-              <Slider
-                value={[drawingPrecision]}
-                min={10}
-                max={100}
-                step={5}
-                onValueChange={handlePrecisionChange}
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>More Detail</span>
-                <span>Smoother</span>
-              </div>
+            <Slider
+              value={[difficultyLevel]}
+              min={10}
+              max={100}
+              step={5}
+              onValueChange={handleDifficultyChange}
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Easy</span>
+              <span>Hard</span>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              <Timer size={18} className="text-primary" />
-              Display Duration
-            </CardTitle>
-            <CardDescription>Seconds to display the target circle</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>Duration (seconds)</span>
-                <span className="font-medium">{displayDuration}s</span>
-              </div>
-              <Slider
-                value={[displayDuration]}
-                min={1}
-                max={10}
-                step={1}
-                onValueChange={handleDurationChange}
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Shorter</span>
-                <span>Longer</span>
-              </div>
+        <Separator className="bg-purple-300/20" />
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-medium">
+            <Circle size={18} className="text-primary" />
+            Drawing Precision
+          </div>
+          <p className="text-sm text-muted-foreground">Adjust the smoothness of circle drawing</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span>Precision Level</span>
+              <span className="font-medium">{drawingPrecision}%</span>
             </div>
-          </CardContent>
-        </Card>
+            <Slider
+              value={[drawingPrecision]}
+              min={10}
+              max={100}
+              step={5}
+              onValueChange={handlePrecisionChange}
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>More Detail</span>
+              <span>Smoother</span>
+            </div>
+          </div>
+        </div>
 
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              <Bell size={18} className="text-primary" />
-              Notifications
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 flex items-center justify-between">
+        <Separator className="bg-purple-300/20" />
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-medium">
+            <Timer size={18} className="text-primary" />
+            Display Duration
+          </div>
+          <p className="text-sm text-muted-foreground">Seconds to display the target circle</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span>Duration (seconds)</span>
+              <span className="font-medium">{displayDuration}s</span>
+            </div>
+            <Slider
+              value={[displayDuration]}
+              min={1}
+              max={10}
+              step={1}
+              onValueChange={handleDurationChange}
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Shorter</span>
+              <span>Longer</span>
+            </div>
+          </div>
+        </div>
+
+        <Separator className="bg-purple-300/20" />
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-medium">
+            <Bell size={18} className="text-primary" />
+            Notifications
+          </div>
+          <div className="flex items-center justify-between">
             <span>Enable Notifications</span>
             <Switch 
               checked={notifications}
               onCheckedChange={handleNotificationToggle}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card className="border-primary/20 shadow-md overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/10 to-purple-400/10">
-            <CardTitle className="flex items-center gap-2">
-              {darkMode ? <Moon size={18} className="text-primary" /> : <Sun size={18} className="text-primary" />}
-              Appearance
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 flex items-center justify-between">
+        <Separator className="bg-purple-300/20" />
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-lg font-medium">
+            {darkMode ? <Moon size={18} className="text-primary" /> : <Sun size={18} className="text-primary" />}
+            Appearance
+          </div>
+          <div className="flex items-center justify-between">
             <span>Dark Mode</span>
             <Switch 
               checked={darkMode}
               onCheckedChange={handleDarkModeToggle}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Button variant="outline" className="w-full">
+        <Separator className="bg-purple-300/20" />
+
+        <Button variant="outline" className="w-full rounded-full">
           <Palette size={18} className="mr-2" />
           Customize Theme
         </Button>
