@@ -21,7 +21,8 @@ const Account = () => {
     createdAt: '2023-10-15',
     totalGames: 42,
     bestScore: 92.7,
-    avatarColor: '#9b87f5'
+    avatarColor: '#9b87f5',
+    avatarImage: null
   };
   
   // Get user data from localStorage if available

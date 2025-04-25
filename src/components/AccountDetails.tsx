@@ -10,6 +10,7 @@ interface UserData {
   email: string;
   createdAt: string;
   avatarColor: string;
+  avatarImage?: string | null;
   totalGames: number;
   bestScore: number;
 }
@@ -37,10 +38,18 @@ const AccountDetails = ({ userData }: AccountDetailsProps) => {
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <div 
-              className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold text-white"
-              style={{ backgroundColor: userData.avatarColor }}
+              className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold text-white overflow-hidden"
+              style={{ backgroundColor: userData.avatarImage ? 'transparent' : userData.avatarColor }}
             >
-              {userData.username.charAt(0).toUpperCase()}
+              {userData.avatarImage ? (
+                <img 
+                  src={userData.avatarImage} 
+                  alt={`${userData.username}'s avatar`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                userData.username.charAt(0).toUpperCase()
+              )}
             </div>
             <div>
               <h3 className="text-xl font-bold">{userData.username}</h3>

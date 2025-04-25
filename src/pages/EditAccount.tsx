@@ -39,10 +39,19 @@ const EditAccount = () => {
   const parsedUserData = storedUserData ? JSON.parse(storedUserData) : {
     username: 'GiottoMaster',
     email: 'artist@example.com',
-    avatarColor: '#9b87f5'
+    avatarColor: '#9b87f5',
+    avatarImage: null
   };
   
+  // Load any existing avatar image
   const [selectedColor, setSelectedColor] = useState(parsedUserData.avatarColor);
+  
+  // Initialize the avatar preview with the saved image if it exists
+  React.useEffect(() => {
+    if (parsedUserData.avatarImage) {
+      setAvatarPreview(parsedUserData.avatarImage);
+    }
+  }, []);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,12 +62,13 @@ const EditAccount = () => {
   });
   
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Save form data and selected color to localStorage
+    // Save form data, selected color and avatar image to localStorage
     const updatedUserData = {
       ...parsedUserData,
       username: values.username,
       email: values.email,
       avatarColor: selectedColor,
+      avatarImage: avatarPreview  // Save the avatar image
     };
     
     localStorage.setItem('userData', JSON.stringify(updatedUserData));
