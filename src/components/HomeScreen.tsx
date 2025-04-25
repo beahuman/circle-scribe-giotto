@@ -21,7 +21,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
       
       <div className="flex-1 flex flex-col items-center justify-center gap-12 p-6 text-center pb-24">
         <div className="space-y-4 max-w-xs text-center">
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+          <h1 className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             Giotto
           </h1>
           <p className="text-lg text-muted-foreground">Can you draw a perfect circle?</p>
@@ -49,7 +49,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartGame, showLeaderboard })
             <Button 
               onClick={showLeaderboard}
               variant="outline"
-              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20 text-[#1A1F2C]"
+              className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20 text-[hsl(250,10%,25%)]"
             >
               <i className="ri-trophy-line text-2xl mr-2 text-primary" />
               Leaderboard
