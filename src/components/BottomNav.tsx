@@ -15,7 +15,7 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/history')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group hover:bg-transparent"
       >
         <div className="relative mb-1">
           {isActive('/history') && (
@@ -33,7 +33,7 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/about')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group hover:bg-transparent"
       >
         <div className="relative mb-1">
           {isActive('/about') && (
@@ -51,7 +51,7 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group hover:bg-transparent"
       >
         <div className="relative mb-1">
           {isActive('/') && (
@@ -69,7 +69,7 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/account')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group hover:bg-transparent"
       >
         <div className="relative mb-1">
           {isActive('/account') && (
@@ -87,7 +87,7 @@ const BottomNav = () => {
       <Button 
         variant="ghost"
         onClick={() => navigate('/settings')}
-        className="flex flex-col items-center py-2 h-auto text-xs text-primary group"
+        className="flex flex-col items-center py-2 h-auto text-xs text-primary group hover:bg-transparent"
       >
         <div className="relative mb-1">
           {isActive('/settings') && (
@@ -106,4 +106,3 @@ const BottomNav = () => {
 };
 
 export default BottomNav;
-
