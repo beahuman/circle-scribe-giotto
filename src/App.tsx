@@ -17,10 +17,10 @@ import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import Auth from "./pages/Auth";
 
+// Create the client outside of the component
+const queryClient = new QueryClient();
+
 const App = () => {
-  // Create a client inside the component to ensure proper React context
-  const queryClient = new QueryClient();
-  
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
