@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CircleUser, Save, Upload } from 'lucide-react';
+import { ArrowLeft, CircleUser, Save, Upload, Edit } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
   Form,
@@ -106,6 +105,9 @@ const EditAccount = () => {
                     <label htmlFor="avatar-upload" className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 cursor-pointer rounded-full transition-opacity">
                       <Upload className="h-6 w-6 text-white" />
                     </label>
+                    <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-primary shadow-lg">
+                      <Edit className="h-4 w-4 text-white" />
+                    </div>
                     <input 
                       id="avatar-upload" 
                       type="file" 
@@ -175,4 +177,3 @@ const EditAccount = () => {
 };
 
 export default EditAccount;
-
