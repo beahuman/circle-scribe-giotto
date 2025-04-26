@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { calculateAccuracy, smoothPoints } from '@/utils/circleUtils';
 import AdBanner from './AdBanner';
+import BottomNav from './BottomNav';
 
 interface Point {
   x: number;
@@ -105,6 +106,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
 
       <div className="absolute bottom-0 w-full">
         <AdBanner />
+        <BottomNav />
       </div>
     </div>
   );
