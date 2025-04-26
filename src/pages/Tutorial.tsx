@@ -1,7 +1,8 @@
+
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ChevronRight, CheckCircle, Circle, Hand, ArrowRight, Gauge, Trophy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle, Circle, Hand, ArrowRight, Gauge, Trophy } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import LogoAnimation from '@/components/LogoAnimation';
 
@@ -10,8 +11,8 @@ const tutorialSteps = [
     title: "Welcome to Giotto's Circle",
     content: "Learn how to draw the perfect circle with this step-by-step tutorial. Inspired by the Renaissance master Giotto di Bondone's famous demonstration of skill.",
     illustration: (
-      <div className="relative w-full h-64 bg-gradient-to-br from-primary/10 to-purple-400/10 rounded-lg flex items-center justify-center">
-        <Circle className="w-32 h-32 text-primary animate-[spin_3s_linear_infinite]" strokeWidth={1.5} />
+      <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
+        <Circle className="w-32 h-32 text-[#765ED8] animate-[spin_3s_linear_infinite]" strokeWidth={1.5} />
       </div>
     )
   },
@@ -19,8 +20,8 @@ const tutorialSteps = [
     title: "The Perfect Grip",
     content: "Hold your device comfortably. Place your finger or stylus on the screen without pressing too hard. A light touch gives you better control.",
     illustration: (
-      <div className="relative w-full h-64 bg-gradient-to-br from-primary/10 to-purple-400/10 rounded-lg flex items-center justify-center">
-        <Hand className="w-32 h-32 text-primary" strokeWidth={1.5} />
+      <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
+        <Hand className="w-32 h-32 text-[#765ED8]" strokeWidth={1.5} />
       </div>
     )
   },
@@ -28,8 +29,8 @@ const tutorialSteps = [
     title: "Start With Confidence",
     content: "Begin drawing from any point, but commit to it. A confident start leads to a smoother circle. Don't hesitate once you begin.",
     illustration: (
-      <div className="relative w-full h-64 bg-gradient-to-br from-primary/10 to-purple-400/10 rounded-lg flex items-center justify-center">
-        <ArrowRight className="w-32 h-32 text-primary animate-bounce" strokeWidth={1.5} />
+      <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
+        <ArrowRight className="w-32 h-32 text-[#765ED8] animate-bounce" strokeWidth={1.5} />
       </div>
     )
   },
@@ -37,8 +38,8 @@ const tutorialSteps = [
     title: "Maintain Even Speed",
     content: "Keep your drawing speed consistent throughout the entire motion. Varying speeds create uneven curves and affect accuracy.",
     illustration: (
-      <div className="relative w-full h-64 bg-gradient-to-br from-primary/10 to-purple-400/10 rounded-lg flex items-center justify-center">
-        <Gauge className="w-32 h-32 text-primary" strokeWidth={1.5} />
+      <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
+        <Gauge className="w-32 h-32 text-[#765ED8]" strokeWidth={1.5} />
       </div>
     )
   },
@@ -46,8 +47,8 @@ const tutorialSteps = [
     title: "Complete The Circle",
     content: "Return to your starting point, closing the circle with a smooth motion. The end should seamlessly connect with the beginning for a perfect circle.",
     illustration: (
-      <div className="w-full h-64 rounded-lg bg-gradient-to-br from-primary/20 to-purple-400/20 flex items-center justify-center">
-        <div className="w-40 h-40 rounded-full border-4 border-primary animate-[spin_3s_linear_infinite]" />
+      <div className="w-full h-64 bg-white rounded-lg flex items-center justify-center">
+        <div className="w-40 h-40 rounded-full border-4 border-[#765ED8] animate-[spin_3s_linear_infinite]" />
       </div>
     )
   },
@@ -55,8 +56,8 @@ const tutorialSteps = [
     title: "Practice Makes Perfect",
     content: "Like Giotto, mastery comes with practice. Don't be discouraged by early attempts. Keep drawing circles and watch your skill improve.",
     illustration: (
-      <div className="relative w-full h-64 bg-gradient-to-br from-primary/10 to-purple-400/10 rounded-lg flex items-center justify-center">
-        <Trophy className="w-32 h-32 text-primary" strokeWidth={1.5} />
+      <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
+        <Trophy className="w-32 h-32 text-[#765ED8]" strokeWidth={1.5} />
       </div>
     )
   }
@@ -106,7 +107,7 @@ const Tutorial = () => {
         <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Tutorial</h1>
       </div>
 
-      <div className="flex-1 space-y-6 max-w-md mx-auto w-full" ref={contentRef}>
+      <div className="flex-1 space-y-6 w-full" ref={contentRef}>
         <div className="text-center mb-8">
           <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
             <LogoAnimation className="w-24 h-24" />
@@ -118,7 +119,7 @@ const Tutorial = () => {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-white rounded-lg p-6 space-y-4">
+          <div className="rounded-lg p-6 space-y-4">
             <h3 className="text-xl font-semibold flex items-center">
               {completedSteps.includes(currentStep) && (
                 <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
@@ -142,8 +143,8 @@ const Tutorial = () => {
                   onClick={goToPreviousStep}
                   disabled={isFirstStep}
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Previous
+                  <ChevronLeft className="mr-2 h-4 w-4" />
+                  Back
                 </Button>
                 <Button 
                   className="flex-1 px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
