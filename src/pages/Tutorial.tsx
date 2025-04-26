@@ -1,7 +1,7 @@
+
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, ChevronRight, CheckCircle, Circle, Hand, ArrowRight, Gauge, Trophy } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import LogoAnimation from '@/components/LogoAnimation';
@@ -45,6 +45,7 @@ const tutorialSteps = [
   },
   {
     title: "Complete The Circle",
+    content: "Return to your starting point, closing the circle with a smooth motion. The end should seamlessly connect with the beginning for a perfect circle.",
     illustration: (
       <div className="w-full h-64 rounded-lg bg-gradient-to-br from-primary/20 to-purple-400/20 flex items-center justify-center">
         <div className="w-40 h-40 rounded-full border-4 border-primary animate-[spin_3s_linear_infinite]" />
@@ -85,7 +86,17 @@ const Tutorial = () => {
     }
   };
 
+  const goToPreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+      if (contentRef.current) {
+        contentRef.current.scrollTop = 0;
+      }
+    }
+  };
+
   const isLastStep = currentStep === tutorialSteps.length - 1;
+  const isFirstStep = currentStep === 0;
 
   return (
     <div className="min-h-screen p-6 flex flex-col pb-24 bg-gradient-to-b from-background to-background/95">
@@ -108,34 +119,45 @@ const Tutorial = () => {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold flex items-center">
-            {completedSteps.includes(currentStep) && (
-              <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
-            )}
-            {tutorialSteps[currentStep].title}
-          </h3>
-          
-          <div className="space-y-4 mt-4">
-            <div className="overflow-hidden rounded-lg shadow-lg">
-              {tutorialSteps[currentStep].illustration}
+          <div className="bg-white border-2 border-[#765ED8] rounded-lg p-6 space-y-4">
+            <h3 className="text-xl font-semibold flex items-center">
+              {completedSteps.includes(currentStep) && (
+                <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
+              )}
+              {tutorialSteps[currentStep].title}
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="overflow-hidden rounded-lg">
+                {tutorialSteps[currentStep].illustration}
+              </div>
+
+              <p className="text-lg">
+                {tutorialSteps[currentStep].content}
+              </p>
+
+              <div className="flex justify-between gap-4 mt-8">
+                <Button 
+                  className="flex-1 px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+                  size="lg"
+                  onClick={goToPreviousStep}
+                  disabled={isFirstStep}
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Previous
+                </Button>
+                <Button 
+                  className="flex-1 px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+                  size="lg"
+                  onClick={goToNextStep}
+                >
+                  {isLastStep ? "Finish Tutorial" : "Next"}
+                  {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
+                </Button>
+              </div>
             </div>
-
-            <p className="text-lg">
-              {tutorialSteps[currentStep].content}
-            </p>
-
-            <Button 
-              className="w-full px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 mt-8"
-              size="lg"
-              onClick={goToNextStep}
-            >
-              {isLastStep ? "Finish Tutorial" : "Next Step"}
-              {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
-            </Button>
           </div>
         </div>
-
-        <Separator className="bg-[#D6BCFA] my-8" />
 
         <div className="flex space-x-2 justify-center">
           {tutorialSteps.map((_, index) => (
@@ -156,3 +178,4 @@ const Tutorial = () => {
 };
 
 export default Tutorial;
+
