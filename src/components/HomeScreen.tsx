@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Trophy, ArrowLeft, Ghost, Pencil, Share2 } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
+import { Dialog } from '@capacitor/dialog';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -28,7 +29,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       } else {
         // Fallback to copy to clipboard
         await navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
+        
+        // Use capacitor dialog for native alert
+        await Dialog.alert({
+          title: 'Link copied',
+          message: 'Link copied to clipboard!',
+        });
       }
     } catch (error) {
       console.error('Error sharing:', error);
@@ -54,8 +60,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         </div>
         <p className="text-2xl font-bold text-[#765ED8]">The art of the perfect circle</p>
       </div>
-      
-      {/* Removed guest mode alert component */}
       
       <div className="max-w-md space-y-4">
         <p>
