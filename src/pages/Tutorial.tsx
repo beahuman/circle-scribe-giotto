@@ -1,55 +1,66 @@
-
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, ChevronRight, CheckCircle, Book, CircleDot, School, BookOpen, PenTool, Clock, Target, Award } from 'lucide-react';
+import { ArrowLeft, ChevronRight, CheckCircle } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import LogoAnimation from '@/components/LogoAnimation';
 
-// Tutorial steps
+// Tutorial steps with illustrations
 const tutorialSteps = [
   {
     title: "Welcome to Giotto's Circle",
     content: "Learn how to draw the perfect circle with this step-by-step tutorial. Inspired by the Renaissance master Giotto di Bondone's famous demonstration of skill.",
-    icon: <BookOpen className="h-24 w-24 text-primary/70" />
+    illustration: (
+      <div className="relative w-full h-64 bg-[url('/photo-1487058792275-0ad4aaf24ca7')] bg-cover bg-center rounded-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
+      </div>
+    )
   },
   {
     title: "The Perfect Grip",
     content: "Hold your device comfortably. Place your finger or stylus on the screen without pressing too hard. A light touch gives you better control.",
-    icon: <PenTool className="h-24 w-24 text-primary/70" />
+    illustration: (
+      <div className="relative w-full h-64 bg-[url('/photo-1581091226825-a6a2a5aee158')] bg-cover bg-center rounded-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
+      </div>
+    )
   },
   {
     title: "Start With Confidence",
     content: "Begin drawing from any point, but commit to it. A confident start leads to a smoother circle. Don't hesitate once you begin.",
-    icon: <div className="relative">
-      <CircleDot className="h-24 w-24 text-primary/70" />
-      <div className="absolute top-1/4 left-1/4 h-4 w-4 bg-primary rounded-full animate-pulse" />
-    </div>
+    illustration: (
+      <div className="relative w-full h-64 bg-[url('/photo-1649972904349-6e44c42644a7')] bg-cover bg-center rounded-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
+      </div>
+    )
   },
   {
     title: "Maintain Even Speed",
     content: "Keep your drawing speed consistent throughout the entire motion. Varying speeds create uneven curves and affect accuracy.",
-    icon: <div className="relative">
-      <Clock className="h-24 w-24 text-primary/70" />
-      <div className="absolute inset-0 border-2 border-primary rounded-full animate-[spin_3s_linear_infinite]" style={{ borderRightColor: 'transparent' }} />
-    </div>
+    illustration: (
+      <div className="relative w-full h-64 bg-[url('/photo-1461749280684-dccba630e2f6')] bg-cover bg-center rounded-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
+      </div>
+    )
   },
   {
     title: "Complete The Circle",
     content: "Finish where you started. Don't lift your finger until you've connected the endpoints. The perfect circle is a continuous motion.",
-    icon: <div className="relative">
-      <CircleDot className="h-24 w-24 text-primary/70" />
-      <div className="absolute inset-0 border-2 border-primary rounded-full animate-draw-circle" />
-    </div>
+    illustration: (
+      <div className="w-full h-64 rounded-lg bg-gradient-to-br from-primary/20 to-purple-400/20 flex items-center justify-center">
+        <div className="w-40 h-40 rounded-full border-4 border-primary animate-[spin_3s_linear_infinite]" />
+      </div>
+    )
   },
   {
     title: "Practice Makes Perfect",
     content: "Like Giotto, mastery comes with practice. Don't be discouraged by early attempts. Keep drawing circles and watch your skill improve.",
-    icon: <div className="relative">
-      <Award className="h-24 w-24 text-primary/70" />
-      <div className="absolute inset-0 border-2 border-green-500 rounded-full" />
-    </div>
+    illustration: (
+      <div className="relative w-full h-64 bg-[url('/photo-1498050108023-c5249f4df085')] bg-cover bg-center rounded-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
+      </div>
+    )
   }
 ];
 
@@ -98,7 +109,6 @@ const Tutorial = () => {
         </div>
 
         <div className="flex items-center mb-4 text-sm font-medium text-muted-foreground">
-          <School className="mr-2 h-4 w-4" />
           <span>Step {currentStep + 1} of {tutorialSteps.length}</span>
         </div>
 
@@ -111,13 +121,8 @@ const Tutorial = () => {
           </h3>
           
           <div className="space-y-4 mt-4">
-            <div className="relative h-48 bg-muted/30 rounded-lg flex items-center justify-center mb-6 border border-primary/10 shadow-inner overflow-hidden">
-              <div className="transform transition-all duration-500 ease-in-out">
-                {tutorialSteps[currentStep].icon}
-              </div>
-              {/* Decorative elements */}
-              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-primary/5 rounded-full blur-xl"></div>
-              <div className="absolute -top-8 -left-8 w-16 h-16 bg-purple-400/5 rounded-full blur-lg"></div>
+            <div className="overflow-hidden rounded-lg shadow-lg">
+              {tutorialSteps[currentStep].illustration}
             </div>
 
             <p className="text-lg">
