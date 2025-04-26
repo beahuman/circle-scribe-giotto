@@ -6,7 +6,7 @@ interface LogoAnimationProps {
   className?: string;
 }
 
-const LogoAnimation: React.FC<LogoAnimationProps> = ({ className }) => {
+const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '' }) => {
   const [animationData, setAnimationData] = useState<any>(null);
   
   useEffect(() => {
@@ -19,11 +19,11 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className }) => {
 
   if (!animationData) {
     // Show a simple loading state while the animation loads
-    return <div className={className}>Loading...</div>;
+    return <div className={`w-[240px] h-[240px] ${className}`}>Loading...</div>;
   }
 
   return (
-    <div className={className}>
+    <div className={`w-[240px] ${className}`}>
       <Lottie 
         animationData={animationData}
         loop={true}
@@ -34,3 +34,4 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className }) => {
 };
 
 export default LogoAnimation;
+

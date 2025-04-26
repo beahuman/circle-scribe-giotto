@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Trophy, ArrowLeft } from "lucide-react";
+import LogoAnimation from './LogoAnimation';
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -24,7 +25,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
       )}
 
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold">Giotto</h1>
+        <div className="w-[240px] mx-auto">
+          <LogoAnimation />
+        </div>
         <p className="text-muted-foreground">The art of the perfect circle</p>
       </div>
       
@@ -68,3 +71,4 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
 };
 
 export default WelcomeScreen;
+

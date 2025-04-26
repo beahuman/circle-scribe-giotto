@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -49,7 +50,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       )}
 
       <div className="space-y-2">
-        <div className="w-full max-w-xs mx-auto">
+        <div className="w-[240px] mx-auto">
           <LogoAnimation />
         </div>
         <p className="text-2xl font-bold text-[#765ED8]">The art of the perfect circle</p>
@@ -115,3 +116,4 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 };
 
 export default WelcomeScreen;
+
