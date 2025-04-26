@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -119,7 +118,7 @@ const Tutorial = () => {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-white border-2 border-[#765ED8] rounded-lg p-6 space-y-4">
+          <div className="bg-white rounded-lg p-6 space-y-4">
             <h3 className="text-xl font-semibold flex items-center">
               {completedSteps.includes(currentStep) && (
                 <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
@@ -128,7 +127,7 @@ const Tutorial = () => {
             </h3>
             
             <div className="space-y-4">
-              <div className="overflow-hidden rounded-lg">
+              <div className="overflow-hidden rounded-lg border-2 border-[#765ED8]">
                 {tutorialSteps[currentStep].illustration}
               </div>
 
@@ -178,4 +177,3 @@ const Tutorial = () => {
 };
 
 export default Tutorial;
-
