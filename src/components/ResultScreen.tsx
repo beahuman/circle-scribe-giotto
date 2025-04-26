@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Trophy, Home, Star, Share2 } from "lucide-react";
+import { Trophy, Home, Star, Share2, BadgeDollarSign } from "lucide-react";
 
 interface ResultScreenProps {
   accuracy: number;
@@ -11,6 +11,7 @@ interface ResultScreenProps {
   targetCircle: { x: number; y: number; radius: number };
   drawnPoints: { x: number; y: number }[];
   onBackToHome?: () => void;
+  onRemoveAds?: () => void;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({
@@ -20,7 +21,8 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   showLeaderboard,
   targetCircle,
   drawnPoints,
-  onBackToHome
+  onBackToHome,
+  onRemoveAds
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
@@ -162,6 +164,17 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           </Button>
         )}
 
+        {onRemoveAds && (
+          <Button
+            onClick={onRemoveAds}
+            variant="outline"
+            className="px-8 py-6 text-lg rounded-full border-yellow-500 bg-white text-yellow-500 hover:bg-yellow-500/5"
+          >
+            <BadgeDollarSign className="mr-2 h-5 w-5" />
+            Remove Ads
+          </Button>
+        )}
+
         <Button 
           onClick={handleShare}
           variant="ghost"
@@ -176,4 +189,3 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
 };
 
 export default ResultScreen;
-

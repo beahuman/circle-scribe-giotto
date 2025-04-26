@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
@@ -11,9 +10,10 @@ type GameState = 'showing' | 'drawing' | 'result';
 
 interface GiottoGameProps {
   onReturnToHome?: () => void;
+  onRemoveAds?: () => void;
 }
 
-const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
+const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) => {
   const [gameState, setGameState] = useState<GameState>('showing');
   const [accuracy, setAccuracy] = useState(0);
   const [targetCircle, setTargetCircle] = useState(generateRandomCirclePosition());
@@ -60,7 +60,6 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
   };
   
   const handleReplay = () => {
-    // Reset the game state and generate a new circle
     setTargetCircle(generateRandomCirclePosition());
     setGameState('showing');
   };
@@ -122,6 +121,7 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome }) => {
           targetCircle={targetCircle}
           drawnPoints={drawnPoints}
           onBackToHome={onReturnToHome}
+          onRemoveAds={onRemoveAds}
         />
       )}
     </div>

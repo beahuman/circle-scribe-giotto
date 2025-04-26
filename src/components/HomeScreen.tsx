@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowLeft, Ghost, Pencil, Share2 } from "lucide-react";
+import { Trophy, ArrowLeft, Ghost, Pencil, Share2, BadgeDollarSign } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
 import { Dialog } from '@capacitor/dialog';
 
@@ -10,13 +10,15 @@ interface HomeScreenProps {
   showLeaderboard?: () => void;
   onBackToHome?: () => void;
   isGuestMode?: boolean;
+  onRemoveAds?: () => void;
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ 
   onStart, 
   showLeaderboard, 
   onBackToHome,
-  isGuestMode 
+  isGuestMode,
+  onRemoveAds
 }) => {
   const handleShare = async () => {
     try {
@@ -89,6 +91,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
           >
             <Trophy className="mr-2 h-5 w-5" />
             Leaderboard
+          </Button>
+        )}
+
+        {onRemoveAds && (
+          <Button
+            onClick={onRemoveAds}
+            variant="outline"
+            className="px-8 py-6 text-lg rounded-full border-yellow-500 bg-white text-yellow-500 hover:bg-yellow-500/5"
+          >
+            <BadgeDollarSign className="mr-2 h-5 w-5" />
+            Remove Ads
           </Button>
         )}
 

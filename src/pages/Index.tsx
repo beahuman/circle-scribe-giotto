@@ -39,13 +39,21 @@ const Index = () => {
     }
   };
   
+  const handleRemoveAds = () => {
+    console.log('Remove ads clicked - to be implemented');
+  };
+  
   return gameStarted ? (
-    <GiottoGame onReturnToHome={() => setGameStarted(false)} />
+    <GiottoGame 
+      onReturnToHome={() => setGameStarted(false)} 
+      onRemoveAds={handleRemoveAds}
+    />
   ) : (
     <HomeScreen 
       onStart={handleStartGame}
       showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
       isGuestMode={Boolean(localStorage.getItem('guestMode'))}
+      onRemoveAds={handleRemoveAds}
     />
   );
 };
