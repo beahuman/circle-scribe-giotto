@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -94,7 +95,9 @@ const EditAccount = () => {
     avatarPreview,
     handleColorSelect,
     handleImageUpload,
-    getAvatarStyle
+    getAvatarStyle,
+    setSelectedColor,
+    setAvatarPreview
   } = useAvatarEditor({
     username: profile?.username || 'User',
     email: user?.email || '',
@@ -113,10 +116,10 @@ const EditAccount = () => {
   useEffect(() => {
     if (profile) {
       form.setValue('username', profile.username || '');
-      if (profile.avatar_color) setSelectedColor(profile.avatar_color);
-      if (profile.avatar_image) setAvatarPreview(profile.avatar_image);
+      setSelectedColor(profile.avatar_color || '#9b87f5');
+      setAvatarPreview(profile.avatar_image || null);
     }
-  }, [profile, form]);
+  }, [profile, form, setSelectedColor, setAvatarPreview]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     updateProfileMutation.mutate({

@@ -11,7 +11,7 @@ export interface UserAvatarData {
 
 export const useAvatarEditor = (initialData: UserAvatarData) => {
   const [selectedColor, setSelectedColor] = useState(initialData.avatarColor);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(initialData.avatarImage);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -45,6 +45,8 @@ export const useAvatarEditor = (initialData: UserAvatarData) => {
     avatarPreview,
     handleColorSelect,
     handleImageUpload,
-    getAvatarStyle
+    getAvatarStyle,
+    setSelectedColor,
+    setAvatarPreview
   };
 };
