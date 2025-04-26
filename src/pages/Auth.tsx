@@ -98,7 +98,13 @@ const Auth = () => {
     const { value } = await Dialog.confirm({
       title: 'Playing as Guest',
       message: 'Your scores and progress won\'t be saved. Create an account anytime to track your progress!',
-      okButtonTitle: 'Ok'
+      okButtonTitle: 'Continue',
+      cancelButtonTitle: 'Cancel',
+      buttonBackgroundColor: '#9b87f5',
+      buttonTextColor: '#FFFFFF',
+      titleColor: '#1A1F2C',
+      messageColor: '#8E9196',
+      backgroundGradient: ['#FFFFFF', '#F6F6F7']
     });
 
     if (value) {
