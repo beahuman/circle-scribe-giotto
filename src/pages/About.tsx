@@ -101,38 +101,13 @@ const About = () => {
           <div className="space-y-4">
             <div>
               <p className="text-sm font-medium">Designed & Developed by</p>
-              <p className="text-sm text-muted-foreground">The Giotto Team</p>
+              <p className="text-sm text-muted-foreground">human design</p>
             </div>
             
-            <div>
-              <p className="text-sm font-medium">Built with</p>
-              <p className="text-sm text-muted-foreground">React, TypeScript & Shadcn UI</p>
-            </div>
-            
-            <div className="pt-2 flex justify-between">
-              <Button 
-                variant="outline"
-                className="px-6 py-4 rounded-full border-primary/30 hover:bg-primary/5 shadow-lg shadow-primary/20"
-                asChild
-              >
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-4 w-4" />
-                  GitHub
-                </a>
-              </Button>
-              
-              <Button 
-                className="px-6 py-4 rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
-              >
-                <Heart className="h-4 w-4 mr-2" />
-                Support Us
-              </Button>
+            <div className="text-center text-xs text-muted-foreground pt-4">
+              <p>Version 1.0.0 • © {new Date().getFullYear()} Giotto App</p>
             </div>
           </div>
-        </div>
-        
-        <div className="text-center text-xs text-muted-foreground pt-4">
-          <p>Version 1.0.0 • © {new Date().getFullYear()} Giotto App</p>
         </div>
       </div>
       
