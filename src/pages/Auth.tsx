@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,12 +11,21 @@ import SocialLoginButtons from '@/components/auth/SocialLoginButtons';
 import EmailSignInForm from '@/components/auth/EmailSignInForm';
 import EmailSignUpForm from '@/components/auth/EmailSignUpForm';
 import LogoAnimation from '@/components/LogoAnimation';
-import BottomNav from '@/components/BottomNav';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("signin");
+  const [guestDialogOpen, setGuestDialogOpen] = useState(false);
 
   const handleEmailSignIn = async (values: { email: string; password: string }) => {
     try {
@@ -94,8 +104,12 @@ const Auth = () => {
   };
 
   const handleGuestPlay = () => {
+    setGuestDialogOpen(true);
+  };
+  
+  const confirmGuestPlay = () => {
     localStorage.setItem('guestMode', 'true');
-    alert('Playing as Guest\n\nYour scores and progress won\'t be saved. Create an account anytime to track your progress!');
+    setGuestDialogOpen(false);
     navigate('/');
   };
 
@@ -110,8 +124,8 @@ const Auth = () => {
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             Welcome To
           </h1>
-          <div className="flex justify-center w-full"> {/* Added centered container */}
-            <div className="w-[240px]"> {/* Fixed width container */}
+          <div className="flex justify-center w-full">
+            <div className="w-[240px]">
               <LogoAnimation />
             </div>
           </div>
@@ -156,6 +170,21 @@ const Auth = () => {
           </Tabs>
         </div>
       </div>
+      
+      {/* Guest Mode Alert Dialog */}
+      <AlertDialog open={guestDialogOpen} onOpenChange={setGuestDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Playing as Guest</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your scores and progress won't be saved. Create an account anytime to track your progress!
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={confirmGuestPlay}>Ok</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
