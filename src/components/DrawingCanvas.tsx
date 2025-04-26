@@ -83,7 +83,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     <div className="absolute inset-0">
       {instructionVisible && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-[#765ED8]/80 px-4 py-2 rounded-full backdrop-blur-sm animate-fade-in">
-          <span className="text-lg font-medium text-white">Draw the circle</span>
+          <span className="text-lg font-medium text-white absolute left-1/2 -translate-x-1/2">Draw the circle</span>
         </div>
       )}
       
