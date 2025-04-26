@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from "react";
 import GiottoGame from "@/components/GiottoGame";
 import HomeScreen from "@/components/HomeScreen";
 import { getGameService } from '@/utils/gameServices';
+import BottomNav from '@/components/BottomNav';
 
 const Index = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -43,18 +45,23 @@ const Index = () => {
     console.log('Remove ads clicked - to be implemented');
   };
   
-  return gameStarted ? (
-    <GiottoGame 
-      onReturnToHome={() => setGameStarted(false)} 
-      onRemoveAds={handleRemoveAds}
-    />
-  ) : (
-    <HomeScreen 
-      onStart={handleStartGame}
-      showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
-      isGuestMode={Boolean(localStorage.getItem('guestMode'))}
-      onRemoveAds={handleRemoveAds}
-    />
+  return (
+    <div className="min-h-screen pb-16">
+      {gameStarted ? (
+        <GiottoGame 
+          onReturnToHome={() => setGameStarted(false)} 
+          onRemoveAds={handleRemoveAds}
+        />
+      ) : (
+        <HomeScreen 
+          onStart={handleStartGame}
+          showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
+          isGuestMode={Boolean(localStorage.getItem('guestMode'))}
+          onRemoveAds={handleRemoveAds}
+        />
+      )}
+      <BottomNav />
+    </div>
   );
 };
 

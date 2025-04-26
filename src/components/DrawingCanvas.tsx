@@ -34,7 +34,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     const drawingPrecision = Number(localStorage.getItem('drawingPrecision')) || 50;
     
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight - 70; // Adjust for bottom nav
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -80,7 +80,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
   };
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 pb-16">
       {instructionVisible && (
         <div className="fixed top-6 inset-x-0 mx-auto w-fit bg-[#765ED8] px-6 py-2 rounded-full backdrop-blur-sm animate-fade-in">
           <span className="text-lg font-medium text-white block text-center">Draw the circle</span>
@@ -105,10 +105,11 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
         onTouchEnd={handleEnd}
       />
 
-      <div className="absolute bottom-0 w-full">
+      <div className="fixed bottom-0 w-full">
         <AdBanner />
-        <BottomNav />
       </div>
+      
+      <BottomNav />
     </div>
   );
 };

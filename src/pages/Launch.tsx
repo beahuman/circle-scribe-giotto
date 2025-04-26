@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import { preloadAnimation } from '@/utils/animationLoader';
+import BottomNav from '@/components/BottomNav';
 
 const Launch = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Launch = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 pb-16">
       <div className="w-full max-w-md flex flex-col items-center">
         {launchAnimationData && (
           <div className="w-[345px]">
@@ -40,6 +41,7 @@ const Launch = () => {
           </div>
         )}
       </div>
+      <BottomNav />
     </div>
   );
 };
