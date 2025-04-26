@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -32,7 +31,6 @@ const EditAccount = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   
-  // Redirect if not logged in
   useEffect(() => {
     if (!user) {
       navigate('/auth');
@@ -112,10 +110,11 @@ const EditAccount = () => {
     },
   });
 
-  // Update form values when profile is loaded
   useEffect(() => {
-    if (profile?.username) {
-      form.setValue('username', profile.username);
+    if (profile) {
+      form.setValue('username', profile.username || '');
+      if (profile.avatar_color) setSelectedColor(profile.avatar_color);
+      if (profile.avatar_image) setAvatarPreview(profile.avatar_image);
     }
   }, [profile, form]);
 

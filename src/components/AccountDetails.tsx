@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CircleUser } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,6 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
   const { data: userData, isLoading } = useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
-      // Fetch user profile
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
@@ -27,7 +25,7 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
       
       if (profileError) throw profileError;
 
-      // Fetch user's game scores
+      // Separate query for game scores
       const { data: scores, error: scoresError } = await supabase
         .from('game_scores')
         .select('score')

@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 interface GameService {
@@ -23,12 +22,11 @@ class GameCenterService implements GameService {
   async submitScore(score: number): Promise<void> {
     console.log(`Submitting score ${score} to Game Center`);
     
-    // Save score to Supabase
     const { error } = await supabase
       .from('game_scores')
       .insert({
-        user_id: supabase.auth.getUser().then(res => res.data.user?.id),
         score,
+        user_id: (await supabase.auth.getUser()).data.user?.id,
         game_center_synced: true
       });
 
@@ -43,7 +41,6 @@ class GameCenterService implements GameService {
   async showLeaderboard(): Promise<void> {
     console.log("Showing Game Center leaderboard");
     
-    // Fetch scores from Supabase
     const { data, error } = await supabase
       .from('game_scores')
       .select('*')
@@ -91,21 +88,17 @@ class WebMockGameService implements GameService {
   }
 }
 
-// Export a singleton instance of the appropriate service
 let gameService: GameService;
 
 export const getGameService = async (): Promise<GameService> => {
   if (!gameService) {
-    // Try Game Center for iOS
     const gameCenterService = new GameCenterService();
     if (await gameCenterService.isAvailable()) {
       gameService = gameCenterService;
     } else {
-      // Fall back to mock service for web
       gameService = new WebMockGameService();
     }
     
-    // Initialize the selected service
     await gameService.initialize();
   }
   
