@@ -49,7 +49,7 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
         }}
       />
       
-      <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-[#765ED8]/80 px-4 py-2 rounded-full backdrop-blur-sm">
+      <div className="fixed top-6 inset-x-0 mx-auto w-fit bg-[#765ED8] px-4 py-2 rounded-full backdrop-blur-sm">
         <span className="text-lg font-medium text-white">Memorize: {countdown}</span>
       </div>
     </div>
