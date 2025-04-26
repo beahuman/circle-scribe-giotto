@@ -12,7 +12,7 @@ const tutorialSteps = [
     title: "Welcome to Giotto's Circle",
     content: "Learn how to draw the perfect circle with this step-by-step tutorial. Inspired by the Renaissance master Giotto di Bondone's famous demonstration of skill.",
     illustration: (
-      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/placeholder.svg')" }}>
+      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/tutorial/welcome.webp')" }}>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
       </div>
     )
@@ -21,7 +21,7 @@ const tutorialSteps = [
     title: "The Perfect Grip",
     content: "Hold your device comfortably. Place your finger or stylus on the screen without pressing too hard. A light touch gives you better control.",
     illustration: (
-      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/placeholder.svg')" }}>
+      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/tutorial/grip.webp')" }}>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
       </div>
     )
@@ -30,7 +30,7 @@ const tutorialSteps = [
     title: "Start With Confidence",
     content: "Begin drawing from any point, but commit to it. A confident start leads to a smoother circle. Don't hesitate once you begin.",
     illustration: (
-      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/placeholder.svg')" }}>
+      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/tutorial/start.webp')" }}>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
       </div>
     )
@@ -39,7 +39,7 @@ const tutorialSteps = [
     title: "Maintain Even Speed",
     content: "Keep your drawing speed consistent throughout the entire motion. Varying speeds create uneven curves and affect accuracy.",
     illustration: (
-      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/placeholder.svg')" }}>
+      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/tutorial/speed.webp')" }}>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
       </div>
     )
@@ -57,7 +57,7 @@ const tutorialSteps = [
     title: "Practice Makes Perfect",
     content: "Like Giotto, mastery comes with practice. Don't be discouraged by early attempts. Keep drawing circles and watch your skill improve.",
     illustration: (
-      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/placeholder.svg')" }}>
+      <div className="relative w-full h-64 bg-cover bg-center rounded-lg" style={{ backgroundImage: "url('/tutorial/practice.webp')" }}>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 rounded-lg" />
       </div>
     )
