@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { calculateAccuracy, smoothPoints } from '@/utils/circleUtils';
 import AdBanner from './AdBanner';
@@ -81,8 +82,8 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
   return (
     <div className="absolute inset-0">
       {instructionVisible && (
-        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-background/80 px-4 py-2 rounded-full backdrop-blur-sm animate-fade-in">
-          <span className="text-lg font-medium">Draw the circle</span>
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-[#765ED8]/80 px-4 py-2 rounded-full backdrop-blur-sm animate-fade-in">
+          <span className="text-lg font-medium text-white">Draw the circle</span>
         </div>
       )}
       
