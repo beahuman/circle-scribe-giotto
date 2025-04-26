@@ -34,25 +34,27 @@ const Launch = () => {
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6">
-      <div className="w-full max-w-md space-y-8">
-        <div className={`transform transition-all duration-500 ease-out ${showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-          {launchAnimationData && (
-            <div className="flex justify-center">
-              <div className="w-[400px]">
-                <Lottie 
-                  animationData={launchAnimationData}
-                  loop={false}
-                  autoplay={true}
-                  onComplete={handleAnimationComplete}
-                />
+      <div className="w-full max-w-md">
+        <div className="relative">
+          <p className={`text-[#765ED8] text-xl font-bold text-center transform transition-all duration-500 ease-out absolute w-full left-0 ${showTagline ? (showLogo ? 'translate-y-32 opacity-100' : 'translate-y-0 opacity-100') : 'translate-y-0 opacity-0'}`}>
+            Experience the art of drawing perfect circles
+          </p>
+          
+          <div className={`transform transition-all duration-500 ease-out mt-24 ${showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+            {launchAnimationData && (
+              <div className="flex justify-center">
+                <div className="w-[400px]">
+                  <Lottie 
+                    animationData={launchAnimationData}
+                    loop={false}
+                    autoplay={true}
+                    onComplete={handleAnimationComplete}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-        
-        <p className={`text-[#765ED8] text-xl font-bold text-center transform transition-all duration-500 ease-out ${showTagline ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          Experience the art of drawing perfect circles
-        </p>
       </div>
     </div>
   );
