@@ -8,12 +8,17 @@ const Launch = () => {
   const navigate = useNavigate();
   const [launchAnimationData, setLaunchAnimationData] = useState(null);
   const [isHomeAnimationLoaded, setIsHomeAnimationLoaded] = useState(false);
+  const [showTagline, setShowTagline] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
   
   useEffect(() => {
+    // Start the animation sequence
+    setTimeout(() => setShowTagline(true), 150);
+    setTimeout(() => setShowLogo(true), 250);
+
     // Load both animations in parallel
     Promise.all([
       preloadAnimation('/GiottoAnimatedLogo.json'),
-      // Load the home animation first to ensure it's ready
       preloadAnimation('/GiottoAnimatedLogo.json')
     ]).then(([launchAnim, _]) => {
       setLaunchAnimationData(launchAnim);
@@ -22,7 +27,6 @@ const Launch = () => {
   }, []);
 
   const handleAnimationComplete = () => {
-    // Only redirect if the home animation is loaded
     if (isHomeAnimationLoaded) {
       navigate('/auth');
     }
@@ -30,21 +34,23 @@ const Launch = () => {
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6">
-      <div className="w-full max-w-md space-y-8 animate-fade-in">
-        {launchAnimationData && (
-          <div className="flex justify-center">
-            <div className="w-[400px]">
-              <Lottie 
-                animationData={launchAnimationData}
-                loop={false}
-                autoplay={true}
-                onComplete={handleAnimationComplete}
-              />
+      <div className="w-full max-w-md space-y-8">
+        <div className={`transform transition-all duration-500 ease-out ${showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+          {launchAnimationData && (
+            <div className="flex justify-center">
+              <div className="w-[400px]">
+                <Lottie 
+                  animationData={launchAnimationData}
+                  loop={false}
+                  autoplay={true}
+                  onComplete={handleAnimationComplete}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         
-        <p className="text-[#765ED8] text-xl font-bold text-center">
+        <p className={`text-[#765ED8] text-xl font-bold text-center transform transition-all duration-500 ease-out ${showTagline ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           Experience the art of drawing perfect circles
         </p>
       </div>
