@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, ExternalLink, Github, Heart, HelpCircle } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
+import LogoAnimation from '@/components/LogoAnimation';
 
 const About = () => {
   const navigate = useNavigate();
@@ -20,11 +20,9 @@ const About = () => {
 
       <div className="flex-1 space-y-6 max-w-md mx-auto w-full">
         <div className="text-center mb-8">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-primary/50 flex items-center justify-center">
-            <div className="w-14 h-14 rounded-full border-2 border-primary"></div>
+          <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+            <LogoAnimation className="w-24 h-24" />
           </div>
-          <h2 className="text-3xl font-bold mb-1">Giotto</h2>
-          <p className="text-muted-foreground">The art of the perfect circle</p>
         </div>
 
         <div className="space-y-4">
