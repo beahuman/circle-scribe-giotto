@@ -67,7 +67,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         <p className="text-center">
           Draw a perfect circle with your finger, just like the Renaissance master Giotto.
         </p>
-        <ol className="text-center space-y-2 text-sm text-muted-foreground mb-96">
+        <ol className="text-center space-y-2 text-sm text-muted-foreground mb-12">
           <li>1. You'll be shown a perfect circle for 3 seconds</li>
           <li>2. Then try to recreate it in the same location</li>
           <li>3. Your accuracy will be calculated as a percentage</li>
