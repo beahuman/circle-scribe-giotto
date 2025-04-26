@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,20 +5,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Ghost } from 'lucide-react';
+import { Dialog } from '@capacitor/dialog';
 import AuthHeader from '@/components/auth/AuthHeader';
 import SocialLoginButtons from '@/components/auth/SocialLoginButtons';
 import EmailSignInForm from '@/components/auth/EmailSignInForm';
 import EmailSignUpForm from '@/components/auth/EmailSignUpForm';
 import LogoAnimation from '@/components/LogoAnimation';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -103,14 +94,17 @@ const Auth = () => {
     }
   };
 
-  const handleGuestPlay = () => {
-    setGuestDialogOpen(true);
-  };
-  
-  const confirmGuestPlay = () => {
-    localStorage.setItem('guestMode', 'true');
-    setGuestDialogOpen(false);
-    navigate('/');
+  const handleGuestPlay = async () => {
+    const { value } = await Dialog.confirm({
+      title: 'Playing as Guest',
+      message: 'Your scores and progress won\'t be saved. Create an account anytime to track your progress!',
+      okButtonTitle: 'Ok'
+    });
+
+    if (value) {
+      localStorage.setItem('guestMode', 'true');
+      navigate('/');
+    }
   };
 
   const handleTabChange = (value: string) => {
@@ -170,21 +164,6 @@ const Auth = () => {
           </Tabs>
         </div>
       </div>
-      
-      {/* Guest Mode Alert Dialog */}
-      <AlertDialog open={guestDialogOpen} onOpenChange={setGuestDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Playing as Guest</AlertDialogTitle>
-            <AlertDialogDescription>
-              Your scores and progress won't be saved. Create an account anytime to track your progress!
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={confirmGuestPlay}>Ok</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };
