@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { calculateAccuracy, smoothPoints } from '@/utils/circleUtils';
+import AdBanner from './AdBanner';
 
 interface Point {
   x: number;
@@ -28,19 +29,14 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Get current drawing precision from localStorage
     const drawingPrecision = Number(localStorage.getItem('drawingPrecision')) || 50;
     
-    // Set canvas size to match screen
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Draw the path if there are points
     if (points.length > 1) {
-      // Apply smoothing based on current precision setting
       const smoothedPoints = smoothPoints(points, drawingPrecision);
       
       ctx.beginPath();
@@ -74,10 +70,8 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     
     setIsDrawing(false);
     
-    // Calculate accuracy
     const accuracy = calculateAccuracy(points, targetCircle);
     
-    // Allow a small delay to see the completed drawing
     setTimeout(() => {
       onComplete(accuracy, points);
     }, 500);
@@ -108,6 +102,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
         }}
         onTouchEnd={handleEnd}
       />
+
+      <div className="absolute bottom-0 w-full">
+        <AdBanner />
+      </div>
     </div>
   );
 };

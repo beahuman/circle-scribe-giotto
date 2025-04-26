@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Trophy, Star, Share2, BadgeDollarSign } from "lucide-react";
 import BottomNav from './BottomNav';
+import AdBanner from './AdBanner';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -175,6 +176,8 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           </Button>
         )}
       </div>
+
+      <AdBanner />
 
       <BottomNav />
     </div>
