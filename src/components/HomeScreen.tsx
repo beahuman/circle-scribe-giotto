@@ -5,9 +5,9 @@ import { Trophy, ArrowLeft, Ghost, Pencil, Share2, BadgeDollarSign } from "lucid
 import LogoAnimation from './LogoAnimation';
 import { Dialog } from '@capacitor/dialog';
 
-interface HomeScreenProps {
-  onStart: () => void;
-  showLeaderboard?: () => void;
+interface HomeScreenProps { 
+  onStart: () => void; 
+  showLeaderboard?: () => void; 
   onBackToHome?: () => void;
   isGuestMode?: boolean;
   onRemoveAds?: () => void;
@@ -44,7 +44,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col items-center justify-center gap-6 animate-fade-in p-6 pb-24">
+    <div className="min-h-[100dvh] flex flex-col items-center justify-center gap-6 animate-fade-in p-6 pb-24 text-center">
       {onBackToHome && (
         <Button 
           variant="ghost" 
@@ -56,25 +56,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         </Button>
       )}
 
-      <div className="space-y-2">
+      <div className="space-y-2 text-center">
         <div className="w-[240px] mx-auto">
           <LogoAnimation />
         </div>
-        <p className="text-2xl font-bold text-[#765ED8]">The art of the perfect circle</p>
+        <p className="text-2xl font-bold text-[#765ED8] text-center">The art of the perfect circle</p>
       </div>
       
-      <div className="max-w-md space-y-4">
-        <p>
+      <div className="max-w-md space-y-4 text-center">
+        <p className="text-center">
           Draw a perfect circle with your finger, just like the Renaissance master Giotto.
         </p>
-        <ol className="text-left space-y-2 text-sm text-muted-foreground">
+        <ol className="text-center space-y-2 text-sm text-muted-foreground">
           <li>1. You'll be shown a perfect circle for 3 seconds</li>
           <li>2. Then try to recreate it in the same location</li>
           <li>3. Your accuracy will be calculated as a percentage</li>
         </ol>
       </div>
       
-      <div className="flex flex-col gap-4 w-full max-w-xs">
+      <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
         <Button 
           onClick={onStart}
           className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
