@@ -94,25 +94,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
           </Button>
         )}
 
+        <Button
+          onClick={handleShare}
+          variant="secondary"
+          className="px-8 py-6 text-lg rounded-full bg-white border-[#765ED8] border text-[#765ED8] hover:bg-[#765ED8]/5"
+        >
+          <Share2 className="mr-2 h-5 w-5" />
+          Share Giotto
+        </Button>
+
         {onRemoveAds && (
           <Button
             onClick={onRemoveAds}
-            variant="outline"
-            className="px-8 py-6 text-lg rounded-full border-yellow-500 bg-white text-yellow-500 hover:bg-yellow-500/5"
+            variant="ghost"
+            className="text-yellow-500 hover:text-yellow-600 hover:bg-transparent"
           >
-            <BadgeDollarSign className="mr-2 h-5 w-5" />
+            <BadgeDollarSign className="h-5 w-5" />
             Remove Ads
           </Button>
         )}
-
-        <Button
-          onClick={handleShare}
-          variant="ghost"
-          className="px-8 py-4 text-lg rounded-full text-primary hover:bg-primary/10"
-        >
-          <Share2 className="mr-2 h-5 w-5 text-primary" />
-          Share Giotto
-        </Button>
       </div>
     </div>
   );
