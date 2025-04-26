@@ -116,8 +116,10 @@ const Auth = () => {
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             Welcome To
           </h1>
-          <div className="w-[200px] mx-auto">
-            <LogoAnimation />
+          <div className="flex justify-center w-full"> {/* Added centered container */}
+            <div className="w-[240px]"> {/* Fixed width container */}
+              <LogoAnimation />
+            </div>
           </div>
         </div>
 
