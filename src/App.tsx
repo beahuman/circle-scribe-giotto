@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import Auth from "./pages/Auth";
+import Tutorial from "./pages/Tutorial";
 
 // Create the client outside of the component
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/settings" element={<Settings />} />
               <Route path="/history" element={<History />} />
               <Route path="/about" element={<About />} />
+              <Route path="/tutorial" element={<Tutorial />} />
               <Route path="/account" element={<Account />} />
               <Route path="/account/edit" element={<EditAccount />} />
               <Route path="*" element={<NotFound />} />
