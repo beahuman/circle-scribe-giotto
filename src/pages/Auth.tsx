@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -96,12 +95,7 @@ const Auth = () => {
 
   const handleGuestPlay = () => {
     localStorage.setItem('guestMode', 'true');
-    toast({
-      title: "Playing as Guest",
-      description: "Your scores and progress won't be saved. Create an account anytime to track your progress!",
-      variant: "default",
-      duration: 5000,
-    });
+    alert('Playing as Guest\n\nYour scores and progress won\'t be saved. Create an account anytime to track your progress!');
     navigate('/');
   };
 
