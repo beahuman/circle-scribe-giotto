@@ -1,18 +1,17 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Trophy, ArrowLeft, Ghost, Pencil, Share2 } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
 
-interface WelcomeScreenProps {
+interface HomeScreenProps {
   onStart: () => void;
   showLeaderboard?: () => void;
   onBackToHome?: () => void;
   isGuestMode?: boolean;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
+const HomeScreen: React.FC<HomeScreenProps> = ({ 
   onStart, 
   showLeaderboard, 
   onBackToHome,
@@ -56,20 +55,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <p className="text-2xl font-bold text-[#765ED8]">The art of the perfect circle</p>
       </div>
       
-      {isGuestMode && (
-        <Alert style={{ 
-          backgroundColor: '#FFFFFF',
-          border: '2px solid #765ED8'
-        }}>
-          <div className="flex flex-col items-center">
-            <Ghost className="h-6 w-6 mb-2" style={{ color: '#765ED8' }} />
-            <AlertTitle className="text-lg font-semibold">Guest Mode</AlertTitle>
-            <AlertDescription className="text-sm mt-1">
-              Your scores and history won't be saved and you can't connect to Game Center.
-            </AlertDescription>
-          </div>
-        </Alert>
-      )}
+      {/* Removed guest mode alert component */}
       
       <div className="max-w-md space-y-4">
         <p>
@@ -115,5 +101,4 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   );
 };
 
-export default WelcomeScreen;
-
+export default HomeScreen;
