@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
@@ -35,25 +34,23 @@ const Launch = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 p-6">
       <div className="w-full max-w-md">
-        <div className="relative">
-          <p className={`text-[#765ED8] text-xl font-bold text-center transform transition-all duration-500 ease-out absolute w-full left-0 ${showTagline ? (showLogo ? 'translate-y-32 opacity-100' : 'translate-y-0 opacity-100') : 'translate-y-0 opacity-0'}`}>
-            Experience the art of drawing perfect circles
-          </p>
-          
-          <div className={`transform transition-all duration-500 ease-out mt-24 ${showLogo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+        <div className="relative flex flex-col items-center">
+          <div className={`transform transition-all duration-500 ease-out ${showLogo ? 'opacity-100' : 'opacity-0'}`}>
             {launchAnimationData && (
-              <div className="flex justify-center">
-                <div className="w-[400px]">
-                  <Lottie 
-                    animationData={launchAnimationData}
-                    loop={false}
-                    autoplay={true}
-                    onComplete={handleAnimationComplete}
-                  />
-                </div>
+              <div className="w-[400px]">
+                <Lottie 
+                  animationData={launchAnimationData}
+                  loop={false}
+                  autoplay={true}
+                  onComplete={handleAnimationComplete}
+                />
               </div>
             )}
           </div>
+          
+          <p className={`text-[#765ED8] text-xl font-bold text-center transform transition-all duration-500 ease-out mt-6 ${showTagline ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'}`}>
+            Experience the art of drawing perfect circles
+          </p>
         </div>
       </div>
     </div>
