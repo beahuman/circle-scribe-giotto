@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { LineIcon, TriangleIcon, SquareIcon } from "lucide-react";
+import { StraightLine, Triangle, Square } from "lucide-react";
 import { smoothPoints } from '@/utils/circleUtils';
 import { evaluateShape } from '@/utils/shapeUtils';
 
@@ -174,9 +174,9 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
   // Get shape icon based on type
   const getShapeIcon = () => {
     switch (shapeType) {
-      case 'line': return <LineIcon className="h-6 w-6" />;
-      case 'triangle': return <TriangleIcon className="h-6 w-6" />;
-      case 'square': return <SquareIcon className="h-6 w-6" />;
+      case 'line': return <StraightLine className="h-6 w-6" />;
+      case 'triangle': return <Triangle className="h-6 w-6" />;
+      case 'square': return <Square className="h-6 w-6" />;
     }
   };
 
