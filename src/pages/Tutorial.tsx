@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, CheckCircle, Circle, Hand, ArrowRight, Gauge, Trophy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle, Circle, Hand, ArrowRight, Gauge, Trophy, ArrowLeft } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import LogoAnimation from '@/components/LogoAnimation';
 
