@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Trophy, Star, Share2, BadgeDollarSign } from "lucide-react";
@@ -28,6 +29,23 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
+  // Enhanced snarky feedback messages based on accuracy score
+  const getFeedbackMessage = (score: number) => {
+    if (score >= 95) return "Wow, did you use a compass? That's cheating! Or maybe you're secretly Giotto himself?";
+    if (score >= 90) return "Almost suspiciously perfect. Did you trace it with your nose pressed against the screen?";
+    if (score >= 85) return "Not bad! Giotto is still laughing, but not as hard as before.";
+    if (score >= 80) return "Your art teacher called. She wants her 'participation trophy' back.";
+    if (score >= 75) return "My toddler cousin drew a better circle with their eyes closed. During an earthquake.";
+    if (score >= 70) return "I've seen rounder squares. Seriously, what was that supposed to be?";
+    if (score >= 65) return "My grandmother can draw better circles in her sleep. And she doesn't have hands.";
+    if (score >= 60) return "Was your finger having a seizure while drawing that?";
+    if (score >= 50) return "Did you draw that with your eyes closed? Or maybe your elbow?";
+    if (score >= 40) return "I'd call that a circle... if I were legally blind and extremely generous.";
+    if (score >= 30) return "Are you sure that was supposed to be a circle? Looks more like a cat sat on your phone.";
+    if (score >= 20) return "Did you mistake 'circle' for 'abstract modern art'? Because... wow.";
+    return "That's more of a potato than a circle! Did you even try?";
+  };
+  
   const containerSize = 200;
   const centerX = containerSize / 2;
   const centerY = containerSize / 2;
@@ -48,7 +66,6 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   }));
   
   const handleShare = async () => {
-    const roundedAccuracy = Math.round(accuracy * 100) / 100;
     const shareText = `I drew a circle with ${roundedAccuracy}% accuracy in Giotto! Can you beat my score?`;
     
     try {
@@ -127,13 +144,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           </div>
         </div>
         <p className="text-muted-foreground max-w-xs">
-          {roundedAccuracy >= 95 ? "Wow, did you use a compass? That's cheating!" :
-           roundedAccuracy >= 85 ? "Almost perfect! But Giotto is still laughing." :
-           roundedAccuracy >= 75 ? "Not bad... for a kindergartener." :
-           roundedAccuracy >= 65 ? "My grandmother can draw better circles in her sleep." :
-           roundedAccuracy >= 50 ? "Did you draw that with your eyes closed?" :
-           roundedAccuracy >= 35 ? "Are you sure that was supposed to be a circle?" :
-           "That's more of a potato than a circle!"}
+          {getFeedbackMessage(roundedAccuracy)}
         </p>
       </div>
       

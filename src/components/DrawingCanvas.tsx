@@ -23,7 +23,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
   const [isDrawing, setIsDrawing] = useState(false);
   const [points, setPoints] = useState<Point[]>([]);
   const [instructionVisible, setInstructionVisible] = useState(true);
+  const [drawingPoints, setDrawingPoints] = useState<Point[]>([]);
 
+  // Separate rendering from data collection
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -31,21 +33,34 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    const drawingPrecision = Number(localStorage.getItem('drawingPrecision')) || 50;
-    
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - 70; // Adjust for bottom nav
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     if (points.length > 1) {
-      const smoothedPoints = smoothPoints(points, drawingPrecision);
-      
+      // Create a smooth visual representation
+      const drawingPrecision = Number(localStorage.getItem('drawingPrecision')) || 50;
+      const smoothedPoints = smoothPoints(points, Math.max(30, drawingPrecision));
+      setDrawingPoints(smoothedPoints);
+    }
+  }, [points]);
+  
+  // Separate effect for actual drawing to improve performance
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    if (drawingPoints.length > 1) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.beginPath();
-      ctx.moveTo(smoothedPoints[0].x, smoothedPoints[0].y);
+      ctx.moveTo(drawingPoints[0].x, drawingPoints[0].y);
       
-      for (let i = 1; i < smoothedPoints.length; i++) {
-        ctx.lineTo(smoothedPoints[i].x, smoothedPoints[i].y);
+      for (let i = 1; i < drawingPoints.length; i++) {
+        ctx.lineTo(drawingPoints[i].x, drawingPoints[i].y);
       }
       
       ctx.strokeStyle = 'hsl(var(--primary) / 0.8)';
@@ -54,16 +69,18 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
       ctx.lineJoin = 'round';
       ctx.stroke();
     }
-  }, [points]);
+  }, [drawingPoints]);
 
   const handleStart = (x: number, y: number) => {
     setIsDrawing(true);
     setPoints([{ x, y }]);
+    setDrawingPoints([{ x, y }]);
     setInstructionVisible(false);
   };
 
   const handleMove = (x: number, y: number) => {
     if (!isDrawing) return;
+    // Direct path following for responsive feel
     setPoints(prevPoints => [...prevPoints, { x, y }]);
   };
 
