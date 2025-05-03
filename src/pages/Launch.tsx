@@ -28,7 +28,7 @@ const Launch = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 pb-16">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/80 pb-16 overflow-y-auto">
       <div className="w-full max-w-md flex flex-col items-center">
         {launchAnimationData && (
           <div className="w-[345px]">
@@ -41,7 +41,6 @@ const Launch = () => {
           </div>
         )}
       </div>
-      <BottomNav />
     </div>
   );
 };

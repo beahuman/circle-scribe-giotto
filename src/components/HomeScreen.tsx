@@ -44,7 +44,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col items-center justify-center gap-6 animate-fade-in p-6 pb-24 text-center">
+    <div className="min-h-[100dvh] flex flex-col items-center justify-center gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto">
       {onBackToHome && (
         <Button 
           variant="ghost" 

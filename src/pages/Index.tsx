@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import GiottoGame from "@/components/GiottoGame";
 import HomeScreen from "@/components/HomeScreen";
 import { getGameService } from '@/utils/gameServices';
-import BottomNav from '@/components/BottomNav';
 
 const Index = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -46,7 +45,7 @@ const Index = () => {
   };
   
   return (
-    <div className="min-h-screen pb-16">
+    <div className="min-h-screen pb-16 overflow-y-auto">
       {gameStarted ? (
         <GiottoGame 
           onReturnToHome={() => setGameStarted(false)} 
@@ -60,7 +59,6 @@ const Index = () => {
           onRemoveAds={handleRemoveAds}
         />
       )}
-      <BottomNav />
     </div>
   );
 };

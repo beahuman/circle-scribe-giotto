@@ -16,6 +16,7 @@ import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import Auth from "./pages/Auth";
 import Tutorial from "./pages/Tutorial";
+import BottomNav from "@/components/BottomNav";
 
 // Create the client outside of the component
 const queryClient = new QueryClient();
@@ -28,20 +29,23 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <Routes>
-              <Route path="/launch" element={<Launch />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/signin" element={<Navigate to="/auth" replace />} />
-              <Route path="/signup" element={<Navigate to="/auth" replace />} />
-              <Route path="/" element={<Index />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/history" element={<History />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/tutorial" element={<Tutorial />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/account/edit" element={<EditAccount />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className="min-h-screen overflow-y-auto pb-16">
+              <Routes>
+                <Route path="/launch" element={<Launch />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/signin" element={<Navigate to="/auth" replace />} />
+                <Route path="/signup" element={<Navigate to="/auth" replace />} />
+                <Route path="/" element={<Index />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/history" element={<History />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/tutorial" element={<Tutorial />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/account/edit" element={<EditAccount />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <BottomNav />
+            </div>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
