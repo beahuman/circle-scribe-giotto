@@ -13,6 +13,9 @@ interface ResultScreenProps {
   drawnPoints: { x: number; y: number }[];
   onBackToHome?: () => void;
   onRemoveAds?: () => void;
+  isPenaltyMode?: boolean;
+  penaltyShapesRequired?: number;
+  penaltyShapesCompleted?: number;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({
@@ -23,13 +26,21 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   targetCircle,
   drawnPoints,
   onBackToHome,
-  onRemoveAds
+  onRemoveAds,
+  isPenaltyMode = false,
+  penaltyShapesRequired = 3,
+  penaltyShapesCompleted = 0
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
   // Enhanced snarky feedback messages based on accuracy score
-  const getFeedbackMessage = (score: number) => {
+  const getFeedbackMessage = (score: number, isPenalty = false) => {
+    // Penalty mode has special extra sarcastic messages
+    if (isPenalty) {
+      return "Looks like someone needs to go back to kindergarten! Draw some basic shapes before attempting a circle again.";
+    }
+    
     if (score >= 95) return "Wow, did you use a compass? That's cheating! Or maybe you're secretly Giotto himself?";
     if (score >= 90) return "Almost suspiciously perfect. Did you trace it with your nose pressed against the screen?";
     if (score >= 85) return "Not bad! Giotto is still laughing, but not as hard as before.";
@@ -42,7 +53,6 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
     if (score >= 40) return "I'd call that a circle... if I were legally blind and extremely generous.";
     if (score >= 30) return "Are you sure that was supposed to be a circle? Looks more like a cat sat on your phone.";
     if (score >= 20) return "Did you mistake 'circle' for 'abstract modern art'? Because... wow.";
-    // New snarky responses
     if (score >= 18) return "That's not a circle, that's a cry for help. Have you considered finger painting instead?";
     if (score >= 16) return "If that's your idea of a circle, I'd hate to see what you think a straight line looks like.";
     if (score >= 14) return "Is your finger broken? Because that circle certainly is.";
@@ -102,6 +112,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
+      {/* Visualization of the circle results */}
       <div className="relative w-[200px] h-[200px] mx-auto my-6 rounded-full shadow-lg bg-gradient-to-br from-background to-muted/20">
         <div 
           className="absolute border-2 border-primary/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow" 
@@ -153,8 +164,21 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
             <Star className="h-4 w-4 text-primary animate-pulse" />
           </div>
         </div>
+        
+        {isPenaltyMode && (
+          <div className="bg-red-100 border border-red-200 p-3 rounded-lg max-w-xs mx-auto">
+            <p className="text-red-500 font-medium">
+              Shape Challenge Mode!
+            </p>
+            <p className="text-sm text-red-400 mt-1">
+              Complete {penaltyShapesRequired} shape challenges to return to circle drawing.
+              {penaltyShapesCompleted > 0 && ` (${penaltyShapesCompleted}/${penaltyShapesRequired} completed)`}
+            </p>
+          </div>
+        )}
+        
         <p className="text-muted-foreground max-w-xs">
-          {getFeedbackMessage(roundedAccuracy)}
+          {getFeedbackMessage(roundedAccuracy, isPenaltyMode)}
         </p>
       </div>
       
@@ -163,10 +187,10 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           onClick={onReplay}
           className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
         >
-          Try Again
+          {isPenaltyMode ? "Start Shape Challenge" : "Try Again"}
         </Button>
         
-        {showLeaderboard && (
+        {showLeaderboard && !isPenaltyMode && (
           <Button 
             onClick={showLeaderboard}
             variant="secondary"

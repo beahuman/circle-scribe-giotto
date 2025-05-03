@@ -1,12 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
 import ResultScreen from './ResultScreen';
+import ShapeChallenge from './ShapeChallenge';
 import { generateRandomCirclePosition } from '@/utils/circleUtils';
 import { getGameService } from '@/utils/gameServices';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-type GameState = 'showing' | 'drawing' | 'result';
+type GameState = 'showing' | 'drawing' | 'result' | 'penalty';
+type PenaltyShape = 'line' | 'triangle' | 'square' | null;
 
 interface GiottoGameProps {
   onReturnToHome?: () => void;
@@ -23,6 +26,9 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
   const [difficultyLevel, setDifficultyLevel] = useState(() => {
     return Number(localStorage.getItem('difficultyLevel')) || 50;
   });
+  const [consecutiveLowScores, setConsecutiveLowScores] = useState(0);
+  const [currentPenaltyShape, setCurrentPenaltyShape] = useState<PenaltyShape>(null);
+  const [completedPenaltyShapes, setCompletedPenaltyShapes] = useState(0);
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -49,6 +55,13 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
     setDrawnPoints(points);
     setGameState('result');
     
+    // Track consecutive low scores for the penalty system
+    if (score < 30) {
+      setConsecutiveLowScores(prev => prev + 1);
+    } else {
+      setConsecutiveLowScores(0);
+    }
+    
     if (isGameServiceAvailable) {
       try {
         const service = await getGameService();
@@ -58,8 +71,45 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
       }
     }
   };
+
+  const handlePenaltyComplete = (score: number) => {
+    if (score >= 50) {
+      setCompletedPenaltyShapes(prev => prev + 1);
+      
+      // If player completed all three penalty shapes, reset and go back to circles
+      if (completedPenaltyShapes + 1 >= 3) {
+        setCompletedPenaltyShapes(0);
+        setConsecutiveLowScores(0);
+        handleReplay();
+        return;
+      }
+      
+      // Rotate to the next shape
+      const shapes: PenaltyShape[] = ['line', 'triangle', 'square'];
+      const currentIndex = shapes.indexOf(currentPenaltyShape || 'line');
+      const nextIndex = (currentIndex + 1) % shapes.length;
+      setCurrentPenaltyShape(shapes[nextIndex]);
+      
+    } else {
+      // Failed the penalty challenge, try again with the same shape
+    }
+    
+    // Show the next penalty shape challenge
+    setGameState('penalty');
+  };
   
   const handleReplay = () => {
+    // Check if the player should be in penalty mode
+    if (consecutiveLowScores >= 3 && completedPenaltyShapes < 3) {
+      // Start penalty mode with the first shape if not already in it
+      if (gameState !== 'penalty') {
+        setCurrentPenaltyShape('line');
+        setGameState('penalty');
+      }
+      return;
+    }
+    
+    // Normal circle drawing continues
     setTargetCircle(generateRandomCirclePosition());
     setGameState('showing');
   };
@@ -122,6 +172,19 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
           drawnPoints={drawnPoints}
           onBackToHome={onReturnToHome}
           onRemoveAds={onRemoveAds}
+          isPenaltyMode={consecutiveLowScores >= 3}
+          penaltyShapesRequired={3}
+          penaltyShapesCompleted={completedPenaltyShapes}
+        />
+      )}
+
+      {gameState === 'penalty' && currentPenaltyShape && (
+        <ShapeChallenge 
+          shapeType={currentPenaltyShape}
+          onComplete={handlePenaltyComplete}
+          difficultyLevel={difficultyLevel}
+          completedShapes={completedPenaltyShapes}
+          totalShapesRequired={3}
         />
       )}
     </div>
