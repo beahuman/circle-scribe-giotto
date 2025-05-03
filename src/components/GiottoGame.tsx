@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
@@ -7,6 +6,7 @@ import ShapeChallenge from './ShapeChallenge';
 import { generateRandomCirclePosition } from '@/utils/circleUtils';
 import { getGameService } from '@/utils/gameServices';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ShapeType } from '@/types/shapes';
 
 type GameState = 'showing' | 'drawing' | 'result' | 'penalty';
 type PenaltyShape = 'line' | 'triangle' | 'square' | null;
