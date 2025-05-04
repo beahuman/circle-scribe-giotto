@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Trophy, Star, Share2, BadgeDollarSign } from "lucide-react";
@@ -107,12 +106,12 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   return (
     <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]">
       
-      <div className="space-y-2">
+      <div className="space-y-2 mt-10">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      {/* Visualization of the circle results */}
+      {/* Visualization of the circle results - fixed positioning */}
       <div className="relative w-[200px] h-[200px] mx-auto my-6 rounded-full shadow-lg bg-gradient-to-br from-background to-muted/20">
         <div 
           className="absolute border-2 border-primary/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow" 
@@ -174,6 +173,13 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
               Complete {penaltyShapesRequired} shape challenges to return to circle drawing.
               {penaltyShapesCompleted > 0 && ` (${penaltyShapesCompleted}/${penaltyShapesRequired} completed)`}
             </p>
+            
+            {/* Added next shape message */}
+            {penaltyShapesCompleted > 0 && penaltyShapesCompleted < penaltyShapesRequired && (
+              <p className="text-sm text-red-500 font-medium mt-2">
+                Moving on to the next shape challenge!
+              </p>
+            )}
           </div>
         )}
         

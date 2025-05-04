@@ -73,11 +73,16 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
   };
 
   const handlePenaltyComplete = (score: number) => {
+    console.log(`Shape challenge completed with score: ${score}`);
+    
+    // If score is good enough
     if (score >= 50) {
-      setCompletedPenaltyShapes(prev => prev + 1);
+      // Increment completed shapes counter
+      const newCompletedShapes = completedPenaltyShapes + 1;
+      setCompletedPenaltyShapes(newCompletedShapes);
       
       // If player completed all three penalty shapes, reset and go back to circles
-      if (completedPenaltyShapes + 1 >= 3) {
+      if (newCompletedShapes >= 3) {
         setCompletedPenaltyShapes(0);
         setConsecutiveLowScores(0);
         handleReplay();
@@ -89,13 +94,10 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
       const currentIndex = shapes.indexOf(currentPenaltyShape || 'line');
       const nextIndex = (currentIndex + 1) % shapes.length;
       setCurrentPenaltyShape(shapes[nextIndex]);
-      
-    } else {
-      // Failed the penalty challenge, try again with the same shape
     }
     
-    // Show the next penalty shape challenge
-    setGameState('penalty');
+    // Show the next penalty shape challenge (or retry the same one if failed)
+    // We don't need to update gameState here since it's already 'penalty'
   };
   
   const handleReplay = () => {

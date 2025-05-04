@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { smoothPoints } from '@/utils/circleUtils';
@@ -7,6 +6,7 @@ import { ShapeChallengeProps, Point, TargetShape } from '@/types/shapes';
 import ShapeIcon, { getShapeName } from '@/components/shapes/ShapeIcon';
 import ShapeCanvas from '@/components/shapes/ShapeCanvas';
 import { generateTargetShape } from '@/utils/shapeGenerator';
+import ShapeResultScreen from './shapes/ShapeResultScreen';
 
 const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
   shapeType,
@@ -20,6 +20,8 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
   const [instructionVisible, setInstructionVisible] = useState(true);
   const [targetShape, setTargetShape] = useState<TargetShape>({ points: [], width: 0, height: 0 });
   const [showingTargetShape, setShowingTargetShape] = useState(true);
+  const [showResults, setShowResults] = useState(false);
+  const [accuracy, setAccuracy] = useState(0);
 
   // Generate a target shape based on the type
   useEffect(() => {
@@ -62,11 +64,24 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
       
       // Calculate accuracy compared to the target shape
       const accuracy = evaluateShape(smoothedPoints, targetShape.points, shapeType);
-      
-      setTimeout(() => {
-        onComplete(accuracy);
-      }, 500);
+      setAccuracy(accuracy);
+      setShowResults(true);
     }
+  };
+
+  const handleFinishResults = () => {
+    const scoreGoodEnough = accuracy >= 50;
+    setShowResults(false);
+    
+    // Reset for another attempt if score is too low
+    if (!scoreGoodEnough) {
+      setPoints([]);
+      setShowingTargetShape(true);
+      return;
+    }
+    
+    // Otherwise complete this challenge
+    onComplete(accuracy);
   };
 
   const pointerEventHandlers = {
@@ -84,6 +99,19 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
     },
     onTouchEnd: handleEnd
   };
+
+  if (showResults) {
+    return (
+      <ShapeResultScreen 
+        accuracy={accuracy}
+        shapeType={shapeType}
+        onContinue={handleFinishResults}
+        isLastShape={completedShapes === totalShapesRequired - 1}
+        points={points}
+        targetShape={targetShape}
+      />
+    );
+  }
 
   return (
     <div className="absolute inset-0">
