@@ -16,17 +16,17 @@ const PenaltyModeInfo: React.FC<PenaltyModeInfoProps> = ({
   
   return (
     <div className="bg-red-100 border border-red-200 p-3 rounded-lg max-w-xs mx-auto">
-      <p className="text-red-500 font-medium">
+      <p className="text-red-500 font-medium text-center">
         Shape Challenge Mode!
       </p>
-      <p className="text-sm text-red-400 mt-1">
+      <p className="text-sm text-red-400 mt-1 text-center">
         Complete {penaltyShapesRequired} shape challenges to return to circle drawing.
         {penaltyShapesCompleted > 0 && ` (${penaltyShapesCompleted}/${penaltyShapesRequired} completed)`}
       </p>
       
       {/* Added next shape message */}
       {penaltyShapesCompleted > 0 && penaltyShapesCompleted < penaltyShapesRequired && (
-        <p className="text-sm text-red-500 font-medium mt-2">
+        <p className="text-sm text-red-500 font-medium mt-2 text-center">
           Moving on to the next shape challenge!
         </p>
       )}

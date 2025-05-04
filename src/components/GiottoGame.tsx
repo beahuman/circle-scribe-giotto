@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
@@ -85,7 +86,9 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
       if (newCompletedShapes >= 3) {
         setCompletedPenaltyShapes(0);
         setConsecutiveLowScores(0);
-        handleReplay();
+        setCurrentPenaltyShape(null);
+        setGameState('showing');
+        setTargetCircle(generateRandomCirclePosition());
         return;
       }
       
@@ -95,9 +98,6 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
       const nextIndex = (currentIndex + 1) % shapes.length;
       setCurrentPenaltyShape(shapes[nextIndex]);
     }
-    
-    // Show the next penalty shape challenge (or retry the same one if failed)
-    // We don't need to update gameState here since it's already 'penalty'
   };
   
   const handleReplay = () => {

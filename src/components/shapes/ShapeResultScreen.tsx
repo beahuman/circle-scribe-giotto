@@ -141,7 +141,7 @@ const ShapeResultScreen: React.FC<ShapeResultScreenProps> = ({
           {roundedAccuracy}%
         </div>
         
-        <p className="text-muted-foreground max-w-xs">
+        <p className="text-muted-foreground max-w-xs mx-auto">
           {getShapeFeedback(roundedAccuracy, shapeType)}
         </p>
         

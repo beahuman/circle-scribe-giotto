@@ -44,7 +44,7 @@ const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
   };
 
   return (
-    <p className="text-muted-foreground max-w-xs">
+    <p className="text-muted-foreground max-w-xs mx-auto">
       {getFeedbackMessage(accuracy, isPenaltyMode)}
     </p>
   );
