@@ -11,6 +11,7 @@ interface ShapeResultScreenProps {
   isLastShape: boolean;
   points: Point[];
   targetShape: TargetShape;
+  goingToNextShape: boolean;
 }
 
 const ShapeResultScreen: React.FC<ShapeResultScreenProps> = ({
@@ -19,7 +20,8 @@ const ShapeResultScreen: React.FC<ShapeResultScreenProps> = ({
   onContinue,
   isLastShape,
   points,
-  targetShape
+  targetShape,
+  goingToNextShape
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isPassing = roundedAccuracy >= 50;
@@ -146,6 +148,13 @@ const ShapeResultScreen: React.FC<ShapeResultScreenProps> = ({
         <p className="text-sm text-muted-foreground mt-4">
           {getNextStepMessage()}
         </p>
+        
+        {/* Additional message about next shape challenge */}
+        {isPassing && !isLastShape && goingToNextShape && (
+          <p className="text-sm text-primary font-medium mt-2">
+            Get ready for the next shape challenge!
+          </p>
+        )}
       </div>
       
       <Button 

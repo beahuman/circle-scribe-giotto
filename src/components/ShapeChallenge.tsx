@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { smoothPoints } from '@/utils/circleUtils';
@@ -22,10 +23,12 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
   const [showingTargetShape, setShowingTargetShape] = useState(true);
   const [showResults, setShowResults] = useState(false);
   const [accuracy, setAccuracy] = useState(0);
+  const [goingToNextShape, setGoingToNextShape] = useState(false);
 
   // Generate a target shape based on the type
   useEffect(() => {
     setTargetShape(generateTargetShape(shapeType));
+    setShowingTargetShape(true);
   }, [shapeType]);
 
   // Show target shape for 3 seconds
@@ -66,6 +69,11 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
       const accuracy = evaluateShape(smoothedPoints, targetShape.points, shapeType);
       setAccuracy(accuracy);
       setShowResults(true);
+      
+      // Determine if we're going to the next shape (for feedback messaging)
+      const isPassing = accuracy >= 50;
+      const isLast = completedShapes === totalShapesRequired - 1;
+      setGoingToNextShape(isPassing && !isLast);
     }
   };
 
@@ -109,6 +117,7 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
         isLastShape={completedShapes === totalShapesRequired - 1}
         points={points}
         targetShape={targetShape}
+        goingToNextShape={goingToNextShape}
       />
     );
   }
