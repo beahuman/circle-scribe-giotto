@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { smoothPoints } from '@/utils/circleUtils';
@@ -29,6 +28,8 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
   useEffect(() => {
     setTargetShape(generateTargetShape(shapeType));
     setShowingTargetShape(true);
+    // Clear any previous drawing points when shape type changes
+    setPoints([]);
   }, [shapeType]);
 
   // Show target shape for 3 seconds
@@ -88,6 +89,8 @@ const ShapeChallenge: React.FC<ShapeChallengeProps> = ({
       return;
     }
     
+    // Clear the drawing points before completing this challenge
+    setPoints([]);
     // Otherwise complete this challenge
     onComplete(accuracy);
   };
