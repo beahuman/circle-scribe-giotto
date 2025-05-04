@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { smoothPoints } from '@/utils/circleUtils';
-import { evaluateShape } from '@/utils/shapeUtils';
+import { evaluateShape } from '@/utils/shapes';
 import { ShapeChallengeProps, Point, TargetShape } from '@/types/shapes';
 import ShapeIcon, { getShapeName } from '@/components/shapes/ShapeIcon';
 import ShapeCanvas from '@/components/shapes/ShapeCanvas';
