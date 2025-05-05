@@ -1,14 +1,15 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Trophy, Share2, BadgeDollarSign } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ResultControlsProps {
   onReplay: () => void;
   showLeaderboard?: () => void;
-  onShare: () => void;
+  onShare?: () => void;
   onRemoveAds?: () => void;
-  isPenaltyMode: boolean;
+  isPenaltyMode?: boolean;
+  className?: string;
 }
 
 const ResultControls: React.FC<ResultControlsProps> = ({
@@ -16,44 +17,44 @@ const ResultControls: React.FC<ResultControlsProps> = ({
   showLeaderboard,
   onShare,
   onRemoveAds,
-  isPenaltyMode
+  isPenaltyMode,
+  className
 }) => {
   return (
-    <div className="flex flex-col gap-4 w-full max-w-xs mb-20">
-      <Button 
+    <div className={cn("flex flex-col gap-3 w-full max-w-xs", className)}>
+      <Button
         onClick={onReplay}
         className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
       >
-        {isPenaltyMode ? "Start Shape Challenge" : "Try Again"}
+        {isPenaltyMode ? "Go to Shape Challenge" : "Draw Another Circle"}
       </Button>
-      
-      {showLeaderboard && !isPenaltyMode && (
-        <Button 
+
+      {showLeaderboard && (
+        <Button
           onClick={showLeaderboard}
-          variant="secondary"
-          className="px-8 py-6 text-lg rounded-full border border-[#765ED8] text-[#765ED8] bg-white hover:bg-[#765ED8]/10"
+          variant="outline"
+          className="px-8 py-6 text-lg rounded-full border border-primary/20"
         >
-          <Trophy className="mr-2 h-5 w-5" />
-          View Leaderboard
+          Show Leaderboard
         </Button>
       )}
 
-      <Button 
-        onClick={onShare}
-        variant="secondary"
-        className="px-8 py-6 text-lg rounded-full bg-white border-[#765ED8] border text-[#765ED8] hover:bg-[#765ED8]/5"
-      >
-        <Share2 className="mr-2 h-5 w-5" />
-        Share Score
-      </Button>
-
+      {onShare && (
+        <Button
+          onClick={onShare}
+          variant="ghost"
+          className="px-8 py-2 rounded-full"
+        >
+          Share Result
+        </Button>
+      )}
+      
       {onRemoveAds && (
         <Button
           onClick={onRemoveAds}
           variant="ghost"
-          className="text-yellow-500 hover:text-yellow-600 hover:bg-transparent"
+          className="text-sm text-muted-foreground hover:text-primary"
         >
-          <BadgeDollarSign className="h-5 w-5" />
           Remove Ads
         </Button>
       )}

@@ -57,20 +57,22 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   };
   
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]">
-      <div className="space-y-2 mt-10">
+    <div className="flex flex-col items-center justify-start gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]">
+      <div className="space-y-2 mt-8 mb-4">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      {/* Circle visualization component */}
-      <CircleVisualization 
-        targetCircle={targetCircle}
-        drawnPoints={drawnPoints}
-        isGoodScore={isGoodScore}
-      />
+      {/* Circle visualization component with more vertical space */}
+      <div className="my-8 w-full">
+        <CircleVisualization 
+          targetCircle={targetCircle}
+          drawnPoints={drawnPoints}
+          isGoodScore={isGoodScore}
+        />
+      </div>
       
-      <div className="space-y-4">
+      <div className="space-y-6 w-full mt-4">
         <div>
           <div className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
             {roundedAccuracy}%
@@ -105,6 +107,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         onShare={handleShare}
         onRemoveAds={onRemoveAds}
         isPenaltyMode={isPenaltyMode}
+        className="mt-6"
       />
 
       <AdBanner />

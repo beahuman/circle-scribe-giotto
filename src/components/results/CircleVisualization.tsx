@@ -33,7 +33,8 @@ const CircleVisualization: React.FC<CircleVisualizationProps> = ({
   }));
 
   return (
-    <div className="relative w-[200px] h-[200px] mx-auto my-6 rounded-full shadow-lg bg-gradient-to-br from-background to-muted/20">
+    <div className="relative w-[200px] h-[200px] mx-auto rounded-full shadow-lg bg-gradient-to-br from-background to-muted/20">
+      {/* Target circle outline */}
       <div 
         className="absolute border-2 border-primary/50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow" 
         style={{
@@ -43,6 +44,7 @@ const CircleVisualization: React.FC<CircleVisualizationProps> = ({
         }} 
       />
       
+      {/* User's drawn circle path */}
       {drawnPoints.length > 0 && (
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
           <path
@@ -62,11 +64,12 @@ const CircleVisualization: React.FC<CircleVisualizationProps> = ({
         </svg>
       )}
       
+      {/* Pass/fail icon in the center */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
         {isGoodScore ? (
-          <i className="ri-checkbox-circle-line text-5xl text-primary animate-pulse-slow" />
+          <i className="ri-checkbox-circle-line text-4xl text-primary animate-pulse-slow" />
         ) : (
-          <i className="ri-close-circle-line text-5xl text-muted-foreground" />
+          <i className="ri-close-circle-line text-4xl text-muted-foreground" />
         )}
       </div>
     </div>
