@@ -1,22 +1,20 @@
-
 import { useState, useEffect } from "react";
 import GiottoGame from "@/components/GiottoGame";
 import HomeScreen from "@/components/HomeScreen";
 import { getGameService } from '@/utils/gameServices';
 import { useToast } from "@/hooks/use-toast";
-
 const Index = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [isGameCenterAvailable, setIsGameCenterAvailable] = useState(false);
-  const { toast } = useToast();
-  
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     const initializeGameCenter = async () => {
       try {
         const service = await getGameService();
         const signedIn = await service.signIn();
         setIsGameCenterAvailable(signedIn);
-        
         if (signedIn) {
           console.log("Game Center initialized successfully");
         }
@@ -25,16 +23,13 @@ const Index = () => {
         setIsGameCenterAvailable(false);
       }
     };
-    
     if (!localStorage.getItem('guestMode')) {
       initializeGameCenter();
     }
   }, []);
-  
   const handleStartGame = () => {
     setGameStarted(true);
   };
-  
   const showLeaderboard = async () => {
     if (isGameCenterAvailable) {
       try {
@@ -56,7 +51,6 @@ const Index = () => {
       });
     }
   };
-  
   const handleRemoveAds = () => {
     console.log('Remove ads clicked - to be implemented');
     toast({
@@ -65,24 +59,8 @@ const Index = () => {
       duration: 3000
     });
   };
-  
-  return (
-    <div className="min-h-screen pb-16 overflow-y-auto">
-      {gameStarted ? (
-        <GiottoGame 
-          onReturnToHome={() => setGameStarted(false)} 
-          onRemoveAds={handleRemoveAds}
-        />
-      ) : (
-        <HomeScreen 
-          onStart={handleStartGame}
-          showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined}
-          isGuestMode={Boolean(localStorage.getItem('guestMode'))}
-          onRemoveAds={handleRemoveAds}
-        />
-      )}
-    </div>
-  );
+  return <div className="min-h-screen pb-16 overflow-y-auto bg-indigo-50">
+      {gameStarted ? <GiottoGame onReturnToHome={() => setGameStarted(false)} onRemoveAds={handleRemoveAds} /> : <HomeScreen onStart={handleStartGame} showLeaderboard={isGameCenterAvailable ? showLeaderboard : undefined} isGuestMode={Boolean(localStorage.getItem('guestMode'))} onRemoveAds={handleRemoveAds} />}
+    </div>;
 };
-
 export default Index;

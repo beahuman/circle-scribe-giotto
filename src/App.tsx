@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -21,16 +20,14 @@ import BottomNav from "@/components/BottomNav";
 
 // Create the client outside of the component
 const queryClient = new QueryClient();
-
 const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
+  return <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <div className="min-h-screen overflow-y-auto pb-16">
+            <div className="min-h-screen overflow-y-auto pb-16 bg-white">
               <Routes>
                 <Route path="/launch" element={<Launch />} />
                 <Route path="/auth" element={<Auth />} />
@@ -51,8 +48,6 @@ const App = () => {
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
-    </QueryClientProvider>
-  );
+    </QueryClientProvider>;
 };
-
 export default App;
