@@ -251,6 +251,8 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         showSubmetrics={showSubmetrics}
         visible={showCompletedDrawing}
         fadeOpacity={fadeOpacity}
+        difficultyLevel={Number(localStorage.getItem('difficultyLevel')) || 50}
+        isPenaltyMode={localStorage.getItem('penaltyModeEnabled') === 'true'}
       />
     </div>
   );

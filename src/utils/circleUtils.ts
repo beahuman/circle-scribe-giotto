@@ -71,85 +71,16 @@ const evaluateRadialSymmetry = (points: Point[], center: Point): number => {
 export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficultyLevel: number = 50, isPenaltyMode: boolean = false): number => {
   if (points.length < 3) return 0;
   
-  // Apply difficulty scaling factor (50% is standard, higher is harder)
-  // Range: 0.75 (easiest) to 1.75 (hardest)
-  let difficultyScaling = 0.75 + (difficultyLevel / 50);
+  // Use the new geometric scoring system
+  const geometricResult = calculateGeometricScore(points, targetCircle, difficultyLevel, isPenaltyMode);
   
-  // In penalty mode, increase difficulty scaling by 25%
-  if (isPenaltyMode) {
-    difficultyScaling *= 1.25;
-  }
-  
-  // 1. Find the center of drawn points
-  let sumX = 0, sumY = 0;
-  for (const point of points) {
-    sumX += point.x;
-    sumY += point.y;
-  }
-  const centerX = sumX / points.length;
-  const centerY = sumY / points.length;
-  const drawnCenter = { x: centerX, y: centerY };
-  
-  // 2. Calculate average radius of drawn points
-  let sumRadius = 0;
-  for (const point of points) {
-    const dx = point.x - centerX;
-    const dy = point.y - centerY;
-    sumRadius += Math.sqrt(dx * dx + dy * dy);
-  }
-  const avgRadius = sumRadius / points.length;
-  
-  // 3. Distance score: Calculate mean distance error from ideal path
-  let sumDistanceError = 0;
-  for (const point of points) {
-    // Distance from point to target circle center
-    const pointToCenter = calculatePointToCircleDistance(point, targetCircle);
-    // Error is the absolute difference between this distance and the target radius
-    const distanceError = Math.abs(pointToCenter - targetCircle.radius) / targetCircle.radius;
-    sumDistanceError += distanceError;
-  }
-  const meanDistanceError = sumDistanceError / points.length;
-  const distanceScore = Math.max(0, 100 - (meanDistanceError * 250 * difficultyScaling));
-  
-  // 4. Smoothness score: Penalize jitter/abrupt changes
-  const jitterMeasure = measureJitter(points);
-  // Convert jitter to score (lower jitter = higher score)
-  // Normal jitter range is roughly 0 to π/2 (90 degrees)
-  const smoothnessScore = Math.max(0, 100 - (jitterMeasure * (100 * difficultyScaling) / Math.PI));
-  
-  // 5. Symmetry score: Evaluate radial symmetry
-  const symmetryMeasure = evaluateRadialSymmetry(points, drawnCenter);
-  // Convert symmetry measure to score (lower measure = higher score)
-  const symmetryScore = Math.max(0, 100 - (symmetryMeasure * 500 * difficultyScaling));
-  
-  // 6. Center position accuracy
-  const centerDistance = Math.sqrt(
-    Math.pow(centerX - targetCircle.x, 2) + 
-    Math.pow(centerY - targetCircle.y, 2)
-  );
-  const centerError = centerDistance / targetCircle.radius;
-  const centerScore = Math.max(0, 100 - (centerError * 200 * difficultyScaling));
-  
-  // 7. Radius accuracy
-  const radiusError = Math.abs(avgRadius - targetCircle.radius) / targetCircle.radius;
-  const radiusScore = Math.max(0, 100 - (radiusError * 200 * difficultyScaling));
-  
-  // Combine distance and positioning into a single distance score (50%)
-  const combinedDistanceScore = (distanceScore * 0.6) + (centerScore * 0.2) + (radiusScore * 0.2);
-  
-  // Final weighted score
-  const finalScore = (
-    (combinedDistanceScore * 0.5) +   // Distance: 50% weight
-    (smoothnessScore * 0.25) +        // Smoothness: 25% weight
-    (symmetryScore * 0.25)            // Symmetry: 25% weight
-  );
-  
-  // Apply a small bonus for lower difficulty, but not in penalty mode
-  const difficultyBonus = isPenaltyMode ? 0 : Math.max(0, (1 - (difficultyLevel / 100)) * 10);
-  
-  // Ensure the score is between 0 and 100
-  return Math.min(100, Math.max(0, finalScore + difficultyBonus));
+  // Return the overall score from the geometric system
+  return geometricResult.overallScore;
 };
+
+// Export the geometric scoring function for use in other components
+export { calculateGeometricScore } from './scoring/geometricScoring';
+export type { GeometricSubscores } from './scoring/geometricScoring';
 
 // Generate a random position for a circle within the screen bounds
 export const generateRandomCirclePosition = (padding: number = 100): Circle => {

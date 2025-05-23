@@ -1,7 +1,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Point } from '@/types/shapes';
-import { calculatePointToCircleDistance } from '@/utils/circleUtils';
+import { calculateGeometricScore, GeometricSubscores } from '@/utils/circleUtils';
 
 interface ScoringOverlayProps {
   drawingPoints: Point[];
@@ -13,6 +13,8 @@ interface ScoringOverlayProps {
   showSubmetrics: boolean;
   visible: boolean;
   fadeOpacity: number;
+  difficultyLevel?: number;
+  isPenaltyMode?: boolean;
 }
 
 const ScoringOverlay: React.FC<ScoringOverlayProps> = ({
@@ -20,9 +22,25 @@ const ScoringOverlay: React.FC<ScoringOverlayProps> = ({
   targetCircle,
   showSubmetrics,
   visible,
-  fadeOpacity
+  fadeOpacity,
+  difficultyLevel = 50,
+  isPenaltyMode = false
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [subscores, setSubscores] = useState<GeometricSubscores | null>(null);
+
+  useEffect(() => {
+    if (!visible || drawingPoints.length < 3) return;
+    
+    // Calculate subscores using the geometric scoring system
+    const newSubscores = calculateGeometricScore(
+      drawingPoints, 
+      targetCircle, 
+      difficultyLevel, 
+      isPenaltyMode
+    );
+    setSubscores(newSubscores);
+  }, [drawingPoints, targetCircle, difficultyLevel, isPenaltyMode, visible]);
 
   useEffect(() => {
     if (!visible) return;
@@ -40,62 +58,68 @@ const ScoringOverlay: React.FC<ScoringOverlayProps> = ({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.globalAlpha = fadeOpacity;
     
-    if (showSubmetrics && drawingPoints.length > 1) {
-      drawSubmetrics(ctx, drawingPoints, targetCircle);
+    if (showSubmetrics && drawingPoints.length > 1 && subscores) {
+      drawGeometricFeedback(ctx, drawingPoints, targetCircle, subscores);
     }
     
     ctx.globalAlpha = 1;
-  }, [drawingPoints, targetCircle, showSubmetrics, visible, fadeOpacity]);
+  }, [drawingPoints, targetCircle, showSubmetrics, visible, fadeOpacity, subscores]);
 
-  const drawSubmetrics = (
+  const drawGeometricFeedback = (
     ctx: CanvasRenderingContext2D,
     points: Point[],
-    target: { x: number; y: number; radius: number }
+    target: { x: number; y: number; radius: number },
+    subscores: GeometricSubscores
   ) => {
     if (points.length < 3) return;
 
-    // Calculate center of drawn points
-    const centerX = points.reduce((sum, p) => sum + p.x, 0) / points.length;
-    const centerY = points.reduce((sum, p) => sum + p.y, 0) / points.length;
+    // 1. Stroke deviation indicators
+    drawDeviationIndicators(ctx, points, target, subscores.strokeDeviation);
     
-    // 1. Symmetry indicators - show points that deviate significantly from circular path
-    drawSymmetryIndicators(ctx, points, { x: centerX, y: centerY }, target);
+    // 2. Angular smoothness indicators
+    drawSmoothnessIndicators(ctx, points, subscores.angularSmoothness);
     
-    // 2. Smoothness indicators - highlight sharp angle changes
-    drawSmoothnessIndicators(ctx, points);
+    // 3. Completion offset indicator
+    drawCompletionIndicator(ctx, points, target, subscores.completionOffset);
     
-    // 3. Start/end alignment indicator
-    drawAlignmentIndicator(ctx, points, target);
+    // 4. Display numeric subscores
+    drawSubscoreDisplay(ctx, subscores);
   };
 
-  const drawSymmetryIndicators = (
+  const drawDeviationIndicators = (
     ctx: CanvasRenderingContext2D,
     points: Point[],
-    center: { x: number; y: number },
-    target: { x: number; y: number; radius: number }
+    target: { x: number; y: number; radius: number },
+    deviationScore: number
   ) => {
-    // Calculate average radius from center
-    const radii = points.map(p => 
-      Math.sqrt(Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2))
-    );
-    const avgRadius = radii.reduce((sum, r) => sum + r, 0) / radii.length;
-    
-    // Highlight points that deviate significantly from average radius
+    // Color based on deviation score
+    const getDeviationColor = (score: number) => {
+      if (score >= 90) return 'rgba(34, 197, 94, 0.8)';   // Green - excellent
+      if (score >= 75) return 'rgba(59, 130, 246, 0.8)';  // Blue - good
+      if (score >= 50) return 'rgba(245, 158, 11, 0.8)';  // Yellow - fair
+      return 'rgba(239, 68, 68, 0.8)';                    // Red - poor
+    };
+
     points.forEach((point, index) => {
-      const radius = radii[index];
-      const deviation = Math.abs(radius - avgRadius) / avgRadius;
+      if (index % 3 !== 0) return; // Sample every 3rd point for performance
       
-      if (deviation > 0.15) { // 15% deviation threshold
+      const distanceToCenter = Math.sqrt(
+        Math.pow(point.x - target.x, 2) + Math.pow(point.y - target.y, 2)
+      );
+      const deviation = Math.abs(distanceToCenter - target.radius);
+      const normalizedDeviation = deviation / target.radius;
+      
+      // Only show indicator if deviation is significant
+      if (normalizedDeviation > 0.05) {
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
-        ctx.strokeStyle = deviation > 0.3 ? 'rgba(239, 68, 68, 0.8)' : 'rgba(245, 158, 11, 0.8)';
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = getDeviationColor(deviationScore);
+        ctx.fill();
         
-        // Draw line to ideal position
-        const angle = Math.atan2(point.y - center.y, point.x - center.x);
-        const idealX = center.x + avgRadius * Math.cos(angle);
-        const idealY = center.y + avgRadius * Math.sin(angle);
+        // Draw line to ideal position on circle
+        const angle = Math.atan2(point.y - target.y, point.x - target.x);
+        const idealX = target.x + target.radius * Math.cos(angle);
+        const idealY = target.y + target.radius * Math.sin(angle);
         
         ctx.beginPath();
         ctx.moveTo(point.x, point.y);
@@ -109,8 +133,19 @@ const ScoringOverlay: React.FC<ScoringOverlayProps> = ({
     });
   };
 
-  const drawSmoothnessIndicators = (ctx: CanvasRenderingContext2D, points: Point[]) => {
-    for (let i = 1; i < points.length - 1; i++) {
+  const drawSmoothnessIndicators = (
+    ctx: CanvasRenderingContext2D, 
+    points: Point[], 
+    smoothnessScore: number
+  ) => {
+    const getSmoothnessColor = (score: number) => {
+      if (score >= 90) return 'rgba(34, 197, 94, 0.6)';   // Green - smooth
+      if (score >= 75) return 'rgba(59, 130, 246, 0.6)';  // Blue - good
+      if (score >= 50) return 'rgba(245, 158, 11, 0.6)';  // Yellow - fair
+      return 'rgba(239, 68, 68, 0.6)';                    // Red - jagged
+    };
+
+    for (let i = 1; i < points.length - 1; i += 2) { // Sample every other point
       const prev = points[i - 1];
       const curr = points[i];
       const next = points[i + 1];
@@ -125,40 +160,48 @@ const ScoringOverlay: React.FC<ScoringOverlayProps> = ({
       if (mag1 > 0 && mag2 > 0) {
         const dot = (v1.x * v2.x + v1.y * v2.y) / (mag1 * mag2);
         const angle = Math.acos(Math.max(-1, Math.min(1, dot)));
+        const angleInDegrees = (angle * 180) / Math.PI;
         
-        // Highlight sharp turns (angle > 45 degrees)
-        if (angle > Math.PI / 4) {
+        // Highlight sharp angle changes
+        if (angleInDegrees > 30) {
           ctx.beginPath();
-          ctx.arc(curr.x, curr.y, 4, 0, Math.PI * 2);
-          ctx.fillStyle = angle > Math.PI / 2 ? 'rgba(239, 68, 68, 0.6)' : 'rgba(245, 158, 11, 0.6)';
+          ctx.arc(curr.x, curr.y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = getSmoothnessColor(smoothnessScore);
           ctx.fill();
         }
       }
     }
   };
 
-  const drawAlignmentIndicator = (
+  const drawCompletionIndicator = (
     ctx: CanvasRenderingContext2D,
     points: Point[],
-    target: { x: number; y: number; radius: number }
+    target: { x: number; y: number; radius: number },
+    completionScore: number
   ) => {
     if (points.length < 2) return;
     
     const start = points[0];
     const end = points[points.length - 1];
     
-    // Calculate distance between start and end
-    const distance = Math.sqrt(
+    const gapDistance = Math.sqrt(
       Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2)
     );
     
-    // Show alignment indicator if gap is significant
-    if (distance > target.radius * 0.1) { // 10% of radius threshold
+    const getCompletionColor = (score: number) => {
+      if (score >= 90) return 'rgba(34, 197, 94, 0.8)';   // Green - well closed
+      if (score >= 75) return 'rgba(59, 130, 246, 0.8)';  // Blue - good
+      if (score >= 50) return 'rgba(245, 158, 11, 0.8)';  // Yellow - fair
+      return 'rgba(239, 68, 68, 0.8)';                    // Red - poor closure
+    };
+    
+    // Show gap if significant
+    if (gapDistance > target.radius * 0.05) {
       // Draw connection line
       ctx.beginPath();
       ctx.moveTo(start.x, start.y);
       ctx.lineTo(end.x, end.y);
-      ctx.strokeStyle = distance > target.radius * 0.2 ? 'rgba(239, 68, 68, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+      ctx.strokeStyle = getCompletionColor(completionScore);
       ctx.lineWidth = 2;
       ctx.setLineDash([5, 5]);
       ctx.stroke();
@@ -168,11 +211,28 @@ const ScoringOverlay: React.FC<ScoringOverlayProps> = ({
       [start, end].forEach((point, index) => {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
-        ctx.strokeStyle = index === 0 ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+        ctx.strokeStyle = index === 0 ? 'rgba(34, 197, 94, 0.8)' : getCompletionColor(completionScore);
         ctx.lineWidth = 2;
         ctx.stroke();
       });
     }
+  };
+
+  const drawSubscoreDisplay = (ctx: CanvasRenderingContext2D, subscores: GeometricSubscores) => {
+    const margin = 20;
+    const lineHeight = 20;
+    const startY = 30;
+    
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx.fillRect(margin - 10, startY - 15, 200, 80);
+    
+    ctx.font = '12px system-ui';
+    ctx.fillStyle = 'white';
+    
+    ctx.fillText(`Deviation: ${subscores.strokeDeviation.toFixed(1)}%`, margin, startY);
+    ctx.fillText(`Smoothness: ${subscores.angularSmoothness.toFixed(1)}%`, margin, startY + lineHeight);
+    ctx.fillText(`Completion: ${subscores.completionOffset.toFixed(1)}%`, margin, startY + lineHeight * 2);
+    ctx.fillText(`Overall: ${subscores.overallScore.toFixed(1)}%`, margin, startY + lineHeight * 3);
   };
 
   if (!visible) return null;
