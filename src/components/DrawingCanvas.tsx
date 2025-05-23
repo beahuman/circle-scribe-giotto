@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { calculateAccuracy } from '@/utils/circleUtils';
 import AdBanner from './AdBanner';
@@ -84,11 +83,22 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
 
   return (
     <div className="absolute inset-0 pb-16">
-      <InstructionOverlay visible={instructionVisible} />
+      <InstructionOverlay 
+        visible={instructionVisible} 
+        message="Draw the circle"
+        position="top"
+        variant="primary"
+        animateIn={true}
+      />
+      
       <QualityIndicator 
         isDrawing={isDrawing} 
         pointsLength={points.length} 
-        strokeQuality={strokeQuality} 
+        strokeQuality={strokeQuality}
+        position="bottom-right"
+        size="md"
+        showPulse={true}
+        thresholds={{ high: 0.7, medium: 0.4 }}
       />
       
       <div 
