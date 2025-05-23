@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Calendar } from 'lucide-react';
 import AdBanner from './AdBanner';
 import CircleVisualization from './results/CircleVisualization';
 import FeedbackMessage from './results/FeedbackMessage';

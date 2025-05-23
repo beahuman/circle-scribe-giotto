@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Calendar } from "lucide-react";
@@ -42,19 +43,20 @@ const ResultControls: React.FC<ResultControlsProps> = ({
           <Button 
             onClick={onReplay}
             variant="outline"
-            className="px-6 py-3 rounded-full opacity-50 cursor-not-allowed"
+            className="px-8 py-4 text-lg rounded-full opacity-50 cursor-not-allowed shadow-lg"
             disabled
           >
-            <Calendar className="mr-2 h-4 w-4" />
+            <Calendar className="mr-2 h-5 w-5" />
             Come Back Tomorrow
           </Button>
         ) : (
           <Button 
             onClick={onReplay}
-            className="px-6 py-3 rounded-full"
+            className="px-8 py-4 text-lg font-semibold rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 animate-pulse"
+            size="lg"
           >
-            <RotateCcw className="mr-2 h-4 w-4" />
-            {isDailyMode ? 'Try Again' : 'Draw Another'}
+            <RotateCcw className="mr-3 h-5 w-5" />
+            {isDailyMode ? 'Try Again' : 'Play Again'}
           </Button>
         )}
         
