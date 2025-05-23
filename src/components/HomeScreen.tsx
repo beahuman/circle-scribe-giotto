@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, History, Settings, Trophy, HelpCircle, Tag, Palette } from "lucide-react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CircleDot, Trophy, Calendar, Settings, Info, Store, History, UserCircle } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 import LogoAnimation from './LogoAnimation';
-import OnboardingOverlay from './OnboardingOverlay';
+import WelcomeScreen from './WelcomeScreen';
+import DailyCalibrationScreen from './DailyCalibrationScreen';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -14,112 +13,118 @@ interface HomeScreenProps {
   onRemoveAds?: () => void;
 }
 
-const HomeScreen: React.FC<HomeScreenProps> = ({
-  onStart,
-  showLeaderboard,
-  isGuestMode,
-  onRemoveAds
-}) => {
-  const navigate = useNavigate();
-  const [currentTipIndex, setCurrentTipIndex] = useState(0);
-  const [showOnboarding, setShowOnboarding] = useState(() => {
-    // Show onboarding if user hasn't seen it before
-    return !localStorage.getItem('onboardingCompleted');
-  });
+const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showDailyCalibration, setShowDailyCalibration] = useState(false);
 
-  const tips = ["Focus on smooth, consistent strokes.", "Adjust difficulty for optimal challenge.", "Experiment with different drawing speeds.", "Visualize the target before drawing.", "Take breaks to avoid mental fatigue."];
+  useEffect(() => {
+    // Check if the user is returning from the game
+    const returningFromGame = sessionStorage.getItem('returningFromGame');
+    if (returningFromGame === 'true') {
+      setShowWelcome(false);
+      sessionStorage.removeItem('returningFromGame');
+    } else {
+      // Show welcome screen on first visit or refresh
+      setTimeout(() => {
+        setShowWelcome(false);
+      }, 2000);
+    }
+  }, []);
 
-  const handleNextTip = () => {
-    setCurrentTipIndex(prev => (prev + 1) % tips.length);
+  const handleStartDailyCalibration = () => {
+    setShowDailyCalibration(true);
   };
 
-  const handlePrevTip = () => {
-    setCurrentTipIndex(prev => (prev - 1 + tips.length) % tips.length);
-  };
+  if (showDailyCalibration) {
+    return (
+      <DailyCalibrationScreen 
+        onStartCalibration={() => {
+          setShowDailyCalibration(false);
+          onStart();
+        }}
+        onBack={() => setShowDailyCalibration(false)}
+      />
+    );
+  }
 
-  const handleOnboardingComplete = () => {
-    localStorage.setItem('onboardingCompleted', 'true');
-    setShowOnboarding(false);
-  };
-
-  const handleStartTraining = () => {
-    onStart();
-  };
+  if (showWelcome) {
+    return (
+      <WelcomeScreen 
+        onStart={onStart} 
+        showLeaderboard={showLeaderboard}
+      />
+    );
+  }
 
   return (
-    <>
-      {showOnboarding && (
-        <OnboardingOverlay onComplete={handleOnboardingComplete} />
-      )}
-      
-      <div className="flex flex-col items-center justify-center min-h-screen px-4 py-12 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-zinc-900 to-zinc-800 opacity-30 z-0" />
-        
-        <LogoAnimation className="z-10" />
-        
-        <p className="text-md md:text-lg text-center mb-8 z-10 text-indigo-600 text-xl">
-          Master the art of freehand circles.
-        </p>
-        
-        <div className="space-y-4 w-full max-w-md z-10 mt-8">
-          <Button onClick={handleStartTraining} size="lg" className="w-full text-lg font-medium">
-            Begin Motor Training
-          </Button>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <Button onClick={() => navigate("/store")} variant="outline" className="flex gap-2 items-center justify-center">
-              <Palette className="h-4 w-4" />
-              Reward Store
-            </Button>
-            
-            <Button onClick={() => navigate("/history")} variant="outline" className="flex gap-2 items-center justify-center">
-              <History className="h-4 w-4" />
-              History
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <Button onClick={() => navigate("/tutorial")} variant="secondary" className="flex gap-2 items-center justify-center">
-              <HelpCircle className="h-4 w-4" />
-              Tutorial
-            </Button>
-            
-            <Button onClick={() => navigate("/settings")} variant="secondary" className="flex gap-2 items-center justify-center">
-              <Settings className="h-4 w-4" />
-              Settings
-            </Button>
-          </div>
-          
-          {showLeaderboard && (
-            <Button onClick={showLeaderboard} variant="ghost" className="w-full flex gap-2 items-center justify-center" disabled={isGuestMode}>
-              <Trophy className="h-4 w-4" />
-              {isGuestMode ? 'Sign in for Leaderboard' : 'Show Leaderboard'}
-            </Button>
-          )}
-          
-          {onRemoveAds && (
-            <Button onClick={onRemoveAds} variant="ghost" className="w-full flex gap-2 items-center justify-center">
-              <Tag className="h-4 w-4" />
-              Remove Ads
-            </Button>
-          )}
+    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center min-h-screen bg-gradient-to-b from-primary/5 to-background">
+      <div className="space-y-2">
+        <div className="w-[240px] mx-auto">
+          <LogoAnimation />
         </div>
-        
-        <div className="absolute bottom-4 left-0 right-0 p-4 z-10">
-          <div className="flex items-center justify-between">
-            <Button variant="ghost" size="icon" onClick={handlePrevTip}>
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <p className="text-sm text-zinc-500 italic text-center max-w-[240px]">
-              {tips[currentTipIndex]}
-            </p>
-            <Button variant="ghost" size="icon" onClick={handleNextTip}>
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
+        <p className="text-muted-foreground">The art of the perfect circle</p>
       </div>
-    </>
+
+      <div className="flex flex-col gap-4 w-full max-w-xs">
+        <Button 
+          onClick={onStart}
+          className="px-8 py-6 text-lg rounded-full"
+        >
+          Practice Mode
+        </Button>
+        
+        <Button 
+          onClick={handleStartDailyCalibration}
+          variant="outline"
+          className="px-8 py-6 text-lg rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+        >
+          <Calendar className="mr-2 h-5 w-5" />
+          Daily Calibration
+        </Button>
+        
+        {showLeaderboard && (
+          <Button 
+            onClick={showLeaderboard}
+            variant="secondary"
+            className="px-8 py-4 rounded-full"
+          >
+            <Trophy className="mr-2 h-5 w-5" />
+            Leaderboard
+          </Button>
+        )}
+
+        {!isGuestMode && (
+          <Button variant="ghost" className="justify-start">
+            <UserCircle className="mr-2 h-4 w-4" />
+            Account
+          </Button>
+        )}
+
+        <Button variant="ghost" className="justify-start">
+          <Settings className="mr-2 h-4 w-4" />
+          Settings
+        </Button>
+
+        <Button variant="ghost" className="justify-start">
+          <History className="mr-2 h-4 w-4" />
+          History
+        </Button>
+
+        <Button variant="ghost" className="justify-start">
+          <Store className="mr-2 h-4 w-4" />
+          Store
+        </Button>
+
+        <Button variant="ghost" className="justify-start">
+          <Info className="mr-2 h-4 w-4" />
+          About
+        </Button>
+      </div>
+
+      <p className="text-xs text-muted-foreground">
+        Crafted with passion by <a href="https://twitter.com/Nutlope" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">@Nutlope</a>
+      </p>
+    </div>
   );
 };
 

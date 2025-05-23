@@ -24,6 +24,8 @@ interface ResultScreenProps {
   onRemoveAds?: () => void;
   isPenaltyMode?: boolean;
   sessionRoundsPlayed?: number;
+  isDailyMode?: boolean;
+  dailyCompleted?: boolean;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({
@@ -37,7 +39,9 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   onBackToHome,
   onRemoveAds,
   isPenaltyMode = false,
-  sessionRoundsPlayed = 0
+  sessionRoundsPlayed = 0,
+  isDailyMode = false,
+  dailyCompleted = false
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
@@ -100,6 +104,19 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
+      {/* Daily mode indicator */}
+      {isDailyMode && (
+        <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 max-w-sm">
+          <div className="flex items-center gap-2 justify-center text-primary">
+            <Calendar className="h-4 w-4" />
+            <span className="font-medium text-sm">Daily Calibration Complete</span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Neural pathways strengthened. Return tomorrow!
+          </p>
+        </div>
+      )}
+      
       {/* Circle visualization component with proper vertical space */}
       <div className="w-full my-8">
         <CircleVisualization 
@@ -146,6 +163,8 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         isPenaltyMode={isPenaltyMode}
         accuracy={roundedAccuracy}
         sessionRoundsPlayed={sessionRoundsPlayed}
+        isDailyMode={isDailyMode}
+        dailyCompleted={dailyCompleted}
         className="mt-6"
       />
 

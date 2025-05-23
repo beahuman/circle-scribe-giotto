@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CircleDisplay from './CircleDisplay';
@@ -14,6 +13,7 @@ import { useGameService } from '@/hooks/useGameService';
 import { useGameHandlers } from '@/features/game/gameHandlers';
 import MobileWarning from './game/MobileWarning';
 import { Point } from '@/types/shapes';
+import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Game state management
@@ -79,13 +79,41 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   
   const isMobile = useIsMobile();
   
-  // Enhanced drawing complete handler to record round stats
+  // Add daily calibration hook
+  const { todayCompleted, recordDailyAccuracy } = useDailyCalibration();
+  
+  // Check if we're in daily calibration mode
+  const isDailyMode = new URLSearchParams(window.location.search).get('daily') === 'true';
+  
+  // Enhanced drawing complete handler to record round stats and daily calibration
   const handleEnhancedDrawingComplete = async (score: number, points: Point[]) => {
     // Record the round in session stats
     recordRound(score);
     
+    // If in daily mode, record daily accuracy and prevent retries
+    if (isDailyMode) {
+      const success = recordDailyAccuracy(score);
+      if (success) {
+        // In daily mode, we don't allow retries
+        console.log('Daily calibration recorded:', score);
+      }
+    }
+    
     // Call the original handler
     await handleDrawingComplete(score, points);
+  };
+  
+  // Override replay handler for daily mode
+  const handleDailyAwareReplay = () => {
+    if (isDailyMode && todayCompleted) {
+      toast({
+        title: "Daily calibration complete",
+        description: "Return tomorrow for your next session!",
+        duration: 3000
+      });
+      return;
+    }
+    handleReplay();
   };
   
   // View stats handler
@@ -164,7 +192,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
             <ResultScreen 
               accuracy={accuracy}
               difficultyLevel={difficultyLevel}
-              onReplay={handleReplay}
+              onReplay={isDailyMode ? handleDailyAwareReplay : handleReplay}
               showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
               targetCircle={targetCircle}
               drawnPoints={drawnPoints}
@@ -173,6 +201,8 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
               isPenaltyMode={inPenaltyMode}
               onViewStats={handleViewStats}
               sessionRoundsPlayed={sessionStats.roundsPlayed}
+              isDailyMode={isDailyMode}
+              dailyCompleted={todayCompleted}
             />
           </motion.div>
         )}
