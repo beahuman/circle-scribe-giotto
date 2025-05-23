@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
 import { Star } from "lucide-react";
+import { motion } from 'framer-motion';
 import AdBanner from './AdBanner';
 import CircleVisualization from './results/CircleVisualization';
 import FeedbackMessage from './results/FeedbackMessage';
@@ -12,24 +14,28 @@ interface ResultScreenProps {
   accuracy: number;
   difficultyLevel: number;
   onReplay: () => void;
+  onViewStats?: () => void;
   showLeaderboard?: () => void;
   targetCircle: { x: number; y: number; radius: number };
   drawnPoints: { x: number; y: number }[];
   onBackToHome?: () => void;
   onRemoveAds?: () => void;
   isPenaltyMode?: boolean;
+  sessionRoundsPlayed?: number;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({
   accuracy,
   difficultyLevel,
   onReplay,
+  onViewStats,
   showLeaderboard,
   targetCircle,
   drawnPoints,
   onBackToHome,
   onRemoveAds,
-  isPenaltyMode = false
+  isPenaltyMode = false,
+  sessionRoundsPlayed = 0
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
@@ -114,7 +120,13 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const improvement = calculateImprovement();
   
   return (
-    <div className={`flex flex-col items-center justify-start gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)] ${backgroundStyle}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.4 }}
+      className={`flex flex-col items-center justify-start gap-6 p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)] ${backgroundStyle}`}
+    >
       <div className="space-y-2 mt-8">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
@@ -169,6 +181,13 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
               Penalty Mode Active
             </div>
           )}
+          
+          {/* Session rounds counter */}
+          {sessionRoundsPlayed > 0 && (
+            <div className="mt-2 text-sm text-muted-foreground">
+              Rounds this session: <span className="font-medium">{sessionRoundsPlayed}</span>
+            </div>
+          )}
         </div>
         
         {/* XP Progress Bar */}
@@ -181,9 +200,13 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         
         {/* Level up message */}
         {progressResult.didLevelUp && (
-          <div className="text-green-500 font-medium animate-fade-in mt-2">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-green-500 font-medium mt-2"
+          >
             Leveled up to {progressResult.newLevel}!
-          </div>
+          </motion.div>
         )}
         
         {/* Feedback message */}
@@ -197,16 +220,18 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       {/* Result controls */}
       <ResultControls
         onReplay={onReplay}
+        onViewStats={onViewStats}
         showLeaderboard={showLeaderboard}
         onShare={handleShare}
         onRemoveAds={onRemoveAds}
         isPenaltyMode={isPenaltyMode}
         accuracy={roundedAccuracy}
+        sessionRoundsPlayed={sessionRoundsPlayed}
         className="mt-6"
       />
 
       <AdBanner />
-    </div>
+    </motion.div>
   );
 };
 

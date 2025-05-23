@@ -5,7 +5,7 @@ import { generateRandomCirclePosition } from '@/utils/circleUtils';
 import { getGameService } from '@/utils/gameServices';
 import { Point } from '@/types/shapes';
 
-type GameState = 'showing' | 'drawing' | 'result' | 'penalty';
+type GameState = 'showing' | 'drawing' | 'result' | 'penalty' | 'stats';
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>('showing');

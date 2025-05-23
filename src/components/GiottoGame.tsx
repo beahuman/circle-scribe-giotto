@@ -1,11 +1,14 @@
 
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
 import ResultScreen from './ResultScreen';
+import SessionStatsView from './SessionStatsView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { GameProps } from '@/types/game';
 import { useGameState } from '@/hooks/useGameState';
+import { useSessionStats } from '@/hooks/useSessionStats';
 import { useSessionTracking } from '@/hooks/useSessionTracking';
 import { useGameService } from '@/hooks/useGameService';
 import { useGameHandlers } from '@/features/game/gameHandlers';
@@ -37,6 +40,9 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
     setStreakCount,
     toast
   } = useGameState();
+  
+  // Session stats tracking
+  const { sessionStats, recordRound, resetSession } = useSessionStats();
   
   // Track session for neuroplasticity feedback
   useSessionTracking();
@@ -72,6 +78,25 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   
   const isMobile = useIsMobile();
   
+  // Enhanced drawing complete handler to record round stats
+  const handleEnhancedDrawingComplete = async (score: number, points: Point[]) => {
+    // Record the round in session stats
+    recordRound(score);
+    
+    // Call the original handler
+    await handleDrawingComplete(score, points);
+  };
+  
+  // View stats handler
+  const handleViewStats = () => {
+    setGameState('stats');
+  };
+  
+  // Back to results handler
+  const handleBackToResults = () => {
+    setGameState('result');
+  };
+  
   // Mobile device check
   if (!isMobile && !bypassMobileCheck) {
     return (
@@ -90,36 +115,85 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Render the current game state
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {gameState === 'showing' && (
-        <CircleDisplay 
-          duration={displayDuration} 
-          onComplete={handleCircleMemorized}
-          circleProps={targetCircle}
-          isPenaltyMode={inPenaltyMode}
-        />
-      )}
-      
-      {gameState === 'drawing' && (
-        <DrawingCanvas 
-          onComplete={handleDrawingComplete}
-          targetCircle={targetCircle}
-          difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
-        />
-      )}
-      
-      {gameState === 'result' && (
-        <ResultScreen 
-          accuracy={accuracy}
-          difficultyLevel={difficultyLevel}
-          onReplay={handleReplay}
-          showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
-          targetCircle={targetCircle}
-          drawnPoints={drawnPoints}
-          onBackToHome={onReturnToHome}
-          onRemoveAds={onRemoveAds}
-          isPenaltyMode={inPenaltyMode}
-        />
-      )}
+      <AnimatePresence mode="wait">
+        {gameState === 'showing' && (
+          <motion.div
+            key="showing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-full"
+          >
+            <CircleDisplay 
+              duration={displayDuration} 
+              onComplete={handleCircleMemorized}
+              circleProps={targetCircle}
+              isPenaltyMode={inPenaltyMode}
+            />
+          </motion.div>
+        )}
+        
+        {gameState === 'drawing' && (
+          <motion.div
+            key="drawing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-full"
+          >
+            <DrawingCanvas 
+              onComplete={handleEnhancedDrawingComplete}
+              targetCircle={targetCircle}
+              difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
+            />
+          </motion.div>
+        )}
+        
+        {gameState === 'result' && (
+          <motion.div
+            key="result"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="w-full h-full"
+          >
+            <ResultScreen 
+              accuracy={accuracy}
+              difficultyLevel={difficultyLevel}
+              onReplay={handleReplay}
+              showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
+              targetCircle={targetCircle}
+              drawnPoints={drawnPoints}
+              onBackToHome={onReturnToHome}
+              onRemoveAds={onRemoveAds}
+              isPenaltyMode={inPenaltyMode}
+              onViewStats={handleViewStats}
+              sessionRoundsPlayed={sessionStats.roundsPlayed}
+            />
+          </motion.div>
+        )}
+        
+        {gameState === 'stats' && (
+          <motion.div
+            key="stats"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="w-full h-full"
+          >
+            <SessionStatsView 
+              stats={sessionStats}
+              onBack={handleBackToResults}
+              onResetSession={resetSession}
+              onDrawAgain={handleReplay}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

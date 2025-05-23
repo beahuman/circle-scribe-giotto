@@ -2,25 +2,30 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ChartBarIcon } from "lucide-react";
 
 interface ResultControlsProps {
   onReplay: () => void;
+  onViewStats?: () => void;
   showLeaderboard?: () => void;
   onShare?: () => void;
   onRemoveAds?: () => void;
   isPenaltyMode?: boolean;
   className?: string;
   accuracy?: number;
+  sessionRoundsPlayed?: number;
 }
 
 const ResultControls: React.FC<ResultControlsProps> = ({
   onReplay,
+  onViewStats,
   showLeaderboard,
   onShare,
   onRemoveAds,
   isPenaltyMode,
   className,
-  accuracy = 0
+  accuracy = 0,
+  sessionRoundsPlayed = 0
 }) => {
   // Neural-inspired transitions - more satisfying animations for higher scores
   const getButtonStyles = () => {
@@ -51,6 +56,20 @@ const ResultControls: React.FC<ResultControlsProps> = ({
       >
         {isPenaltyMode ? "Go to Shape Challenge" : "Draw Another Circle"}
       </Button>
+
+      {onViewStats && sessionRoundsPlayed > 0 && (
+        <Button
+          onClick={onViewStats}
+          variant="outline"
+          className="px-8 py-4 rounded-full flex items-center justify-center gap-2 transition-all duration-300 hover:bg-background/90"
+        >
+          <ChartBarIcon className="h-4 w-4" />
+          <span>View Session Stats</span>
+          <span className="ml-1 bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs">
+            {sessionRoundsPlayed} {sessionRoundsPlayed === 1 ? 'round' : 'rounds'}
+          </span>
+        </Button>
+      )}
 
       {showLeaderboard && (
         <Button

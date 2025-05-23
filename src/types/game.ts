@@ -1,7 +1,7 @@
 
 import { ShapeType } from './shapes';
 
-export type GameState = 'showing' | 'drawing' | 'result' | 'penalty';
+export type GameState = 'showing' | 'drawing' | 'result' | 'penalty' | 'stats';
 export type PenaltyShape = 'line' | 'triangle' | 'square' | null;
 
 export interface GameProps {
@@ -21,4 +21,12 @@ export interface CosmeticItem {
   thumbnail: string;
   category: string;
   value: string;
+}
+
+export interface SessionStats {
+  roundsPlayed: number;
+  averageAccuracy: number;
+  highestAccuracy: number;
+  lowestAccuracy: number;
+  startTime: number;
 }
