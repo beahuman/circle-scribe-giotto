@@ -10,6 +10,14 @@ interface Circle {
   radius: number;
 }
 
+// Calculate the distance between a point and the center of a circle
+export const calculatePointToCircleDistance = (point: Point, circle: Circle): number => {
+  return Math.sqrt(
+    Math.pow(point.x - circle.x, 2) + 
+    Math.pow(point.y - circle.y, 2)
+  );
+};
+
 // Calculate the accuracy of a drawn circle compared to a target circle
 export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficultyLevel: number = 50): number => {
   if (points.length < 3) return 0;
