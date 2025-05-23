@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Trophy, ArrowLeft } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
@@ -10,33 +11,54 @@ interface WelcomeScreenProps {
   onBackToHome?: () => void;
 }
 
+const fadeVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard, onBackToHome }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center">
+    <motion.div 
+      className="flex flex-col items-center justify-center gap-8 p-6 text-center"
+      variants={staggerContainer}
+      initial="initial"
+      animate="animate"
+    >
       {onBackToHome && (
-        <Button 
-          variant="ghost" 
-          onClick={onBackToHome}
-          className="absolute top-4 left-4"
-          size="icon"
-        >
-          <ArrowLeft className="h-6 w-6" />
-        </Button>
+        <motion.div variants={fadeVariants}>
+          <Button 
+            variant="ghost" 
+            onClick={onBackToHome}
+            className="absolute top-4 left-4"
+            size="icon"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </Button>
+        </motion.div>
       )}
 
-      <div className="space-y-2">
+      <motion.div className="space-y-2" variants={fadeVariants}>
         <div className="w-[240px] mx-auto">
           <LogoAnimation />
         </div>
         <p className="text-muted-foreground">The art of the perfect circle</p>
-      </div>
+      </motion.div>
       
-      <div className="relative">
+      <motion.div className="relative" variants={fadeVariants}>
         <div className="w-40 h-40 rounded-full border-4 border-primary opacity-50"></div>
         <CircleDot className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary" size={48} />
-      </div>
+      </motion.div>
       
-      <div className="max-w-md space-y-4">
+      <motion.div className="max-w-md space-y-4" variants={fadeVariants}>
         <p>
           Draw a perfect circle with your finger, just like the Renaissance master Giotto.
         </p>
@@ -45,9 +67,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
           <li>2. Then try to recreate it in the same location</li>
           <li>3. Your accuracy will be calculated as a percentage</li>
         </ol>
-      </div>
+      </motion.div>
       
-      <div className="flex flex-col gap-4 w-full max-w-xs">
+      <motion.div className="flex flex-col gap-4 w-full max-w-xs" variants={fadeVariants}>
         <Button 
           onClick={onStart}
           className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
@@ -65,10 +87,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
             Leaderboard
           </Button>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
 export default WelcomeScreen;
-

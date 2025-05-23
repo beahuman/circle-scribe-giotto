@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { CircleDot, Trophy, Calendar, Settings, Info, Store, History, UserCircle } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +14,20 @@ interface HomeScreenProps {
   isGuestMode?: boolean;
   onRemoveAds?: () => void;
 }
+
+const fadeVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
   const [showWelcome, setShowWelcome] = useState(true);
@@ -37,94 +53,155 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
 
   if (showDailyCalibration) {
     return (
-      <DailyCalibrationScreen 
-        onStartCalibration={() => {
-          setShowDailyCalibration(false);
-          onStart();
-        }}
-        onBack={() => setShowDailyCalibration(false)}
-      />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="daily-calibration"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+        >
+          <DailyCalibrationScreen 
+            onStartCalibration={() => {
+              setShowDailyCalibration(false);
+              onStart();
+            }}
+            onBack={() => setShowDailyCalibration(false)}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
   if (showWelcome) {
     return (
-      <WelcomeScreen 
-        onStart={onStart} 
-        showLeaderboard={showLeaderboard}
-      />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="welcome"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+        >
+          <WelcomeScreen 
+            onStart={onStart} 
+            showLeaderboard={showLeaderboard}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 animate-fade-in p-6 text-center min-h-screen bg-gradient-to-b from-primary/5 to-background">
-      <div className="space-y-2">
-        <div className="w-[240px] mx-auto">
-          <LogoAnimation />
-        </div>
-        <p className="text-muted-foreground">The art of the perfect circle</p>
-      </div>
-
-      <div className="flex flex-col gap-4 w-full max-w-xs">
-        <Button 
-          onClick={onStart}
-          className="px-8 py-6 text-lg rounded-full"
+    <AnimatePresence mode="wait">
+      <motion.div
+        key="home"
+        variants={fadeVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={{ duration: 0.4 }}
+        className="flex flex-col items-center justify-center gap-8 p-6 text-center min-h-screen bg-gradient-to-b from-primary/5 to-background"
+      >
+        <motion.div 
+          className="space-y-2"
+          variants={fadeVariants}
+          transition={{ delay: 0.1 }}
         >
-          Practice Mode
-        </Button>
-        
-        <Button 
-          onClick={handleStartDailyCalibration}
-          variant="outline"
-          className="px-8 py-6 text-lg rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+          <div className="w-[240px] mx-auto">
+            <LogoAnimation />
+          </div>
+          <p className="text-muted-foreground">The art of the perfect circle</p>
+        </motion.div>
+
+        <motion.div 
+          className="flex flex-col gap-4 w-full max-w-xs"
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
         >
-          <Calendar className="mr-2 h-5 w-5" />
-          Daily Calibration
-        </Button>
-        
-        {showLeaderboard && (
-          <Button 
-            onClick={showLeaderboard}
-            variant="secondary"
-            className="px-8 py-4 rounded-full"
-          >
-            <Trophy className="mr-2 h-5 w-5" />
-            Leaderboard
-          </Button>
-        )}
+          <motion.div variants={fadeVariants}>
+            <Button 
+              onClick={onStart}
+              className="px-8 py-6 text-lg rounded-full w-full"
+            >
+              Practice Mode
+            </Button>
+          </motion.div>
+          
+          <motion.div variants={fadeVariants}>
+            <Button 
+              onClick={handleStartDailyCalibration}
+              variant="outline"
+              className="px-8 py-6 text-lg rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 w-full"
+            >
+              <Calendar className="mr-2 h-5 w-5" />
+              Daily Calibration
+            </Button>
+          </motion.div>
+          
+          {showLeaderboard && (
+            <motion.div variants={fadeVariants}>
+              <Button 
+                onClick={showLeaderboard}
+                variant="secondary"
+                className="px-8 py-4 rounded-full w-full"
+              >
+                <Trophy className="mr-2 h-5 w-5" />
+                Leaderboard
+              </Button>
+            </motion.div>
+          )}
 
-        {!isGuestMode && (
-          <Button variant="ghost" className="justify-start">
-            <UserCircle className="mr-2 h-4 w-4" />
-            Account
-          </Button>
-        )}
+          {!isGuestMode && (
+            <motion.div variants={fadeVariants}>
+              <Button variant="ghost" className="justify-start w-full">
+                <UserCircle className="mr-2 h-4 w-4" />
+                Account
+              </Button>
+            </motion.div>
+          )}
 
-        <Button variant="ghost" className="justify-start">
-          <Settings className="mr-2 h-4 w-4" />
-          Settings
-        </Button>
+          <motion.div variants={fadeVariants}>
+            <Button variant="ghost" className="justify-start w-full">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Button>
+          </motion.div>
 
-        <Button variant="ghost" className="justify-start">
-          <History className="mr-2 h-4 w-4" />
-          History
-        </Button>
+          <motion.div variants={fadeVariants}>
+            <Button variant="ghost" className="justify-start w-full">
+              <History className="mr-2 h-4 w-4" />
+              History
+            </Button>
+          </motion.div>
 
-        <Button variant="ghost" className="justify-start">
-          <Store className="mr-2 h-4 w-4" />
-          Store
-        </Button>
+          <motion.div variants={fadeVariants}>
+            <Button variant="ghost" className="justify-start w-full">
+              <Store className="mr-2 h-4 w-4" />
+              Store
+            </Button>
+          </motion.div>
 
-        <Button variant="ghost" className="justify-start">
-          <Info className="mr-2 h-4 w-4" />
-          About
-        </Button>
-      </div>
+          <motion.div variants={fadeVariants}>
+            <Button variant="ghost" className="justify-start w-full">
+              <Info className="mr-2 h-4 w-4" />
+              About
+            </Button>
+          </motion.div>
+        </motion.div>
 
-      <p className="text-xs text-muted-foreground">
-        Crafted with passion by <a href="https://twitter.com/Nutlope" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">@Nutlope</a>
-      </p>
-    </div>
+        <motion.p 
+          className="text-xs text-muted-foreground"
+          variants={fadeVariants}
+          transition={{ delay: 0.3 }}
+        >
+          Crafted with passion by <a href="https://twitter.com/Nutlope" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">@Nutlope</a>
+        </motion.p>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
