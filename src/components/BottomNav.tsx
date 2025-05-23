@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, LineChart, Settings, User, Palette } from 'lucide-react';
@@ -15,9 +16,13 @@ const BottomNav: React.FC = () => {
       <div className="grid grid-cols-5 h-16">
         <Link
           to="/"
-          className={`flex flex-col items-center justify-center text-xs ${
+          className={`flex flex-col items-center justify-center text-xs min-h-[44px] min-w-[44px] touch-manipulation ${
             isActive('/') ? 'text-primary' : 'text-muted-foreground'
           }`}
+          style={{ 
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent'
+          }}
         >
           <Home className="h-5 w-5 mb-1" />
           <span>Home</span>
@@ -25,9 +30,13 @@ const BottomNav: React.FC = () => {
         
         <Link
           to="/store"
-          className={`flex flex-col items-center justify-center text-xs ${
+          className={`flex flex-col items-center justify-center text-xs min-h-[44px] min-w-[44px] touch-manipulation ${
             isActive('/store') ? 'text-primary' : 'text-muted-foreground'
           }`}
+          style={{ 
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent'
+          }}
         >
           <Palette className="h-5 w-5 mb-1" />
           <span>Store</span>
@@ -35,9 +44,13 @@ const BottomNav: React.FC = () => {
         
         <Link
           to="/history"
-          className={`flex flex-col items-center justify-center text-xs ${
+          className={`flex flex-col items-center justify-center text-xs min-h-[44px] min-w-[44px] touch-manipulation ${
             isActive('/history') ? 'text-primary' : 'text-muted-foreground'
           }`}
+          style={{ 
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent'
+          }}
         >
           <LineChart className="h-5 w-5 mb-1" />
           <span>History</span>
@@ -45,9 +58,13 @@ const BottomNav: React.FC = () => {
         
         <Link
           to="/settings"
-          className={`flex flex-col items-center justify-center text-xs ${
+          className={`flex flex-col items-center justify-center text-xs min-h-[44px] min-w-[44px] touch-manipulation ${
             isActive('/settings') ? 'text-primary' : 'text-muted-foreground'
           }`}
+          style={{ 
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent'
+          }}
         >
           <Settings className="h-5 w-5 mb-1" />
           <span>Settings</span>
@@ -55,9 +72,13 @@ const BottomNav: React.FC = () => {
         
         <Link
           to="/account"
-          className={`flex flex-col items-center justify-center text-xs ${
+          className={`flex flex-col items-center justify-center text-xs min-h-[44px] min-w-[44px] touch-manipulation ${
             isActive('/account') ? 'text-primary' : 'text-muted-foreground'
           }`}
+          style={{ 
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent'
+          }}
         >
           <User className="h-5 w-5 mb-1" />
           <span>Profile</span>

@@ -38,12 +38,12 @@ const ResultControls: React.FC<ResultControlsProps> = ({
         </div>
       )}
       
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {isDailyMode && dailyCompleted ? (
           <Button 
             onClick={onReplay}
             variant="outline"
-            className="px-8 py-4 text-lg rounded-full opacity-50 cursor-not-allowed shadow-lg"
+            className="px-8 py-4 text-lg rounded-full opacity-50 cursor-not-allowed shadow-lg min-h-[56px]"
             disabled
           >
             <Calendar className="mr-2 h-5 w-5" />
@@ -52,7 +52,7 @@ const ResultControls: React.FC<ResultControlsProps> = ({
         ) : (
           <Button 
             onClick={onReplay}
-            className="px-8 py-4 text-lg font-semibold rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 animate-pulse"
+            className="px-8 py-4 text-lg font-semibold rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 animate-pulse min-h-[56px]"
             size="lg"
           >
             <RotateCcw className="mr-3 h-5 w-5" />
@@ -64,7 +64,7 @@ const ResultControls: React.FC<ResultControlsProps> = ({
           <Button 
             onClick={onViewStats}
             variant="secondary"
-            className="px-6 py-3 rounded-full"
+            className="px-6 py-3 rounded-full min-h-[48px]"
           >
             View Stats
           </Button>
@@ -74,7 +74,7 @@ const ResultControls: React.FC<ResultControlsProps> = ({
           <Button 
             onClick={showLeaderboard}
             variant="outline"
-            className="px-6 py-3 rounded-full"
+            className="px-6 py-3 rounded-full min-h-[48px]"
           >
             Show Leaderboard
           </Button>
@@ -83,7 +83,7 @@ const ResultControls: React.FC<ResultControlsProps> = ({
         <Button 
           onClick={onShare}
           variant="ghost"
-          className="px-6 py-3 rounded-full"
+          className="px-6 py-3 rounded-full min-h-[48px]"
         >
           Share Result
         </Button>
@@ -92,7 +92,7 @@ const ResultControls: React.FC<ResultControlsProps> = ({
           <Button 
             onClick={onRemoveAds}
             variant="destructive"
-            className="px-6 py-3 rounded-full"
+            className="px-6 py-3 rounded-full min-h-[48px]"
           >
             Remove Ads
           </Button>

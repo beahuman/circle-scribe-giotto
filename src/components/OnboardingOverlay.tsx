@@ -41,7 +41,11 @@ const OnboardingOverlay: React.FC<OnboardingOverlayProps> = ({ onComplete }) => 
       <div className="max-w-md w-full text-center space-y-8">
         {/* Skip button */}
         <div className="absolute top-6 right-6">
-          <Button variant="ghost" onClick={handleSkip} className="text-sm text-gray-500">
+          <Button 
+            variant="ghost" 
+            onClick={handleSkip} 
+            className="text-sm text-gray-500 min-h-[44px] min-w-[44px]"
+          >
             Skip
           </Button>
         </div>
@@ -98,7 +102,7 @@ const OnboardingOverlay: React.FC<OnboardingOverlayProps> = ({ onComplete }) => 
         <Button
           onClick={handleNext}
           size="lg"
-          className="w-full mt-8 flex items-center justify-center gap-2"
+          className="w-full mt-8 flex items-center justify-center gap-2 min-h-[56px]"
         >
           {currentSlide < slides.length - 1 ? (
             <>

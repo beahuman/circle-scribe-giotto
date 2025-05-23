@@ -38,7 +38,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
           <Button 
             variant="ghost" 
             onClick={onBackToHome}
-            className="absolute top-4 left-4"
+            className="absolute top-4 left-4 min-h-[48px] min-w-[48px]"
             size="icon"
           >
             <ArrowLeft className="h-6 w-6" />
@@ -72,7 +72,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
       <motion.div className="flex flex-col gap-4 w-full max-w-xs" variants={fadeVariants}>
         <Button 
           onClick={onStart}
-          className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
+          className="px-8 py-6 text-lg rounded-full animate-pulse-slow min-h-[56px]"
         >
           Begin
         </Button>
@@ -81,7 +81,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
           <Button 
             onClick={showLeaderboard}
             variant="outline"
-            className="px-8 py-4 rounded-full"
+            className="px-8 py-4 rounded-full min-h-[52px]"
           >
             <Trophy className="mr-2 h-5 w-5" />
             Leaderboard

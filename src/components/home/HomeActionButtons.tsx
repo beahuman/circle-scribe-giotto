@@ -26,7 +26,7 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
       <motion.div variants={fadeVariants}>
         <Button 
           onClick={onStart}
-          className="px-8 py-6 text-lg rounded-full w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
+          className="px-8 py-6 text-lg rounded-full w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 min-h-[56px]"
         >
           Practice Mode
         </Button>
@@ -36,7 +36,7 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
         <Button 
           onClick={onStartDailyCalibration}
           variant="outline"
-          className="px-8 py-6 text-lg rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
+          className="px-8 py-6 text-lg rounded-full border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 min-h-[56px]"
         >
           <Calendar className="mr-2 h-5 w-5" />
           Daily Calibration
@@ -48,7 +48,7 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
           <Button 
             onClick={showLeaderboard}
             variant="secondary"
-            className="px-8 py-4 rounded-full w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
+            className="px-8 py-4 rounded-full w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 min-h-[52px]"
           >
             <Trophy className="mr-2 h-5 w-5" />
             Leaderboard
