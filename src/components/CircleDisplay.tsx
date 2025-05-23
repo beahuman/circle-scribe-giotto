@@ -9,14 +9,18 @@ interface CircleDisplayProps {
     y: number;
     radius: number;
   };
+  isPenaltyMode?: boolean;
 }
 
 const CircleDisplay: React.FC<CircleDisplayProps> = ({ 
   duration, 
   onComplete, 
-  circleProps 
+  circleProps,
+  isPenaltyMode = false
 }) => {
-  const [countdown, setCountdown] = useState(duration);
+  // In penalty mode, force display time to 1 second regardless of settings
+  const actualDuration = isPenaltyMode ? 1 : duration;
+  const [countdown, setCountdown] = useState(actualDuration);
   const { x, y, radius } = circleProps;
   
   useEffect(() => {
@@ -45,12 +49,14 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
           height: radius * 2,
           borderRadius: '50%',
           border: '2px solid',
-          borderColor: 'hsl(var(--primary))'
+          borderColor: isPenaltyMode ? 'rgb(239, 68, 68)' : 'hsl(var(--primary))'
         }}
       />
       
-      <div className="fixed top-6 inset-x-0 mx-auto w-fit bg-[#765ED8] px-4 py-2 rounded-full backdrop-blur-sm">
-        <span className="text-lg font-medium text-white">Memorize: {countdown}</span>
+      <div className={`fixed top-6 inset-x-0 mx-auto w-fit ${isPenaltyMode ? 'bg-red-500' : 'bg-[#765ED8]'} px-4 py-2 rounded-full backdrop-blur-sm`}>
+        <span className="text-lg font-medium text-white">
+          {isPenaltyMode ? 'PENALTY MODE: ' : 'Memorize: '}{countdown}
+        </span>
       </div>
     </div>
   );

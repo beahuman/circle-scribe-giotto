@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,6 +15,9 @@ export const useSettings = () => {
   });
   const [showGhostCircle, setShowGhostCircle] = useState(() => {
     return localStorage.getItem('showGhostCircle') === 'true';
+  });
+  const [penaltyModeEnabled, setPenaltyModeEnabled] = useState(() => {
+    return localStorage.getItem('penaltyModeEnabled') === 'true';
   });
   const { toast } = useToast();
 
@@ -74,6 +76,15 @@ export const useSettings = () => {
     });
   };
 
+  const handlePenaltyModeToggle = (checked: boolean) => {
+    setPenaltyModeEnabled(checked);
+    localStorage.setItem('penaltyModeEnabled', String(checked));
+    toast({
+      title: "Penalty Mode",
+      description: checked ? "Penalty mode enabled - good luck!" : "Penalty mode disabled"
+    });
+  };
+
   return {
     notifications,
     darkMode,
@@ -81,11 +92,13 @@ export const useSettings = () => {
     drawingPrecision,
     displayDuration,
     showGhostCircle,
+    penaltyModeEnabled,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
     handlePrecisionChange,
     handleDurationChange,
     handleGhostCircleToggle,
+    handlePenaltyModeToggle,
   };
 };

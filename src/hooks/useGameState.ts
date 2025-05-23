@@ -6,7 +6,6 @@ import { getGameService } from '@/utils/gameServices';
 import { Point } from '@/types/shapes';
 
 type GameState = 'showing' | 'drawing' | 'result' | 'penalty';
-type PenaltyShape = 'line' | 'triangle' | 'square' | null;
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>('showing');
@@ -22,8 +21,9 @@ export const useGameState = () => {
     return Number(localStorage.getItem('displayDuration')) || 3;
   });
   const [consecutiveLowScores, setConsecutiveLowScores] = useState(0);
-  const [currentPenaltyShape, setCurrentPenaltyShape] = useState<PenaltyShape>(null);
-  const [completedPenaltyShapes, setCompletedPenaltyShapes] = useState(0);
+  const [penaltyModeEnabled, setPenaltyModeEnabled] = useState(() => {
+    return localStorage.getItem('penaltyModeEnabled') === 'true';
+  });
   const [sessionDrawings, setSessionDrawings] = useState(0);
   const [streakCount, setStreakCount] = useState(0);
   const { toast } = useToast();
@@ -47,10 +47,8 @@ export const useGameState = () => {
     setDisplayDuration,
     consecutiveLowScores,
     setConsecutiveLowScores,
-    currentPenaltyShape,
-    setCurrentPenaltyShape,
-    completedPenaltyShapes,
-    setCompletedPenaltyShapes,
+    penaltyModeEnabled,
+    setPenaltyModeEnabled,
     sessionDrawings,
     setSessionDrawings,
     streakCount,

@@ -1,3 +1,4 @@
+
 import { generateRandomCirclePosition } from '@/utils/circleUtils';
 import { Point } from '@/types/shapes';
 import { GameStateProps, GameHandlers } from './types';
@@ -11,7 +12,8 @@ export const useGameHandlers = (props: GameStateProps): GameHandlers => {
     setGameState, 
     setAccuracy, 
     setDrawnPoints, 
-    setTargetCircle
+    setTargetCircle,
+    penaltyModeEnabled
   } = props;
   
   // Initialize the handlers
@@ -41,15 +43,11 @@ export const useGameHandlers = (props: GameStateProps): GameHandlers => {
   const penaltyHandlers = createPenaltyHandlers({
     setGameState,
     setConsecutiveLowScores: props.setConsecutiveLowScores,
-    setCurrentPenaltyShape: props.setCurrentPenaltyShape,
-    setCompletedPenaltyShapes: props.setCompletedPenaltyShapes,
     setTargetCircle,
     setDrawnPoints,
     toast: props.toast,
     consecutiveLowScores: props.consecutiveLowScores,
-    completedPenaltyShapes: props.completedPenaltyShapes,
-    currentPenaltyShape: props.currentPenaltyShape,
-    gameState: props.gameState
+    penaltyModeEnabled: props.penaltyModeEnabled
   });
 
   // Create the combined handlers with extended functionality
@@ -71,7 +69,14 @@ export const useGameHandlers = (props: GameStateProps): GameHandlers => {
     }
     
     // Normal circle drawing continues
-    setTargetCircle(generateRandomCirclePosition());
+    const newCircle = generateRandomCirclePosition();
+    
+    // If in penalty mode (either automatic or enabled), reduce circle size by 20%
+    if (penaltyModeEnabled || props.consecutiveLowScores >= 3) {
+      newCircle.radius = Math.floor(newCircle.radius * 0.8);
+    }
+    
+    setTargetCircle(newCircle);
     setGameState('showing');
     setDrawnPoints([]); // Clear previous drawing
   };
@@ -79,7 +84,7 @@ export const useGameHandlers = (props: GameStateProps): GameHandlers => {
   return {
     ...coreHandlers,
     handleDrawingComplete,
-    handlePenaltyComplete: penaltyHandlers.handlePenaltyComplete,
-    handleReplay
+    handleReplay,
+    isPenaltyMode: () => penaltyModeEnabled || props.consecutiveLowScores >= 3
   };
 };

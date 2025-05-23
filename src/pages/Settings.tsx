@@ -9,6 +9,7 @@ import DisplaySettings from '@/components/settings/DisplaySettings';
 import NotificationSettings from '@/components/settings/NotificationSettings';
 import AppearanceSettings from '@/components/settings/AppearanceSettings';
 import GhostCircleSettings from '@/components/settings/GhostCircleSettings';
+import PenaltyModeSettings from '@/components/settings/PenaltyModeSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +23,14 @@ const Settings = () => {
     drawingPrecision,
     displayDuration,
     showGhostCircle,
+    penaltyModeEnabled,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
     handlePrecisionChange,
     handleDurationChange,
     handleGhostCircleToggle,
+    handlePenaltyModeToggle,
   } = useSettings();
 
   return (
@@ -45,6 +48,13 @@ const Settings = () => {
         <DifficultySettings 
           difficultyLevel={difficultyLevel}
           onDifficultyChange={handleDifficultyChange}
+        />
+
+        <Separator className="bg-purple-300/20" />
+        
+        <PenaltyModeSettings
+          penaltyModeEnabled={penaltyModeEnabled}
+          onPenaltyModeChange={handlePenaltyModeToggle}
         />
 
         <Separator className="bg-purple-300/20" />

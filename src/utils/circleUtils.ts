@@ -68,12 +68,17 @@ const evaluateRadialSymmetry = (points: Point[], center: Point): number => {
 };
 
 // Calculate the accuracy of a drawn circle compared to a target circle
-export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficultyLevel: number = 50): number => {
+export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficultyLevel: number = 50, isPenaltyMode: boolean = false): number => {
   if (points.length < 3) return 0;
   
   // Apply difficulty scaling factor (50% is standard, higher is harder)
   // Range: 0.75 (easiest) to 1.75 (hardest)
-  const difficultyScaling = 0.75 + (difficultyLevel / 50);
+  let difficultyScaling = 0.75 + (difficultyLevel / 50);
+  
+  // In penalty mode, increase difficulty scaling by 25%
+  if (isPenaltyMode) {
+    difficultyScaling *= 1.25;
+  }
   
   // 1. Find the center of drawn points
   let sumX = 0, sumY = 0;
@@ -139,8 +144,8 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficu
     (symmetryScore * 0.25)            // Symmetry: 25% weight
   );
   
-  // Apply a small bonus for lower difficulty
-  const difficultyBonus = Math.max(0, (1 - (difficultyLevel / 100)) * 10);
+  // Apply a small bonus for lower difficulty, but not in penalty mode
+  const difficultyBonus = isPenaltyMode ? 0 : Math.max(0, (1 - (difficultyLevel / 100)) * 10);
   
   // Ensure the score is between 0 and 100
   return Math.min(100, Math.max(0, finalScore + difficultyBonus));

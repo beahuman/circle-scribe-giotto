@@ -28,7 +28,17 @@ const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
     
     // Penalty mode has special extra sarcastic messages
     if (isPenalty) {
-      return "Looks like someone needs to go back to kindergarten! Draw some basic shapes before attempting a circle again.";
+      const penaltyMessages = [
+        "Is your screen upside down? Just checking.",
+        "Did your pet take over the drawing? It might explain a lot.",
+        "Looks like someone needs to go back to kindergarten!",
+        "Are you drawing with your eyes closed as a personal challenge?",
+        "If this was a test, you'd be repeating the grade.",
+        "Maybe circles just aren't your thing. Have you tried squares?",
+        "I've seen better circles drawn by people without opposable thumbs.",
+        "Drawing circles: still harder than rocket science, apparently."
+      ];
+      return penaltyMessages[Math.floor(Math.random() * penaltyMessages.length)];
     }
     
     if (score >= 95) return "Wow, did you use a compass? That's cheating! Or maybe you're secretly Giotto himself?";

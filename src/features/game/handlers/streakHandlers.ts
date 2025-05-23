@@ -17,6 +17,9 @@ export const createStreakHandlers = ({
     if (score >= 75) {
       setStreakCount(prev => prev + 1);
       
+      // Reset consecutive low scores when performing well
+      setConsecutiveLowScores(0);
+      
       // Give positive feedback on streaks (reinforcement)
       if (streakCount === 2) {
         toast({
@@ -46,23 +49,23 @@ export const createStreakHandlers = ({
           duration: 2000
         });
       }
-      setStreakCount(() => 0);
+      setStreakCount(0);
     }
     
     // Track consecutive low scores for the penalty system
-    if (score < 30) {
+    if (score < 50) {
       setConsecutiveLowScores(prev => prev + 1);
       
-      // Neural feedback on repeated poor performance
-      if (streakCount === 2) {
+      // Warn about approaching penalty mode
+      if (setConsecutiveLowScores.length === 2) {
         toast({
-          title: "Struggling with circles?",
-          description: "Let's try something different to build your skills.",
+          title: "Warning",
+          description: "One more low score and you'll enter Penalty Mode!",
           duration: 3000
         });
       }
     } else {
-      setConsecutiveLowScores(() => 0);
+      setConsecutiveLowScores(0);
     }
     
     await submitScore(score);

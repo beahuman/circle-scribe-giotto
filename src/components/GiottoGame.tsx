@@ -3,7 +3,6 @@ import React from 'react';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
 import ResultScreen from './ResultScreen';
-import ShapeChallenge from './ShapeChallenge';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { GameProps } from '@/types/game';
 import { useGameState } from '@/hooks/useGameState';
@@ -30,10 +29,8 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
     displayDuration,
     consecutiveLowScores,
     setConsecutiveLowScores,
-    currentPenaltyShape,
-    setCurrentPenaltyShape,
-    completedPenaltyShapes,
-    setCompletedPenaltyShapes,
+    penaltyModeEnabled,
+    setPenaltyModeEnabled,
     sessionDrawings,
     setSessionDrawings,
     streakCount,
@@ -51,9 +48,9 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   const {
     handleCircleMemorized,
     handleDrawingComplete,
-    handlePenaltyComplete,
     handleReplay,
-    handleBypassMobile
+    handleBypassMobile,
+    isPenaltyMode
   } = useGameHandlers({
     setGameState,
     setAccuracy,
@@ -63,17 +60,14 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
     setConsecutiveLowScores,
     setTargetCircle,
     setDifficultyLevel,
-    setCurrentPenaltyShape,
-    setCompletedPenaltyShapes,
     submitScore,
     toast,
     difficultyLevel,
     streakCount,
     sessionDrawings,
     consecutiveLowScores,
-    completedPenaltyShapes,
-    gameState,
-    currentPenaltyShape
+    penaltyModeEnabled,
+    gameState
   });
   
   const isMobile = useIsMobile();
@@ -90,6 +84,9 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
     );
   }
   
+  // Check if we're in penalty mode
+  const inPenaltyMode = isPenaltyMode();
+  
   // Render the current game state
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -98,6 +95,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
           duration={displayDuration} 
           onComplete={handleCircleMemorized}
           circleProps={targetCircle}
+          isPenaltyMode={inPenaltyMode}
         />
       )}
       
@@ -105,6 +103,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
         <DrawingCanvas 
           onComplete={handleDrawingComplete}
           targetCircle={targetCircle}
+          difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
         />
       )}
       
@@ -118,19 +117,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
           drawnPoints={drawnPoints}
           onBackToHome={onReturnToHome}
           onRemoveAds={onRemoveAds}
-          isPenaltyMode={consecutiveLowScores >= 3}
-          penaltyShapesRequired={3}
-          penaltyShapesCompleted={completedPenaltyShapes}
-        />
-      )}
-
-      {gameState === 'penalty' && currentPenaltyShape && (
-        <ShapeChallenge 
-          shapeType={currentPenaltyShape}
-          onComplete={handlePenaltyComplete}
-          difficultyLevel={difficultyLevel}
-          completedShapes={completedPenaltyShapes}
-          totalShapesRequired={3}
+          isPenaltyMode={inPenaltyMode}
         />
       )}
     </div>

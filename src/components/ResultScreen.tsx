@@ -3,7 +3,6 @@ import { Star } from "lucide-react";
 import AdBanner from './AdBanner';
 import CircleVisualization from './results/CircleVisualization';
 import FeedbackMessage from './results/FeedbackMessage';
-import PenaltyModeInfo from './results/PenaltyModeInfo';
 import ResultControls from './results/ResultControls';
 
 interface ResultScreenProps {
@@ -16,8 +15,6 @@ interface ResultScreenProps {
   onBackToHome?: () => void;
   onRemoveAds?: () => void;
   isPenaltyMode?: boolean;
-  penaltyShapesRequired?: number;
-  penaltyShapesCompleted?: number;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({
@@ -29,9 +26,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   drawnPoints,
   onBackToHome,
   onRemoveAds,
-  isPenaltyMode = false,
-  penaltyShapesRequired = 3,
-  penaltyShapesCompleted = 0
+  isPenaltyMode = false
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
@@ -50,13 +45,14 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
     scoreHistory.push({
       score: roundedAccuracy,
       timestamp: Date.now(),
-      difficulty: difficultyLevel
+      difficulty: difficultyLevel,
+      isPenalty: isPenaltyMode
     });
     // Keep last 100 scores
     if (scoreHistory.length > 100) scoreHistory.shift();
     localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
     
-  }, [roundedAccuracy, isGoodScore, difficultyLevel]);
+  }, [roundedAccuracy, isGoodScore, difficultyLevel, isPenaltyMode]);
   
   const handleShare = async () => {
     const shareText = `I drew a circle with ${roundedAccuracy}% accuracy in Giotto! Can you beat my score?`;
@@ -141,14 +137,14 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
             </span>
             <Star className="h-4 w-4 text-primary animate-pulse" />
           </div>
+          
+          {/* Penalty mode indicator */}
+          {isPenaltyMode && (
+            <div className="mt-2 px-3 py-1 bg-red-100 text-red-500 rounded-full text-sm font-medium inline-block animate-pulse-slow">
+              Penalty Mode Active
+            </div>
+          )}
         </div>
-        
-        {/* Penalty mode information */}
-        <PenaltyModeInfo
-          isPenaltyMode={isPenaltyMode}
-          penaltyShapesRequired={penaltyShapesRequired}
-          penaltyShapesCompleted={penaltyShapesCompleted}
-        />
         
         {/* Feedback message */}
         <FeedbackMessage
