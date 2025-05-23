@@ -1,3 +1,6 @@
+
+import { calculateGeometricScore, GeometricSubscores } from './scoring/geometricScoring';
+
 interface Point {
   x: number;
   y: number;
