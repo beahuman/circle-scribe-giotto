@@ -13,6 +13,7 @@ import { useSessionTracking } from '@/hooks/useSessionTracking';
 import { useGameService } from '@/hooks/useGameService';
 import { useGameHandlers } from '@/features/game/gameHandlers';
 import MobileWarning from './game/MobileWarning';
+import { Point } from '@/types/shapes';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Game state management

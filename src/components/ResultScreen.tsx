@@ -1,14 +1,16 @@
 
 import React, { useEffect, useState } from 'react';
-import { Star } from "lucide-react";
 import { motion } from 'framer-motion';
 import AdBanner from './AdBanner';
 import CircleVisualization from './results/CircleVisualization';
 import FeedbackMessage from './results/FeedbackMessage';
 import ResultControls from './results/ResultControls';
 import XpProgressBar from './results/XpProgressBar';
+import ScoreDisplay from './results/ScoreDisplay';
 import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 import { useCosmetics } from '@/hooks/useCosmetics';
+import { useImprovementCalculator } from './results/ImprovementCalculator';
+import { useResultActions } from './results/useResultActions';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -47,6 +49,12 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const backgroundStyle = getEquippedValue('background');
   const animationStyle = getEquippedValue('animation');
   
+  // Calculate improvement using our custom hook
+  const improvement = useImprovementCalculator(roundedAccuracy);
+  
+  // Handle actions like sharing and vibration feedback
+  const { handleShare } = useResultActions(roundedAccuracy, difficultyLevel, isPenaltyMode);
+  
   // Add XP based on accuracy
   useEffect(() => {
     const result = playerProgress.addXp(roundedAccuracy);
@@ -58,66 +66,6 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       navigator.vibrate([100, 50, 100, 50, 100]);
     }
   }, [roundedAccuracy]);
-  
-  // Add haptic feedback on result screen load based on score
-  useEffect(() => {
-    if ('navigator' in window && 'vibrate' in navigator) {
-      if (isGoodScore) {
-        // Pleasing pulse pattern for good result
-        navigator.vibrate([30, 20, 30]);
-      }
-    }
-    
-    // Track score history in local storage for progress visualization
-    const scoreHistory = JSON.parse(localStorage.getItem('scoreHistory') || '[]');
-    scoreHistory.push({
-      score: roundedAccuracy,
-      timestamp: Date.now(),
-      difficulty: difficultyLevel,
-      isPenalty: isPenaltyMode
-    });
-    // Keep last 100 scores
-    if (scoreHistory.length > 100) scoreHistory.shift();
-    localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
-    
-  }, [roundedAccuracy, isGoodScore, difficultyLevel, isPenaltyMode]);
-  
-  const handleShare = async () => {
-    const shareText = `I drew a circle with ${roundedAccuracy}% accuracy in Giotto! Can you beat my score?`;
-    
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: 'My Giotto Score',
-          text: shareText,
-          url: window.location.href
-        });
-      } else {
-        await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
-        alert('Score and link copied to clipboard!');
-      }
-    } catch (error) {
-      console.error('Error sharing:', error);
-    }
-  };
-  
-  // Calculate improvement compared to average of last 5 scores
-  const calculateImprovement = (): number | null => {
-    try {
-      const scoreHistory = JSON.parse(localStorage.getItem('scoreHistory') || '[]');
-      if (scoreHistory.length <= 1) return null;
-      
-      const recentScores = scoreHistory.slice(-6, -1); // Last 5 excluding current
-      if (recentScores.length === 0) return null;
-      
-      const avgRecentScore = recentScores.reduce((sum: number, item: any) => sum + item.score, 0) / recentScores.length;
-      return roundedAccuracy - avgRecentScore;
-    } catch (e) {
-      return null;
-    }
-  };
-  
-  const improvement = calculateImprovement();
   
   return (
     <motion.div
@@ -142,80 +90,31 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         />
       </div>
       
-      <div className="space-y-6 w-full mt-2">
-        <div>
-          <div className={`text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400 ${isGoodScore ? animationStyle : ''}`}>
-            {roundedAccuracy}%
-          </div>
-          
-          {/* Neural reward: Show improvement compared to average */}
-          {improvement !== null && Math.abs(improvement) > 1 && (
-            <div className={`text-sm mt-1 ${improvement > 0 ? 'text-green-500' : 'text-orange-400'}`}>
-              <span className="flex items-center justify-center gap-1">
-                {improvement > 0 ? (
-                  <>
-                    <i className="ri-arrow-up-line"></i>
-                    {improvement.toFixed(1)}% improvement
-                  </>
-                ) : (
-                  <>
-                    <i className="ri-arrow-down-line"></i>
-                    {Math.abs(improvement).toFixed(1)}% below your average
-                  </>
-                )}
-              </span>
-            </div>
-          )}
-          
-          <div className="flex items-center justify-center gap-2 mt-2 text-sm">
-            <Star className="h-4 w-4 text-primary animate-pulse" />
-            <span className="text-muted-foreground">
-              Difficulty Level: {difficultyLevel}%
-            </span>
-            <Star className="h-4 w-4 text-primary animate-pulse" />
-          </div>
-          
-          {/* Penalty mode indicator */}
-          {isPenaltyMode && (
-            <div className="mt-2 px-3 py-1 bg-red-100 text-red-500 rounded-full text-sm font-medium inline-block animate-pulse-slow">
-              Penalty Mode Active
-            </div>
-          )}
-          
-          {/* Session rounds counter */}
-          {sessionRoundsPlayed > 0 && (
-            <div className="mt-2 text-sm text-muted-foreground">
-              Rounds this session: <span className="font-medium">{sessionRoundsPlayed}</span>
-            </div>
-          )}
-        </div>
-        
-        {/* XP Progress Bar */}
-        <XpProgressBar 
-          playerProgress={playerProgress}
-          xpGained={progressResult.xpGained}
-          didLevelUp={progressResult.didLevelUp}
-          className="max-w-xs mx-auto mt-4"
-        />
-        
-        {/* Level up message */}
-        {progressResult.didLevelUp && (
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="text-green-500 font-medium mt-2"
-          >
-            Leveled up to {progressResult.newLevel}!
-          </motion.div>
-        )}
-        
-        {/* Feedback message */}
-        <FeedbackMessage
-          accuracy={roundedAccuracy}
-          isPenaltyMode={isPenaltyMode}
-          hasImproved={improvement !== null && improvement > 0}
-        />
-      </div>
+      {/* Score display component */}
+      <ScoreDisplay 
+        roundedAccuracy={roundedAccuracy}
+        difficultyLevel={difficultyLevel}
+        improvement={improvement}
+        isPenaltyMode={isPenaltyMode}
+        sessionRoundsPlayed={sessionRoundsPlayed}
+        animationStyle={animationStyle}
+        progressResult={progressResult}
+      />
+      
+      {/* XP Progress Bar */}
+      <XpProgressBar 
+        playerProgress={playerProgress}
+        xpGained={progressResult.xpGained}
+        didLevelUp={progressResult.didLevelUp}
+        className="max-w-xs mx-auto mt-4"
+      />
+      
+      {/* Feedback message */}
+      <FeedbackMessage
+        accuracy={roundedAccuracy}
+        isPenaltyMode={isPenaltyMode}
+        hasImproved={improvement !== null && improvement > 0}
+      />
       
       {/* Result controls */}
       <ResultControls
