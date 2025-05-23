@@ -109,6 +109,8 @@ export const useDrawingState = () => {
 
   const handleEnd = useCallback(() => {
     if (!isDrawing || points.length < 2) return;
+    
+    // Immediate state change for instant feedback
     setIsDrawing(false);
   }, [isDrawing, points.length]);
 

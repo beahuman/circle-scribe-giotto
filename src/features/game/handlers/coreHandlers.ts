@@ -11,10 +11,12 @@ export const createCoreHandlers = ({
 }: Pick<GameStateProps, 'setGameState' | 'setAccuracy' | 'setDrawnPoints' | 'setTargetCircle'>) => {
   
   const handleCircleMemorized = () => {
+    // Immediate state transition
     setGameState('drawing');
   };
 
-  const handleDrawingComplete = async (score: number, points: Point[]) => {
+  const handleDrawingComplete = (score: number, points: Point[]) => {
+    // All state updates happen synchronously for immediate feedback
     setAccuracy(score);
     setDrawnPoints(points);
     setGameState('result');

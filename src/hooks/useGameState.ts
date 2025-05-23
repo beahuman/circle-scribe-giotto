@@ -32,8 +32,10 @@ export const useGameState = () => {
   
   // Create a wrapped setAccuracy that also records the result
   const setAccuracyWithTracking = (newAccuracy: number) => {
+    // Set accuracy immediately without any delays
     setAccuracy(newAccuracy);
-    // Record the result for local progress tracking
+    
+    // Record the result for local progress tracking synchronously
     addGameResult(
       Math.round(newAccuracy), 
       difficultyLevel, 

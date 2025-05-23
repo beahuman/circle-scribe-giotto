@@ -41,16 +41,14 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     
     const accuracy = calculateAccuracy(points, targetCircle);
     
-    // Optimized haptic feedback
+    // Immediate haptic feedback without delay
     if ('navigator' in window && 'vibrate' in navigator) {
       const pattern = accuracy > 80 ? [20] : accuracy > 50 ? [40, 30, 40] : [60, 30, 60, 30, 60];
       navigator.vibrate(pattern);
     }
     
-    // Immediate feedback with optimized timing
-    setTimeout(() => {
-      onComplete(accuracy, points);
-    }, 2500);
+    // Immediate callback - no artificial delay
+    onComplete(accuracy, points);
   }, [isDrawing, points, targetCircle, onComplete]);
 
   // Optimized touch handlers with preventDefault for better performance
@@ -71,6 +69,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     handleEnd();
+    // Immediate finalization without setTimeout
     finalizeDrawing();
   }, [handleEnd, finalizeDrawing]);
 
@@ -88,6 +87,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
 
   const handleMouseUp = useCallback(() => {
     handleEnd();
+    // Immediate finalization without setTimeout
     finalizeDrawing();
   }, [handleEnd, finalizeDrawing]);
 
