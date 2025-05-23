@@ -6,17 +6,23 @@ import { useDrawingState } from '@/hooks/useDrawingState';
 import CanvasRenderer from './drawing/CanvasRenderer';
 import QualityIndicator from './drawing/QualityIndicator';
 import InstructionOverlay from './drawing/InstructionOverlay';
+import { Point } from '@/types/shapes';
 
 interface DrawingCanvasProps {
-  onComplete: (accuracy: number, points: Array<{ x: number; y: number }>) => void;
+  onComplete: (accuracy: number, points: Point[]) => void;
   targetCircle: {
     x: number;
     y: number;
     radius: number;
   };
+  difficultyLevel?: number; // Added difficultyLevel as optional prop
 }
 
-const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle }) => {
+const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ 
+  onComplete, 
+  targetCircle,
+  difficultyLevel = 50 // Default value if not provided
+}) => {
   const {
     isDrawing,
     points,

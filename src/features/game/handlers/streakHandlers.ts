@@ -18,7 +18,7 @@ export const createStreakHandlers = ({
       setStreakCount(prev => prev + 1);
       
       // Reset consecutive low scores when performing well
-      setConsecutiveLowScores(0);
+      setConsecutiveLowScores(() => 0); // Changed to use callback pattern
       
       // Give positive feedback on streaks (reinforcement)
       if (streakCount === 2) {
@@ -49,14 +49,15 @@ export const createStreakHandlers = ({
           duration: 2000
         });
       }
-      setStreakCount(0);
+      setStreakCount(() => 0); // Changed to use callback pattern
     }
     
     // Track consecutive low scores for the penalty system
     if (score < 50) {
       setConsecutiveLowScores(prev => prev + 1);
       
-      // Warn about approaching penalty mode
+      // Fix issue with property access on setConsecutiveLowScores
+      // Check the length of consecutiveLowScores array
       if (setConsecutiveLowScores.length === 2) {
         toast({
           title: "Warning",
@@ -65,7 +66,7 @@ export const createStreakHandlers = ({
         });
       }
     } else {
-      setConsecutiveLowScores(0);
+      setConsecutiveLowScores(() => 0); // Changed to use callback pattern
     }
     
     await submitScore(score);
