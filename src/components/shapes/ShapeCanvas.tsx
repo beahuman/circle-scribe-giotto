@@ -35,7 +35,7 @@ const ShapeCanvas: React.FC<ShapeCanvasProps> = ({
         ctx.lineTo(targetShape.points[i].x, targetShape.points[i].y);
       }
       
-      ctx.strokeStyle = 'hsl(var(--primary) / 0.6)';
+      ctx.strokeStyle = 'rgba(118, 94, 216, 0.6)'; // Using direct color value instead of CSS variable
       ctx.lineWidth = 4;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -51,7 +51,7 @@ const ShapeCanvas: React.FC<ShapeCanvasProps> = ({
         ctx.lineTo(points[i].x, points[i].y);
       }
       
-      ctx.strokeStyle = 'hsl(var(--primary))';
+      ctx.strokeStyle = 'rgb(118, 94, 216)'; // Using direct color value instead of CSS variable
       ctx.lineWidth = 4;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';

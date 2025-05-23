@@ -91,7 +91,7 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         
         // Add a soft glow for high quality strokes
         if (strokeQuality > 0.7) {
-          ctx.shadowColor = 'hsl(var(--primary) / 0.5)';
+          ctx.shadowColor = 'rgba(118, 94, 216, 0.5)'; // Using direct color value
           ctx.shadowBlur = 8;
           drawTrailingEffect(ctx, fadePoints);
           ctx.shadowBlur = 0;
@@ -146,19 +146,19 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         // Normalized accuracy (0 = perfect, 1 = totally off)
         const normalizedError = Math.min(1, avgDistance / distanceTolerance);
         
-        // Generate color gradient based on accuracy
+        // Generate color gradient based on accuracy - using direct color values instead of CSS variables
         if (normalizedError < 0.3) {
           // Good - green
-          segmentFeedback.addColorStop(0, `hsla(var(--success-hsl) / 0.9)`);
-          segmentFeedback.addColorStop(1, `hsla(var(--success-hsl) / 0.9)`);
+          segmentFeedback.addColorStop(0, 'rgba(34, 197, 94, 0.9)'); // Success green
+          segmentFeedback.addColorStop(1, 'rgba(34, 197, 94, 0.9)');
         } else if (normalizedError < 0.7) {
           // Medium - yellow to amber
-          segmentFeedback.addColorStop(0, `hsla(38, 92%, 50% / 0.85)`);
-          segmentFeedback.addColorStop(1, `hsla(38, 92%, 50% / 0.85)`);
+          segmentFeedback.addColorStop(0, 'rgba(245, 158, 11, 0.85)'); // Amber
+          segmentFeedback.addColorStop(1, 'rgba(245, 158, 11, 0.85)');
         } else {
           // Poor - red
-          segmentFeedback.addColorStop(0, `hsla(var(--destructive-hsl) / 0.8)`);
-          segmentFeedback.addColorStop(1, `hsla(var(--destructive-hsl) / 0.8)`);
+          segmentFeedback.addColorStop(0, 'rgba(239, 68, 68, 0.8)'); // Red
+          segmentFeedback.addColorStop(1, 'rgba(239, 68, 68, 0.8)');
         }
         
         ctx.strokeStyle = segmentFeedback;
@@ -192,7 +192,7 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
       
       // Draw glow dots at key points for trailing effect
       if (i % 3 === 0) { // Every 3rd point
-        ctx.fillStyle = `hsla(var(--primary-hsl) / ${opacity * 0.5})`;
+        ctx.fillStyle = `rgba(118, 94, 216, ${opacity * 0.5})`; // Using direct color value
         ctx.beginPath();
         ctx.arc(points[i].x, points[i].y, size / 2, 0, Math.PI * 2);
         ctx.fill();
