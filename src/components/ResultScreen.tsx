@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Star } from "lucide-react";
 import AdBanner from './AdBanner';
 import CircleVisualization from './results/CircleVisualization';
 import FeedbackMessage from './results/FeedbackMessage';
 import ResultControls from './results/ResultControls';
+import XpProgressBar from './results/XpProgressBar';
+import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -30,6 +33,20 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
+  const playerProgress = usePlayerProgress();
+  const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
+  
+  // Add XP based on accuracy
+  useEffect(() => {
+    const result = playerProgress.addXp(roundedAccuracy);
+    setProgressResult(result);
+    
+    // Show level-up toast if leveled up
+    if (result.didLevelUp && 'navigator' in window && 'vibrate' in navigator) {
+      // Celebratory vibration pattern for level up
+      navigator.vibrate([100, 50, 100, 50, 100]);
+    }
+  }, [roundedAccuracy]);
   
   // Add haptic feedback on result screen load based on score
   useEffect(() => {
@@ -116,17 +133,19 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           {/* Neural reward: Show improvement compared to average */}
           {improvement !== null && Math.abs(improvement) > 1 && (
             <div className={`text-sm mt-1 ${improvement > 0 ? 'text-green-500' : 'text-orange-400'}`}>
-              {improvement > 0 ? (
-                <span className="flex items-center justify-center gap-1">
-                  <i className="ri-arrow-up-line"></i>
-                  {improvement.toFixed(1)}% improvement
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-1">
-                  <i className="ri-arrow-down-line"></i>
-                  {Math.abs(improvement).toFixed(1)}% below your average
-                </span>
-              )}
+              <span className="flex items-center justify-center gap-1">
+                {improvement > 0 ? (
+                  <>
+                    <i className="ri-arrow-up-line"></i>
+                    {improvement.toFixed(1)}% improvement
+                  </>
+                ) : (
+                  <>
+                    <i className="ri-arrow-down-line"></i>
+                    {Math.abs(improvement).toFixed(1)}% below your average
+                  </>
+                )}
+              </span>
             </div>
           )}
           
@@ -145,6 +164,21 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
             </div>
           )}
         </div>
+        
+        {/* XP Progress Bar */}
+        <XpProgressBar 
+          playerProgress={playerProgress}
+          xpGained={progressResult.xpGained}
+          didLevelUp={progressResult.didLevelUp}
+          className="max-w-xs mx-auto mt-4"
+        />
+        
+        {/* Level up message */}
+        {progressResult.didLevelUp && (
+          <div className="text-green-500 font-medium animate-fade-in mt-2">
+            Leveled up to {progressResult.newLevel}!
+          </div>
+        )}
         
         {/* Feedback message */}
         <FeedbackMessage

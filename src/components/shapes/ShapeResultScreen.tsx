@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ShapeType, Point, TargetShape } from '@/types/shapes';
 import { getShapeName } from './ShapeIcon';
+import XpProgressBar from '../results/XpProgressBar';
+import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 
 interface ShapeResultScreenProps {
   accuracy: number;
@@ -25,6 +27,20 @@ const ShapeResultScreen: React.FC<ShapeResultScreenProps> = ({
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isPassing = roundedAccuracy >= 50;
+  const playerProgress = usePlayerProgress();
+  const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
+  
+  // Add XP based on accuracy
+  useEffect(() => {
+    const result = playerProgress.addXp(roundedAccuracy);
+    setProgressResult(result);
+    
+    // Show level-up toast if leveled up
+    if (result.didLevelUp && 'navigator' in window && 'vibrate' in navigator) {
+      // Celebratory vibration pattern for level up
+      navigator.vibrate([100, 50, 100, 50, 100]);
+    }
+  }, [roundedAccuracy]);
   
   const getShapeFeedback = (score: number, shape: ShapeType): string => {
     if (score >= 90) {
@@ -140,6 +156,21 @@ const ShapeResultScreen: React.FC<ShapeResultScreenProps> = ({
         <div className="text-4xl font-bold text-primary">
           {roundedAccuracy}%
         </div>
+        
+        {/* XP Progress Bar */}
+        <XpProgressBar 
+          playerProgress={playerProgress}
+          xpGained={progressResult.xpGained}
+          didLevelUp={progressResult.didLevelUp}
+          className="max-w-xs mx-auto mt-4"
+        />
+        
+        {/* Level up message */}
+        {progressResult.didLevelUp && (
+          <div className="text-green-500 font-medium animate-fade-in mt-2">
+            Leveled up to {progressResult.newLevel}!
+          </div>
+        )}
         
         <p className="text-muted-foreground max-w-xs mx-auto">
           {getShapeFeedback(roundedAccuracy, shapeType)}
