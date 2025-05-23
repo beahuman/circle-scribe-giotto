@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { CircleUser } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,14 @@ import { useAuth } from '@/contexts/AuthContext';
 
 interface AccountDetailsProps {
   userId: string;
+}
+
+interface ProfileData {
+  id: string;
+  username: string;
+  avatar_image: string | null;
+  avatar_color: string | null;
+  created_at: string;
 }
 
 const AccountDetails = ({ userId }: AccountDetailsProps) => {
@@ -38,7 +47,7 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
       const { data: { user } } = await supabase.auth.getUser();
 
       return {
-        ...profile,
+        ...profile as ProfileData,
         email: user?.email || '',
         bestScore: scores && scores.length > 0 ? scores[0].score : 0,
         totalGames: scores ? scores.length : 0
@@ -83,7 +92,7 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
           </div>
           
           <div className="text-sm text-muted-foreground">
-            Member since {new Date(userData?.created_at).toLocaleDateString()}
+            Member since {new Date(userData?.created_at || new Date()).toLocaleDateString()}
           </div>
 
           <Button 

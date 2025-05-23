@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -11,13 +12,18 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+interface GameStats {
+  totalGames: number;
+  bestScore: number;
+}
+
 const Account = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { user } = useAuth();
   
-  const { data: gameStats, isLoading } = useQuery({
+  const { data: gameStats, isLoading } = useQuery<GameStats>({
     queryKey: ['gameStats', user?.id],
     queryFn: async () => {
       if (!user?.id) return { totalGames: 0, bestScore: 0 };

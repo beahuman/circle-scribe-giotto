@@ -17,6 +17,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+interface Profile {
+  id: string;
+  username: string | null;
+  avatar_color: string | null;
+  avatar_image: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
 const formSchema = z.object({
   username: z.string().min(3, {
     message: "Username must be at least 3 characters.",
@@ -38,17 +47,19 @@ const EditAccount = () => {
     }
   }, [user, navigate]);
 
-  const { data: profile, isLoading } = useQuery({
+  const { data: profile, isLoading } = useQuery<Profile | null>({
     queryKey: ['profile'],
     queryFn: async () => {
+      if (!user?.id) return null;
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .single();
       
       if (error) throw error;
-      return data;
+      return data as Profile;
     },
     enabled: !!user
   });
@@ -59,6 +70,8 @@ const EditAccount = () => {
       avatarColor: string;
       avatarImage: string | null;
     }) => {
+      if (!user?.id) throw new Error('User not authenticated');
+      
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -66,7 +79,7 @@ const EditAccount = () => {
           avatar_color: values.avatarColor,
           avatar_image: values.avatarImage,
         })
-        .eq('id', user?.id);
+        .eq('id', user.id);
 
       if (error) throw error;
     },
@@ -108,7 +121,7 @@ const EditAccount = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      username: profile?.username || '',
       email: user?.email || '',
     },
   });

@@ -12,6 +12,10 @@ import EmailSignInForm from '@/components/auth/EmailSignInForm';
 import EmailSignUpForm from '@/components/auth/EmailSignUpForm';
 import LogoAnimation from '@/components/LogoAnimation';
 
+interface ProfileUpdate {
+  username: string;
+}
+
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -52,9 +56,11 @@ const Auth = () => {
       if (authError) throw authError;
 
       if (authData.user) {
+        const profileUpdate: ProfileUpdate = { username: values.username };
+        
         const { error: profileError } = await supabase
           .from('profiles')
-          .update({ username: values.username })
+          .update(profileUpdate)
           .eq('id', authData.user.id);
 
         if (profileError) throw profileError;

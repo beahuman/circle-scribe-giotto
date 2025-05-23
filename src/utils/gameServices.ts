@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 interface GameService {
@@ -26,7 +27,7 @@ class GameCenterService implements GameService {
       .from('game_scores')
       .insert({
         score,
-        user_id: (await supabase.auth.getUser()).data.user?.id,
+        user_id: (await supabase.auth.getUser()).data.user?.id || '',
         game_center_synced: true
       });
 
