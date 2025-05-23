@@ -14,7 +14,7 @@ interface GameStateProps {
   setTargetCircle: (circle: { x: number, y: number, radius: number }) => void;
   setDifficultyLevel: (difficulty: number) => void;
   setCurrentPenaltyShape: (shape: PenaltyShape) => void;
-  setCompletedPenaltyShapes: (count: number) => void;
+  setCompletedPenaltyShapes: (callback: (prev: number) => number) => void;
   submitScore: (score: number) => Promise<void>;
   toast: ReturnType<typeof useToast>['toast'];
   difficultyLevel: number;
@@ -91,7 +91,7 @@ export const useGameHandlers = ({
           duration: 2000
         });
       }
-      setStreakCount(0);
+      setStreakCount(prev => 0);
     }
     
     // Track consecutive low scores for the penalty system
@@ -107,7 +107,7 @@ export const useGameHandlers = ({
         });
       }
     } else {
-      setConsecutiveLowScores(0);
+      setConsecutiveLowScores(prev => 0);
     }
     
     // Adaptive difficulty - if player is consistently doing well, subtly increase difficulty
@@ -138,13 +138,12 @@ export const useGameHandlers = ({
     // If score is good enough
     if (score >= 50) {
       // Increment completed shapes counter
-      const newCompletedShapes = completedPenaltyShapes + 1;
-      setCompletedPenaltyShapes(newCompletedShapes);
+      setCompletedPenaltyShapes(prev => prev + 1);
       
       // If player completed all three penalty shapes, reset and go back to circles
-      if (newCompletedShapes >= 3) {
-        setCompletedPenaltyShapes(0);
-        setConsecutiveLowScores(0);
+      if (completedPenaltyShapes + 1 >= 3) {
+        setCompletedPenaltyShapes(prev => 0);
+        setConsecutiveLowScores(prev => 0);
         setCurrentPenaltyShape(null);
         setGameState('showing');
         setTargetCircle(generateRandomCirclePosition());
@@ -167,7 +166,7 @@ export const useGameHandlers = ({
       // Encourage progress
       toast({
         title: "Shape mastered!",
-        description: `${newCompletedShapes}/3 training shapes completed.`,
+        description: `${completedPenaltyShapes + 1}/3 training shapes completed.`,
         duration: 2000
       });
     }
