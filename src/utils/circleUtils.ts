@@ -1,4 +1,3 @@
-
 interface Point {
   x: number;
   y: number;
@@ -18,14 +17,65 @@ export const calculatePointToCircleDistance = (point: Point, circle: Circle): nu
   );
 };
 
+// Calculate angle between three points (in radians)
+const angleBetween = (p1: Point, p2: Point, p3: Point): number => {
+  const a = {x: p1.x - p2.x, y: p1.y - p2.y};
+  const b = {x: p3.x - p2.x, y: p3.y - p2.y};
+  
+  const dotProduct = a.x * b.x + a.y * b.y;
+  const magA = Math.sqrt(a.x * a.x + a.y * a.y);
+  const magB = Math.sqrt(b.x * b.x + b.y * b.y);
+  
+  // Avoid division by zero and floating point errors
+  const cosAngle = Math.max(-1, Math.min(1, dotProduct / (magA * magB || 1)));
+  return Math.acos(cosAngle);
+};
+
+// Measure jitter/smoothness - lower values are better (less jittery)
+const measureJitter = (points: Point[]): number => {
+  if (points.length < 3) return 0;
+  
+  let totalAngleChange = 0;
+  let angleChanges = 0;
+  
+  for (let i = 1; i < points.length - 1; i++) {
+    const angle = angleBetween(points[i-1], points[i], points[i+1]);
+    totalAngleChange += angle;
+    angleChanges++;
+  }
+  
+  return angleChanges > 0 ? totalAngleChange / angleChanges : 0;
+};
+
+// Evaluate radial symmetry from circle's center
+const evaluateRadialSymmetry = (points: Point[], center: Point): number => {
+  if (points.length < 4) return 0;
+  
+  // Calculate mean radius
+  const radii = points.map(point => 
+    Math.sqrt(Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2))
+  );
+  
+  const meanRadius = radii.reduce((sum, r) => sum + r, 0) / radii.length;
+  
+  // Calculate standard deviation of radii (lower is better symmetry)
+  const radiusSquaredDifferences = radii.map(r => Math.pow(r - meanRadius, 2));
+  const radiusVariance = radiusSquaredDifferences.reduce((sum, diff) => sum + diff, 0) / radii.length;
+  const radiusStdDev = Math.sqrt(radiusVariance);
+  
+  // Normalize by mean radius to get a relative measure
+  return radiusStdDev / (meanRadius || 1);
+};
+
 // Calculate the accuracy of a drawn circle compared to a target circle
 export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficultyLevel: number = 50): number => {
   if (points.length < 3) return 0;
   
-  // Apply difficulty scaling factor (50% is standard, higher is harder) with 25% increased difficulty
-  const difficultyScaling = (difficultyLevel / 50) * 1.25;
+  // Apply difficulty scaling factor (50% is standard, higher is harder)
+  // Range: 0.75 (easiest) to 1.75 (hardest)
+  const difficultyScaling = 0.75 + (difficultyLevel / 50);
   
-  // Calculate center of drawn points
+  // 1. Find the center of drawn points
   let sumX = 0, sumY = 0;
   for (const point of points) {
     sumX += point.x;
@@ -33,8 +83,9 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficu
   }
   const centerX = sumX / points.length;
   const centerY = sumY / points.length;
+  const drawnCenter = { x: centerX, y: centerY };
   
-  // Calculate average radius of drawn points
+  // 2. Calculate average radius of drawn points
   let sumRadius = 0;
   for (const point of points) {
     const dx = point.x - centerX;
@@ -43,37 +94,56 @@ export const calculateAccuracy = (points: Point[], targetCircle: Circle, difficu
   }
   const avgRadius = sumRadius / points.length;
   
-  // Calculate variance in radius (circularity) - Adjusted for difficulty
-  let sumVariance = 0;
+  // 3. Distance score: Calculate mean distance error from ideal path
+  let sumDistanceError = 0;
   for (const point of points) {
-    const dx = point.x - centerX;
-    const dy = point.y - centerY;
-    const radius = Math.sqrt(dx * dx + dy * dy);
-    sumVariance += Math.abs(radius - avgRadius) / avgRadius;
+    // Distance from point to target circle center
+    const pointToCenter = calculatePointToCircleDistance(point, targetCircle);
+    // Error is the absolute difference between this distance and the target radius
+    const distanceError = Math.abs(pointToCenter - targetCircle.radius) / targetCircle.radius;
+    sumDistanceError += distanceError;
   }
+  const meanDistanceError = sumDistanceError / points.length;
+  const distanceScore = Math.max(0, 100 - (meanDistanceError * 250 * difficultyScaling));
   
-  // Calculate center distance between drawn and target circles
+  // 4. Smoothness score: Penalize jitter/abrupt changes
+  const jitterMeasure = measureJitter(points);
+  // Convert jitter to score (lower jitter = higher score)
+  // Normal jitter range is roughly 0 to π/2 (90 degrees)
+  const smoothnessScore = Math.max(0, 100 - (jitterMeasure * (100 * difficultyScaling) / Math.PI));
+  
+  // 5. Symmetry score: Evaluate radial symmetry
+  const symmetryMeasure = evaluateRadialSymmetry(points, drawnCenter);
+  // Convert symmetry measure to score (lower measure = higher score)
+  const symmetryScore = Math.max(0, 100 - (symmetryMeasure * 500 * difficultyScaling));
+  
+  // 6. Center position accuracy
   const centerDistance = Math.sqrt(
     Math.pow(centerX - targetCircle.x, 2) + 
     Math.pow(centerY - targetCircle.y, 2)
   );
+  const centerError = centerDistance / targetCircle.radius;
+  const centerScore = Math.max(0, 100 - (centerError * 200 * difficultyScaling));
   
-  // Calculate radius difference between drawn and target circles
-  const radiusDiff = Math.abs(avgRadius - targetCircle.radius) / targetCircle.radius;
+  // 7. Radius accuracy
+  const radiusError = Math.abs(avgRadius - targetCircle.radius) / targetCircle.radius;
+  const radiusScore = Math.max(0, 100 - (radiusError * 200 * difficultyScaling));
   
-  // Apply difficulty scaling to all score components with 25% higher difficulty
-  const circularityScore = Math.max(0, 100 - (sumVariance / points.length * 375 * difficultyScaling));
-  const positionScore = Math.max(0, 100 - (centerDistance / targetCircle.radius * 250 * difficultyScaling));
-  const sizeScore = Math.max(0, 100 - (radiusDiff * 375 * difficultyScaling));
+  // Combine distance and positioning into a single distance score (50%)
+  const combinedDistanceScore = (distanceScore * 0.6) + (centerScore * 0.2) + (radiusScore * 0.2);
   
-  // Final score calculation with difficulty consideration
+  // Final weighted score
   const finalScore = (
-    (circularityScore * 0.8) + 
-    (positionScore * 0.1) + 
-    (sizeScore * 0.1)
-  ) * (1 + (1 - difficultyScaling) * 0.3); // Bonus for lower difficulty
+    (combinedDistanceScore * 0.5) +   // Distance: 50% weight
+    (smoothnessScore * 0.25) +        // Smoothness: 25% weight
+    (symmetryScore * 0.25)            // Symmetry: 25% weight
+  );
   
-  return Math.min(100, Math.max(0, finalScore * 0.65 * 0.8)); // 0.8 = 20% harder
+  // Apply a small bonus for lower difficulty
+  const difficultyBonus = Math.max(0, (1 - (difficultyLevel / 100)) * 10);
+  
+  // Ensure the score is between 0 and 100
+  return Math.min(100, Math.max(0, finalScore + difficultyBonus));
 };
 
 // Generate a random position for a circle within the screen bounds
