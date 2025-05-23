@@ -1,5 +1,4 @@
-
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Point } from '@/types/shapes';
 import { calculatePointToCircleDistance } from '@/utils/circleUtils';
 
@@ -12,18 +11,45 @@ interface CanvasRendererProps {
   };
   showGhostCircle: boolean;
   strokeQuality: number;
+  showCompletedDrawing?: boolean;
 }
 
 const CanvasRenderer: React.FC<CanvasRendererProps> = ({ 
   drawingPoints, 
   targetCircle, 
   showGhostCircle, 
-  strokeQuality 
+  strokeQuality,
+  showCompletedDrawing = false
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
   const trailPointsRef = useRef<Point[]>([]);
   const lastDrawnPointsRef = useRef<number>(0);
+  const [fadeOpacity, setFadeOpacity] = useState(1);
+  
+  // Handle fade-out effect for completed drawings
+  useEffect(() => {
+    if (showCompletedDrawing) {
+      // Start fade-out after 1.5 seconds
+      const fadeTimer = setTimeout(() => {
+        let opacity = 1;
+        const fadeInterval = setInterval(() => {
+          opacity -= 0.02; // Gradual fade over ~1 second
+          setFadeOpacity(Math.max(0, opacity));
+          
+          if (opacity <= 0) {
+            clearInterval(fadeInterval);
+          }
+        }, 20);
+        
+        return () => clearInterval(fadeInterval);
+      }, 1500);
+      
+      return () => clearTimeout(fadeTimer);
+    } else {
+      setFadeOpacity(1);
+    }
+  }, [showCompletedDrawing]);
   
   // Cleanup animation on unmount
   useEffect(() => {
@@ -69,12 +95,17 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Draw the ghost circle if enabled
-      if (showGhostCircle && targetCircle) {
+      // Apply fade opacity for completed drawings
+      ctx.globalAlpha = showCompletedDrawing ? fadeOpacity : 1;
+      
+      // Draw the target circle if we're showing completed drawing or ghost circle is enabled
+      if ((showCompletedDrawing || showGhostCircle) && targetCircle) {
         ctx.beginPath();
         ctx.arc(targetCircle.x, targetCircle.y, targetCircle.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(118, 94, 216, 0.15)'; // Very faint purple color
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = showCompletedDrawing ? 
+          'rgba(118, 94, 216, 0.4)' : // More visible when showing completed drawing
+          'rgba(118, 94, 216, 0.15)'; // Very faint for ghost circle
+        ctx.lineWidth = showCompletedDrawing ? 3 : 2;
         ctx.stroke();
       }
       
@@ -91,7 +122,7 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         
         // Add a soft glow for high quality strokes
         if (strokeQuality > 0.7) {
-          ctx.shadowColor = 'rgba(118, 94, 216, 0.5)'; // Using direct color value
+          ctx.shadowColor = 'rgba(118, 94, 216, 0.5)';
           ctx.shadowBlur = 8;
           drawTrailingEffect(ctx, fadePoints);
           ctx.shadowBlur = 0;
@@ -99,6 +130,9 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
           drawTrailingEffect(ctx, fadePoints);
         }
       }
+      
+      // Reset global alpha
+      ctx.globalAlpha = 1;
       
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -110,7 +144,7 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle]);
+  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle, showCompletedDrawing, fadeOpacity]);
 
   const drawStrokeWithFeedback = (
     ctx: CanvasRenderingContext2D, 
@@ -146,18 +180,18 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         // Normalized accuracy (0 = perfect, 1 = totally off)
         const normalizedError = Math.min(1, avgDistance / distanceTolerance);
         
-        // Generate color gradient based on accuracy - using direct color values instead of CSS variables
+        // Generate color gradient based on accuracy
         if (normalizedError < 0.3) {
           // Good - green
-          segmentFeedback.addColorStop(0, 'rgba(34, 197, 94, 0.9)'); // Success green
+          segmentFeedback.addColorStop(0, 'rgba(34, 197, 94, 0.9)');
           segmentFeedback.addColorStop(1, 'rgba(34, 197, 94, 0.9)');
         } else if (normalizedError < 0.7) {
           // Medium - yellow to amber
-          segmentFeedback.addColorStop(0, 'rgba(245, 158, 11, 0.85)'); // Amber
+          segmentFeedback.addColorStop(0, 'rgba(245, 158, 11, 0.85)');
           segmentFeedback.addColorStop(1, 'rgba(245, 158, 11, 0.85)');
         } else {
           // Poor - red
-          segmentFeedback.addColorStop(0, 'rgba(239, 68, 68, 0.8)'); // Red
+          segmentFeedback.addColorStop(0, 'rgba(239, 68, 68, 0.8)');
           segmentFeedback.addColorStop(1, 'rgba(239, 68, 68, 0.8)');
         }
         
@@ -192,7 +226,7 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
       
       // Draw glow dots at key points for trailing effect
       if (i % 3 === 0) { // Every 3rd point
-        ctx.fillStyle = `rgba(118, 94, 216, ${opacity * 0.5})`; // Using direct color value
+        ctx.fillStyle = `rgba(118, 94, 216, ${opacity * 0.5})`;
         ctx.beginPath();
         ctx.arc(points[i].x, points[i].y, size / 2, 0, Math.PI * 2);
         ctx.fill();

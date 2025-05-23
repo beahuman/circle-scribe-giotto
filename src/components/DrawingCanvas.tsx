@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { calculateAccuracy } from '@/utils/circleUtils';
 import AdBanner from './AdBanner';
@@ -54,9 +55,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
       }
     }
     
+    // Show the result with target circle for 2.5 seconds before transitioning
     setTimeout(() => {
       onComplete(accuracy, points);
-    }, 500);
+    }, 2500);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -122,6 +124,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
           targetCircle={targetCircle}
           showGhostCircle={showGhostCircle}
           strokeQuality={strokeQuality}
+          showCompletedDrawing={!isDrawing && points.length > 1}
         />
       </div>
 
