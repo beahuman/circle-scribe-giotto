@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import AdBanner from './AdBanner';
@@ -7,6 +6,7 @@ import FeedbackMessage from './results/FeedbackMessage';
 import ResultControls from './results/ResultControls';
 import XpProgressBar from './results/XpProgressBar';
 import ScoreDisplay from './results/ScoreDisplay';
+import ScientificFactCard from './results/ScientificFactCard';
 import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 import { useCosmetics } from '@/hooks/useCosmetics';
 import { useImprovementCalculator } from './results/ImprovementCalculator';
@@ -44,6 +44,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const playerProgress = usePlayerProgress();
   const { getEquippedValue } = useCosmetics();
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
+  const [showFactCard, setShowFactCard] = useState(false);
   
   // Get equipped cosmetics
   const backgroundStyle = getEquippedValue('background');
@@ -66,6 +67,19 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       navigator.vibrate([100, 50, 100, 50, 100]);
     }
   }, [roundedAccuracy]);
+
+  // Show scientific fact card after a brief delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowFactCard(true);
+    }, 1500); // Show after 1.5 seconds to let user see their result first
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleFactCardComplete = () => {
+    setShowFactCard(false);
+  };
   
   return (
     <motion.div
@@ -75,6 +89,12 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       transition={{ duration: 0.4 }}
       className={`flex flex-col items-center justify-start gap-6 p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)] ${backgroundStyle}`}
     >
+      {/* Scientific Fact Card */}
+      <ScientificFactCard 
+        isVisible={showFactCard}
+        onComplete={handleFactCardComplete}
+      />
+
       <div className="space-y-2 mt-8">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
