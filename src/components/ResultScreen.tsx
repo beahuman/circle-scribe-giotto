@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Star } from "lucide-react";
 import AdBanner from './AdBanner';
 import CircleVisualization from './results/CircleVisualization';
@@ -37,6 +36,28 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   
+  // Add haptic feedback on result screen load based on score
+  useEffect(() => {
+    if ('navigator' in window && 'vibrate' in navigator) {
+      if (isGoodScore) {
+        // Pleasing pulse pattern for good result
+        navigator.vibrate([30, 20, 30]);
+      }
+    }
+    
+    // Track score history in local storage for progress visualization
+    const scoreHistory = JSON.parse(localStorage.getItem('scoreHistory') || '[]');
+    scoreHistory.push({
+      score: roundedAccuracy,
+      timestamp: Date.now(),
+      difficulty: difficultyLevel
+    });
+    // Keep last 100 scores
+    if (scoreHistory.length > 100) scoreHistory.shift();
+    localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
+    
+  }, [roundedAccuracy, isGoodScore, difficultyLevel]);
+  
   const handleShare = async () => {
     const shareText = `I drew a circle with ${roundedAccuracy}% accuracy in Giotto! Can you beat my score?`;
     
@@ -56,15 +77,33 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
     }
   };
   
+  // Calculate improvement compared to average of last 5 scores
+  const calculateImprovement = (): number | null => {
+    try {
+      const scoreHistory = JSON.parse(localStorage.getItem('scoreHistory') || '[]');
+      if (scoreHistory.length <= 1) return null;
+      
+      const recentScores = scoreHistory.slice(-6, -1); // Last 5 excluding current
+      if (recentScores.length === 0) return null;
+      
+      const avgRecentScore = recentScores.reduce((sum: number, item: any) => sum + item.score, 0) / recentScores.length;
+      return roundedAccuracy - avgRecentScore;
+    } catch (e) {
+      return null;
+    }
+  };
+  
+  const improvement = calculateImprovement();
+  
   return (
     <div className="flex flex-col items-center justify-start gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]">
-      <div className="space-y-2 mt-8 mb-4">
+      <div className="space-y-2 mt-8">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
       </div>
       
-      {/* Circle visualization component with more vertical space */}
-      <div className="my-8 w-full">
+      {/* Circle visualization component with proper vertical space */}
+      <div className="w-full my-8">
         <CircleVisualization 
           targetCircle={targetCircle}
           drawnPoints={drawnPoints}
@@ -72,11 +111,29 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         />
       </div>
       
-      <div className="space-y-6 w-full mt-4">
+      <div className="space-y-6 w-full mt-2">
         <div>
-          <div className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+          <div className={`text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400 ${isGoodScore ? 'animate-pulse-slow' : ''}`}>
             {roundedAccuracy}%
           </div>
+          
+          {/* Neural reward: Show improvement compared to average */}
+          {improvement !== null && Math.abs(improvement) > 1 && (
+            <div className={`text-sm mt-1 ${improvement > 0 ? 'text-green-500' : 'text-orange-400'}`}>
+              {improvement > 0 ? (
+                <span className="flex items-center justify-center gap-1">
+                  <i className="ri-arrow-up-line"></i>
+                  {improvement.toFixed(1)}% improvement
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-1">
+                  <i className="ri-arrow-down-line"></i>
+                  {Math.abs(improvement).toFixed(1)}% below your average
+                </span>
+              )}
+            </div>
+          )}
+          
           <div className="flex items-center justify-center gap-2 mt-2 text-sm">
             <Star className="h-4 w-4 text-primary animate-pulse" />
             <span className="text-muted-foreground">
@@ -97,6 +154,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         <FeedbackMessage
           accuracy={roundedAccuracy}
           isPenaltyMode={isPenaltyMode}
+          hasImproved={improvement !== null && improvement > 0}
         />
       </div>
       
@@ -107,6 +165,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         onShare={handleShare}
         onRemoveAds={onRemoveAds}
         isPenaltyMode={isPenaltyMode}
+        accuracy={roundedAccuracy}
         className="mt-6"
       />
 

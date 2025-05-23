@@ -4,14 +4,28 @@ import React from 'react';
 interface FeedbackMessageProps {
   accuracy: number;
   isPenaltyMode?: boolean;
+  hasImproved?: boolean;
 }
 
 const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
   accuracy,
-  isPenaltyMode = false
+  isPenaltyMode = false,
+  hasImproved = false
 }) => {
   // Enhanced snarky feedback messages based on accuracy score
-  const getFeedbackMessage = (score: number, isPenalty = false) => {
+  const getFeedbackMessage = (score: number, isPenalty = false, improved = false) => {
+    // Neural reinforcement: Add positive reinforcement for improvement
+    if (improved && score >= 50) {
+      const improvementMessages = [
+        "You're getting better! Those neurons are forming new connections.",
+        "Nice improvement! Your brain is learning the pattern.",
+        "Your motor cortex is definitely getting the hang of this!",
+        "That's how muscle memory forms. Keep it up!",
+        "Progress! Your cerebellum is adapting nicely."
+      ];
+      return improvementMessages[Math.floor(Math.random() * improvementMessages.length)];
+    }
+    
     // Penalty mode has special extra sarcastic messages
     if (isPenalty) {
       return "Looks like someone needs to go back to kindergarten! Draw some basic shapes before attempting a circle again.";
@@ -43,9 +57,25 @@ const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
     return "That's more of a potato than a circle! Did you even try?";
   };
 
+  const message = getFeedbackMessage(accuracy, isPenaltyMode, hasImproved);
+
+  // Apply different styling based on score and improvement
+  const getMessageStyle = () => {
+    if (hasImproved && accuracy >= 50) {
+      return "text-green-500 font-medium animate-fade-in";
+    }
+    if (accuracy >= 80) {
+      return "text-primary";
+    }
+    if (accuracy < 30) {
+      return "text-orange-500";
+    }
+    return "text-muted-foreground";
+  };
+
   return (
-    <p className="text-muted-foreground max-w-xs mx-auto">
-      {getFeedbackMessage(accuracy, isPenaltyMode)}
+    <p className={`max-w-xs mx-auto px-3 ${getMessageStyle()}`}>
+      {message}
     </p>
   );
 };
