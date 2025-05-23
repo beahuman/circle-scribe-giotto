@@ -1,75 +1,43 @@
-
 interface Point {
   x: number;
   y: number;
 }
 
-// Enhanced smoothPoints function with more aggressive smoothing for lower precision
+// Optimized smoothing for real-time drawing with minimal lag
 export const smoothPoints = (points: Point[], precision: number = 50): Point[] => {
   if (points.length < 3) return points;
   
-  // For very low precision values, use a different approach that doesn't introduce lag
-  if (precision <= 20) {
-    // Use fewer passes but maintain responsiveness
-    let smoothedPoints = [...points];
-    const windowSize = 2; // Very small window size
-    
-    // Single pass with small window for responsiveness
-    let result: Point[] = [];
-    for (let i = 0; i < smoothedPoints.length; i++) {
-      let sumX = 0, sumY = 0;
-      let count = 0;
-      
-      for (let j = Math.max(0, i - windowSize); j < Math.min(smoothedPoints.length, i + windowSize + 1); j++) {
-        sumX += smoothedPoints[j].x;
-        sumY += smoothedPoints[j].y;
-        count++;
-      }
-      
-      result.push({
-        x: sumX / count,
-        y: sumY / count
-      });
-    }
-    
-    return result;
+  // For real-time drawing, use minimal smoothing to reduce lag
+  if (precision <= 30) {
+    // Ultra-responsive mode - minimal smoothing
+    return applySinglePassSmoothing(points, 0.1);
   }
   
-  // Original smoothing for higher precision values
-  // Convert precision to smoothing factor (5% = max smoothing, 100% = no smoothing)
-  const smoothingFactor = Math.max(0.1, Math.pow(precision / 100, 1.5));
+  // For higher precision, use moderate smoothing
+  const smoothingStrength = Math.max(0.05, (100 - precision) / 200);
+  return applySinglePassSmoothing(points, smoothingStrength);
+};
+
+// Single-pass smoothing for minimal latency
+const applySinglePassSmoothing = (points: Point[], strength: number): Point[] => {
+  if (points.length < 2) return points;
   
-  let smoothedPoints: Point[] = [];
-  // Increase window size for lower precision values
-  const windowSize = Math.floor((1 - smoothingFactor) * 20) + 1;
+  const smoothed: Point[] = [points[0]]; // Keep first point unchanged
   
-  for (let i = 0; i < points.length; i++) {
-    let sumX = 0, sumY = 0;
-    let weightSum = 0;
+  for (let i = 1; i < points.length - 1; i++) {
+    const prev = points[i - 1];
+    const current = points[i];
+    const next = points[i + 1];
     
-    for (let j = Math.max(0, i - windowSize); j < Math.min(points.length, i + windowSize + 1); j++) {
-      // Apply gaussian-like weighting for smoother results
-      const distance = Math.abs(i - j);
-      const weight = Math.exp(-distance * distance / (windowSize * windowSize));
-      
-      sumX += points[j].x * weight;
-      sumY += points[j].y * weight;
-      weightSum += weight;
-    }
+    // Simple weighted average for minimal processing time
+    const smoothedX = current.x + (prev.x + next.x - 2 * current.x) * strength;
+    const smoothedY = current.y + (prev.y + next.y - 2 * current.y) * strength;
     
-    smoothedPoints.push({
-      x: sumX / weightSum,
-      y: sumY / weightSum
-    });
+    smoothed.push({ x: smoothedX, y: smoothedY });
   }
   
-  // For medium-low precision, do fewer passes
-  if (precision <= 25) {
-    const passes = Math.floor((25 - precision) / 10) + 1;
-    for (let pass = 0; pass < passes; pass++) {
-      smoothedPoints = smoothPoints(smoothedPoints, precision + 25);
-    }
-  }
+  // Keep last point unchanged for real-time accuracy
+  smoothed.push(points[points.length - 1]);
   
-  return smoothedPoints;
+  return smoothed;
 };

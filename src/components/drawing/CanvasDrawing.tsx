@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { Point } from '@/types/shapes';
 import { CanvasAnimator } from './CanvasAnimator';
 
@@ -23,7 +23,12 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
   const trailPointsRef = useRef<Point[]>([]);
-  const lastDrawnPointsRef = useRef<number>(0);
+  
+  // Memoize canvas dimensions to avoid recalculation
+  const canvasDimensions = useMemo(() => ({
+    width: window.innerWidth,
+    height: window.innerHeight - 70
+  }), []);
 
   // Cleanup animation on unmount
   useEffect(() => {
@@ -34,34 +39,26 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
     };
   }, []);
 
-  // Handle canvas rendering with animation
+  // Optimized canvas rendering with minimal re-renders
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    // Setup canvas dimensions
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - 70; // Adjust for bottom nav
+    // Set canvas dimensions only when needed
+    if (canvas.width !== canvasDimensions.width || canvas.height !== canvasDimensions.height) {
+      canvas.width = canvasDimensions.width;
+      canvas.height = canvasDimensions.height;
+    }
     
-    // Cancel any existing animation
+    // Cancel any existing animation for performance
     if (animationRef.current !== null) {
       cancelAnimationFrame(animationRef.current);
     }
 
-    // Reset trail if drawing is starting
-    if (drawingPoints.length <= 1) {
-      trailPointsRef.current = [];
-      lastDrawnPointsRef.current = 0;
-    }
+    // Update trail points efficiently
+    trailPointsRef.current = drawingPoints;
 
-    // Add new points to trail
-    if (drawingPoints.length > lastDrawnPointsRef.current) {
-      const newPoints = drawingPoints.slice(lastDrawnPointsRef.current);
-      trailPointsRef.current = [...trailPointsRef.current, ...newPoints];
-      lastDrawnPointsRef.current = drawingPoints.length;
-    }
-
-    // Start animation
+    // Start optimized animation
     const cleanup = CanvasAnimator.startAnimation({
       canvas,
       trailPointsRef,
@@ -73,12 +70,16 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
     });
     
     return cleanup || undefined;
-  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle, showCompletedDrawing, fadeOpacity]);
+  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle, showCompletedDrawing, fadeOpacity, canvasDimensions]);
 
   return (
     <canvas
       ref={canvasRef}
       className="touch-none absolute top-0 left-0 w-full h-full"
+      style={{ 
+        touchAction: 'none', // Prevent browser touch handling for better performance
+        willChange: 'transform' // Hint to browser for GPU acceleration
+      }}
     />
   );
 };

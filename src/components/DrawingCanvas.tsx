@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { calculateAccuracy } from '@/utils/circleUtils';
 import AdBanner from './AdBanner';
 import BottomNav from './BottomNav';
@@ -16,13 +16,13 @@ interface DrawingCanvasProps {
     y: number;
     radius: number;
   };
-  difficultyLevel?: number; // Added difficultyLevel as optional prop
+  difficultyLevel?: number;
 }
 
 const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ 
   onComplete, 
   targetCircle,
-  difficultyLevel = 50 // Default value if not provided
+  difficultyLevel = 50
 }) => {
   const {
     isDrawing,
@@ -36,58 +36,60 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     handleEnd,
   } = useDrawingState();
 
-  const finalizeDrawing = () => {
+  const finalizeDrawing = useCallback(() => {
     if (!isDrawing || points.length < 2) return;
     
     const accuracy = calculateAccuracy(points, targetCircle);
     
-    // Add haptic feedback if available (subtle for good strokes, stronger for poor ones)
+    // Optimized haptic feedback
     if ('navigator' in window && 'vibrate' in navigator) {
-      if (accuracy > 80) {
-        // Gentle pulse for good result
-        navigator.vibrate([20]);
-      } else if (accuracy > 50) {
-        // Medium feedback
-        navigator.vibrate([40, 30, 40]);
-      } else {
-        // Strong feedback for poor result
-        navigator.vibrate([60, 30, 60, 30, 60]);
-      }
+      const pattern = accuracy > 80 ? [20] : accuracy > 50 ? [40, 30, 40] : [60, 30, 60, 30, 60];
+      navigator.vibrate(pattern);
     }
     
-    // Show the result with target circle for 2.5 seconds before transitioning
+    // Immediate feedback with optimized timing
     setTimeout(() => {
       onComplete(accuracy, points);
     }, 2500);
-  };
+  }, [isDrawing, points, targetCircle, onComplete]);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  // Optimized touch handlers with preventDefault for better performance
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent browser scroll/zoom
     const touch = e.touches[0];
     handleStart(touch.clientX, touch.clientY);
-  };
+  }, [handleStart]);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    const touch = e.touches[0];
-    handleMove(touch.clientX, touch.clientY);
-  };
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    e.preventDefault(); // Critical for preventing browser interference
+    if (e.touches.length === 1) { // Only handle single touch
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    }
+  }, [handleMove]);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
     handleEnd();
     finalizeDrawing();
-  };
+  }, [handleEnd, finalizeDrawing]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  // Optimized mouse handlers
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     handleStart(e.clientX, e.clientY);
-  };
+  }, [handleStart]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    handleMove(e.clientX, e.clientY);
-  };
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (isDrawing) {
+      handleMove(e.clientX, e.clientY);
+    }
+  }, [isDrawing, handleMove]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     handleEnd();
     finalizeDrawing();
-  };
+  }, [handleEnd, finalizeDrawing]);
 
   return (
     <div className="absolute inset-0 pb-16">
@@ -110,7 +112,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
       />
       
       <div 
-        className="w-full h-full"
+        className="w-full h-full select-none"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -118,6 +120,13 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        style={{ 
+          touchAction: 'none', // Disable all touch behaviors
+          userSelect: 'none',  // Prevent text selection
+          WebkitTouchCallout: 'none', // Disable iOS callout
+          WebkitUserSelect: 'none'    // Disable iOS text selection
+        }}
       >
         <CanvasRenderer 
           drawingPoints={drawingPoints}
