@@ -1,5 +1,5 @@
-
 import { generateRandomCirclePosition } from '@/utils/circleUtils';
+import { Point } from '@/types/shapes';
 import { GameStateProps, GameHandlers } from './types';
 import { createCoreHandlers } from './handlers/coreHandlers';
 import { createStreakHandlers } from './handlers/streakHandlers';
