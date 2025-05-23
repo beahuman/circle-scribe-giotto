@@ -1,13 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { CircleDot, Trophy, Calendar, Settings, Info, Store, History, UserCircle } from "lucide-react";
+import { CircleDot, Trophy, Calendar, Settings, Info, Store, History, UserCircle, HelpCircle } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import LogoAnimation from './LogoAnimation';
 import WelcomeScreen from './WelcomeScreen';
 import DailyCalibrationScreen from './DailyCalibrationScreen';
 import ProgressDashboard from './ProgressDashboard';
+import WhyCirclesModal from './WhyCirclesModal';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -116,6 +116,18 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
             <LogoAnimation />
           </div>
           <p className="text-muted-foreground">The art of the perfect circle</p>
+          
+          {/* Why Circles? Button */}
+          <WhyCirclesModal>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              <HelpCircle className="mr-1 h-3 w-3" />
+              Why Circles?
+            </Button>
+          </WhyCirclesModal>
         </motion.div>
 
         <motion.div 
