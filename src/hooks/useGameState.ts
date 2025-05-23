@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { generateRandomCirclePosition } from '@/utils/circleUtils';
 import { getGameService } from '@/utils/gameServices';
 import { Point } from '@/types/shapes';
+import { useLocalProgress } from './useLocalProgress';
 
 type GameState = 'showing' | 'drawing' | 'result' | 'penalty' | 'stats';
 
@@ -27,12 +28,24 @@ export const useGameState = () => {
   const [sessionDrawings, setSessionDrawings] = useState(0);
   const [streakCount, setStreakCount] = useState(0);
   const { toast } = useToast();
+  const { addGameResult } = useLocalProgress();
+  
+  // Create a wrapped setAccuracy that also records the result
+  const setAccuracyWithTracking = (newAccuracy: number) => {
+    setAccuracy(newAccuracy);
+    // Record the result for local progress tracking
+    addGameResult(
+      Math.round(newAccuracy), 
+      difficultyLevel, 
+      penaltyModeEnabled || consecutiveLowScores >= 3
+    );
+  };
   
   return {
     gameState,
     setGameState,
     accuracy,
-    setAccuracy,
+    setAccuracy: setAccuracyWithTracking,
     targetCircle,
     setTargetCircle,
     isGameServiceAvailable, 
