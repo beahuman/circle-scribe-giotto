@@ -11,6 +11,7 @@ export const useGameService = () => {
         const service = await getGameService();
         const signedIn = await service.signIn();
         setIsGameServiceAvailable(signedIn);
+        console.log("Game service initialized: ", signedIn ? "SUCCESS" : "FAILED");
       } catch (error) {
         console.error("Failed to initialize game service:", error);
         setIsGameServiceAvailable(false);
@@ -25,9 +26,12 @@ export const useGameService = () => {
       try {
         const service = await getGameService();
         await service.submitScore(score);
+        console.log(`Score ${score} submitted to Game Center`);
       } catch (error) {
         console.error("Failed to submit score:", error);
       }
+    } else {
+      console.log("Game service not available. Score not submitted.");
     }
   };
   
@@ -36,9 +40,12 @@ export const useGameService = () => {
       try {
         const service = await getGameService();
         await service.showLeaderboard();
+        console.log("Showing Game Center leaderboard");
       } catch (error) {
         console.error("Failed to show leaderboard:", error);
       }
+    } else {
+      console.log("Game service not available. Cannot show leaderboard.");
     }
   };
   

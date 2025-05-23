@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChartBarIcon } from "lucide-react";
+import { ChartBarIcon, Share } from "lucide-react";
 
 interface ResultControlsProps {
   onReplay: () => void;
@@ -87,13 +87,14 @@ const ResultControls: React.FC<ResultControlsProps> = ({
       {onShare && (
         <Button
           onClick={onShare}
-          variant="ghost"
+          variant="secondary"
           className={cn(
-            "px-8 py-2 rounded-full",
-            accuracy >= 90 ? "text-primary hover:text-primary/80" : ""
+            "px-8 py-4 rounded-full flex items-center justify-center gap-2",
+            accuracy >= 90 ? "bg-primary/10 hover:bg-primary/20 text-primary" : ""
           )}
         >
-          Share Result
+          <Share className="h-4 w-4" />
+          <span>Share Score</span>
         </Button>
       )}
       

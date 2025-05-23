@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,7 +33,7 @@ export const useResultActions = (
   }, [roundedAccuracy, difficultyLevel, isPenaltyMode]);
   
   const handleShare = async () => {
-    const shareText = `I drew a circle with ${roundedAccuracy}% accuracy in Giotto! Can you beat my score?`;
+    const shareText = `I scored ${roundedAccuracy}% on Giotto! Can you draw a better circle?`;
     
     try {
       if (navigator.share) {
