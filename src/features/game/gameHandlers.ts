@@ -1,193 +1,72 @@
 
-import { useToast } from "@/hooks/use-toast";
 import { generateRandomCirclePosition } from '@/utils/circleUtils';
-import { Point } from '@/types/shapes';
-import { PenaltyShape } from "@/types/game";
+import { GameStateProps, GameHandlers } from './types';
+import { createCoreHandlers } from './handlers/coreHandlers';
+import { createStreakHandlers } from './handlers/streakHandlers';
+import { createDifficultyHandlers } from './handlers/difficultyHandlers';
+import { createPenaltyHandlers } from './handlers/penaltyHandlers';
 
-interface GameStateProps {
-  setGameState: (state: 'showing' | 'drawing' | 'result' | 'penalty') => void;
-  setAccuracy: (accuracy: number) => void;
-  setDrawnPoints: (points: Point[]) => void;
-  setSessionDrawings: (callback: (prev: number) => number) => void;
-  setStreakCount: (callback: (prev: number) => number) => void;
-  setConsecutiveLowScores: (callback: (prev: number) => number) => void;
-  setTargetCircle: (circle: { x: number, y: number, radius: number }) => void;
-  setDifficultyLevel: (difficulty: number) => void;
-  setCurrentPenaltyShape: (shape: PenaltyShape) => void;
-  setCompletedPenaltyShapes: (callback: (prev: number) => number) => void;
-  submitScore: (score: number) => Promise<void>;
-  toast: ReturnType<typeof useToast>['toast'];
-  difficultyLevel: number;
-  streakCount: number;
-  sessionDrawings: number;
-  consecutiveLowScores: number;
-  completedPenaltyShapes: number;
-  gameState: string;
-  currentPenaltyShape: PenaltyShape;
-}
-
-export const useGameHandlers = ({
-  setGameState,
-  setAccuracy,
-  setDrawnPoints,
-  setSessionDrawings,
-  setStreakCount,
-  setConsecutiveLowScores,
-  setTargetCircle,
-  setDifficultyLevel,
-  setCurrentPenaltyShape,
-  setCompletedPenaltyShapes,
-  submitScore,
-  toast,
-  difficultyLevel,
-  streakCount,
-  sessionDrawings,
-  consecutiveLowScores,
-  completedPenaltyShapes,
-  gameState,
-  currentPenaltyShape
-}: GameStateProps) => {
+export const useGameHandlers = (props: GameStateProps): GameHandlers => {
+  const { 
+    setGameState, 
+    setAccuracy, 
+    setDrawnPoints, 
+    setTargetCircle
+  } = props;
   
-  const handleCircleMemorized = () => {
-    setGameState('drawing');
-  };
+  // Initialize the handlers
+  const coreHandlers = createCoreHandlers({
+    setGameState,
+    setAccuracy,
+    setDrawnPoints,
+    setTargetCircle
+  });
+  
+  const streakHandlers = createStreakHandlers({
+    setSessionDrawings: props.setSessionDrawings,
+    setStreakCount: props.setStreakCount,
+    setConsecutiveLowScores: props.setConsecutiveLowScores,
+    submitScore: props.submitScore,
+    toast: props.toast,
+    streakCount: props.streakCount
+  });
+  
+  const difficultyHandlers = createDifficultyHandlers({
+    setDifficultyLevel: props.setDifficultyLevel,
+    toast: props.toast,
+    sessionDrawings: props.sessionDrawings,
+    streakCount: props.streakCount
+  });
+  
+  const penaltyHandlers = createPenaltyHandlers({
+    setGameState,
+    setConsecutiveLowScores: props.setConsecutiveLowScores,
+    setCurrentPenaltyShape: props.setCurrentPenaltyShape,
+    setCompletedPenaltyShapes: props.setCompletedPenaltyShapes,
+    setTargetCircle,
+    setDrawnPoints,
+    toast: props.toast,
+    consecutiveLowScores: props.consecutiveLowScores,
+    completedPenaltyShapes: props.completedPenaltyShapes,
+    currentPenaltyShape: props.currentPenaltyShape,
+    gameState: props.gameState
+  });
 
+  // Create the combined handlers with extended functionality
   const handleDrawingComplete = async (score: number, points: Point[]) => {
-    setAccuracy(score);
-    setDrawnPoints(points);
-    setGameState('result');
-    setSessionDrawings(prev => prev + 1);
+    // First, use the core handler for basic functionality
+    await coreHandlers.handleDrawingComplete(score, points);
     
-    // Track streak for reinforcement (consecutive good scores)
-    if (score >= 75) {
-      setStreakCount(prev => prev + 1);
-      
-      // Give positive feedback on streaks (reinforcement)
-      if (streakCount === 2) {
-        toast({
-          title: "You're on a streak!",
-          description: "Your brain is forming new neural pathways.",
-          duration: 3000
-        });
-      } else if (streakCount === 5) {
-        toast({
-          title: "Impressive streak!",
-          description: "Your motor cortex is getting optimized.",
-          duration: 3000
-        });
-      } else if (streakCount >= 10 && streakCount % 5 === 0) {
-        toast({
-          title: `${streakCount} streak! Amazing!`,
-          description: "You're developing expert-level muscle memory!",
-          duration: 3000
-        });
-      }
-    } else {
-      // Reset streak on poor performance
-      if (streakCount >= 3) {
-        toast({
-          title: "Streak ended",
-          description: "Take a breath and try again.",
-          duration: 2000
-        });
-      }
-      setStreakCount(prev => 0);
-    }
+    // Then handle streak tracking and feedback
+    await streakHandlers.handleStreakTracking(score);
     
-    // Track consecutive low scores for the penalty system
-    if (score < 30) {
-      setConsecutiveLowScores(prev => prev + 1);
-      
-      // Neural feedback on repeated poor performance
-      if (consecutiveLowScores === 2) {
-        toast({
-          title: "Struggling with circles?",
-          description: "Let's try something different to build your skills.",
-          duration: 3000
-        });
-      }
-    } else {
-      setConsecutiveLowScores(prev => 0);
-    }
-    
-    // Adaptive difficulty - if player is consistently doing well, subtly increase difficulty
-    if (sessionDrawings >= 5 && streakCount >= 3) {
-      const storedDifficulty = Number(localStorage.getItem('difficultyLevel')) || 50;
-      if (storedDifficulty < 95) {
-        const newDifficulty = Math.min(95, storedDifficulty + 5);
-        localStorage.setItem('difficultyLevel', String(newDifficulty));
-        setDifficultyLevel(newDifficulty);
-        
-        if (newDifficulty - storedDifficulty >= 5) {
-          // Only notify if difficulty actually increased
-          toast({
-            title: "Skill improving!",
-            description: "Challenge level subtly increased.",
-            duration: 2000
-          });
-        }
-      }
-    }
-    
-    await submitScore(score);
-  };
-
-  const handlePenaltyComplete = (score: number) => {
-    console.log(`Shape challenge completed with score: ${score}`);
-    
-    // If score is good enough
-    if (score >= 50) {
-      // Increment completed shapes counter
-      setCompletedPenaltyShapes(prev => prev + 1);
-      
-      // If player completed all three penalty shapes, reset and go back to circles
-      if (completedPenaltyShapes + 1 >= 3) {
-        setCompletedPenaltyShapes(prev => 0);
-        setConsecutiveLowScores(prev => 0);
-        setCurrentPenaltyShape(null);
-        setGameState('showing');
-        setTargetCircle(generateRandomCirclePosition());
-        
-        // Positive reinforcement for completing training
-        toast({
-          title: "Training complete!",
-          description: "Let's see if your circles improve now!",
-          duration: 3000
-        });
-        return;
-      }
-      
-      // Rotate to the next shape
-      const shapes: PenaltyShape[] = ['line', 'triangle', 'square'];
-      const currentIndex = shapes.indexOf(currentPenaltyShape || 'line');
-      const nextIndex = (currentIndex + 1) % shapes.length;
-      setCurrentPenaltyShape(shapes[nextIndex]);
-      
-      // Encourage progress
-      toast({
-        title: "Shape mastered!",
-        description: `${completedPenaltyShapes + 1}/3 training shapes completed.`,
-        duration: 2000
-      });
-    }
+    // Handle difficulty adjustment
+    difficultyHandlers.handleDifficultyAdjustment();
   };
   
   const handleReplay = () => {
-    // Check if the player should be in penalty mode
-    if (consecutiveLowScores >= 3 && completedPenaltyShapes < 3) {
-      // Start penalty mode with the first shape if not already in it
-      if (gameState !== 'penalty') {
-        setCurrentPenaltyShape('line');
-        setGameState('penalty');
-        setDrawnPoints([]); // Clear previous drawing
-        
-        // Educational moment
-        toast({
-          title: "Shape Training Mode",
-          description: "Mastering basic shapes will help improve your circle drawing.",
-          duration: 4000
-        });
-      }
+    // Check if we should enter penalty mode
+    if (penaltyHandlers.checkForPenaltyMode()) {
       return;
     }
     
@@ -197,15 +76,10 @@ export const useGameHandlers = ({
     setDrawnPoints([]); // Clear previous drawing
   };
   
-  const handleBypassMobile = () => {
-    setGameState('showing');
-  };
-
   return {
-    handleCircleMemorized,
+    ...coreHandlers,
     handleDrawingComplete,
-    handlePenaltyComplete,
-    handleReplay,
-    handleBypassMobile
+    handlePenaltyComplete: penaltyHandlers.handlePenaltyComplete,
+    handleReplay
   };
 };
