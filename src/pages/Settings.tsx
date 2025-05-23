@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
@@ -7,6 +8,7 @@ import DrawingSettings from '@/components/settings/DrawingSettings';
 import DisplaySettings from '@/components/settings/DisplaySettings';
 import NotificationSettings from '@/components/settings/NotificationSettings';
 import AppearanceSettings from '@/components/settings/AppearanceSettings';
+import GhostCircleSettings from '@/components/settings/GhostCircleSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -19,11 +21,13 @@ const Settings = () => {
     difficultyLevel,
     drawingPrecision,
     displayDuration,
+    showGhostCircle,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
     handlePrecisionChange,
     handleDurationChange,
+    handleGhostCircleToggle,
   } = useSettings();
 
   return (
@@ -55,6 +59,13 @@ const Settings = () => {
         <DisplaySettings 
           displayDuration={displayDuration}
           onDurationChange={handleDurationChange}
+        />
+
+        <Separator className="bg-purple-300/20" />
+
+        <GhostCircleSettings
+          showGhostCircle={showGhostCircle}
+          onGhostCircleChange={handleGhostCircleToggle}
         />
 
         <Separator className="bg-purple-300/20" />

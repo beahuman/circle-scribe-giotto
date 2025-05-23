@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
@@ -27,6 +26,9 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
   const [drawnPoints, setDrawnPoints] = useState<Array<{ x: number; y: number }>>([]);
   const [difficultyLevel, setDifficultyLevel] = useState(() => {
     return Number(localStorage.getItem('difficultyLevel')) || 50;
+  });
+  const [displayDuration, setDisplayDuration] = useState(() => {
+    return Number(localStorage.getItem('displayDuration')) || 3;
   });
   const [consecutiveLowScores, setConsecutiveLowScores] = useState(0);
   const [currentPenaltyShape, setCurrentPenaltyShape] = useState<PenaltyShape>(null);
@@ -269,7 +271,7 @@ const GiottoGame: React.FC<GiottoGameProps> = ({ onReturnToHome, onRemoveAds }) 
     <div className="relative min-h-screen w-full overflow-hidden">
       {gameState === 'showing' && (
         <CircleDisplay 
-          duration={3} 
+          duration={displayDuration} 
           onComplete={handleCircleMemorized}
           circleProps={targetCircle}
         />

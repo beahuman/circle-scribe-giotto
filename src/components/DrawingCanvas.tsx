@@ -28,6 +28,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
   const [strokeSpeed, setStrokeSpeed] = useState(0); // Speed of drawing
   const [lastPoint, setLastPoint] = useState<Point | null>(null);
   const [lastTimestamp, setLastTimestamp] = useState<number | null>(null);
+  const [showGhostCircle] = useState(() => {
+    return localStorage.getItem('showGhostCircle') === 'true';
+  });
 
   // Calculate stroke quality metrics
   const updateStrokeMetrics = (newPoint: Point) => {
@@ -93,13 +96,22 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    // Draw ghost circle if enabled
+    if (showGhostCircle && targetCircle) {
+      ctx.beginPath();
+      ctx.arc(targetCircle.x, targetCircle.y, targetCircle.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(118, 94, 216, 0.15)'; // Very faint purple color
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+    
     if (points.length > 1) {
       // Create a smooth visual representation
       const drawingPrecision = Number(localStorage.getItem('drawingPrecision')) || 50;
       const smoothedPoints = smoothPoints(points, Math.max(30, drawingPrecision));
       setDrawingPoints(smoothedPoints);
     }
-  }, [points]);
+  }, [points, showGhostCircle, targetCircle]);
   
   // Separate effect for actual drawing to improve performance
   useEffect(() => {
@@ -109,8 +121,18 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
+    // Clear canvas and redraw ghost circle if enabled
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    if (showGhostCircle && targetCircle) {
+      ctx.beginPath();
+      ctx.arc(targetCircle.x, targetCircle.y, targetCircle.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(118, 94, 216, 0.15)'; // Very faint purple color
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+    
     if (drawingPoints.length > 1) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.beginPath();
       ctx.moveTo(drawingPoints[0].x, drawingPoints[0].y);
       
@@ -138,7 +160,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onComplete, targetCircle 
       
       ctx.stroke();
     }
-  }, [drawingPoints, strokeQuality]);
+  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle]);
 
   const handleStart = (x: number, y: number) => {
     setIsDrawing(true);

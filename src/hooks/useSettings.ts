@@ -14,6 +14,9 @@ export const useSettings = () => {
   const [displayDuration, setDisplayDuration] = useState(() => {
     return Number(localStorage.getItem('displayDuration')) || 3;
   });
+  const [showGhostCircle, setShowGhostCircle] = useState(() => {
+    return localStorage.getItem('showGhostCircle') === 'true';
+  });
   const { toast } = useToast();
 
   const handleNotificationToggle = (checked: boolean) => {
@@ -61,6 +64,15 @@ export const useSettings = () => {
       description: `Circle will display for ${newValue} seconds`
     });
   };
+  
+  const handleGhostCircleToggle = (checked: boolean) => {
+    setShowGhostCircle(checked);
+    localStorage.setItem('showGhostCircle', String(checked));
+    toast({
+      title: "Ghost Circle",
+      description: checked ? "Ghost circle enabled" : "Ghost circle disabled"
+    });
+  };
 
   return {
     notifications,
@@ -68,10 +80,12 @@ export const useSettings = () => {
     difficultyLevel,
     drawingPrecision,
     displayDuration,
+    showGhostCircle,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
     handlePrecisionChange,
     handleDurationChange,
+    handleGhostCircleToggle,
   };
 };
