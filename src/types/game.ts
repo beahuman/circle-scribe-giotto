@@ -12,3 +12,13 @@ export interface GameProps {
 export interface MobileWarningProps {
   onBypassMobile: () => void;
 }
+
+export interface CosmeticItem {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+  thumbnail: string;
+  category: string;
+  value: string;
+}

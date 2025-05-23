@@ -59,8 +59,33 @@ export const usePlayerProgress = () => {
     };
   };
 
+  // New function to spend XP on cosmetics
+  const spendXp = (amount: number): boolean => {
+    if (playerProgress.xp < amount) {
+      return false; // Not enough XP
+    }
+    
+    // Calculate new total XP after spending
+    const newTotalXp = playerProgress.xp - amount;
+    
+    // Calculate new level and XP within that level
+    const newLevel = Math.floor(newTotalXp / XP_PER_LEVEL) + 1;
+    const newXpInCurrentLevel = newTotalXp % XP_PER_LEVEL;
+    
+    // Update player progress
+    setPlayerProgress({
+      xp: newTotalXp,
+      level: newLevel,
+      xpForNextLevel: XP_PER_LEVEL,
+      xpInCurrentLevel: newXpInCurrentLevel
+    });
+    
+    return true; // Successfully spent XP
+  };
+
   return {
     ...playerProgress,
-    addXp
+    addXp,
+    spendXp
   };
 };

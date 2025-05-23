@@ -16,6 +16,7 @@ import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
 import Auth from "./pages/Auth";
 import Tutorial from "./pages/Tutorial";
+import Store from "./pages/Store";
 import BottomNav from "@/components/BottomNav";
 
 // Create the client outside of the component
@@ -40,6 +41,7 @@ const App = () => {
                 <Route path="/history" element={<History />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/tutorial" element={<Tutorial />} />
+                <Route path="/store" element={<Store />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/account/edit" element={<EditAccount />} />
                 <Route path="*" element={<NotFound />} />

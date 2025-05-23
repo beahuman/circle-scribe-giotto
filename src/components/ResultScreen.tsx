@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Star } from "lucide-react";
 import AdBanner from './AdBanner';
@@ -7,6 +6,7 @@ import FeedbackMessage from './results/FeedbackMessage';
 import ResultControls from './results/ResultControls';
 import XpProgressBar from './results/XpProgressBar';
 import { usePlayerProgress } from '@/hooks/usePlayerProgress';
+import { useCosmetics } from '@/hooks/useCosmetics';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -34,7 +34,12 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   const playerProgress = usePlayerProgress();
+  const { getEquippedValue } = useCosmetics();
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
+  
+  // Get equipped cosmetics
+  const backgroundStyle = getEquippedValue('background');
+  const animationStyle = getEquippedValue('animation');
   
   // Add XP based on accuracy
   useEffect(() => {
@@ -109,7 +114,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const improvement = calculateImprovement();
   
   return (
-    <div className="flex flex-col items-center justify-start gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]">
+    <div className={`flex flex-col items-center justify-start gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)] ${backgroundStyle}`}>
       <div className="space-y-2 mt-8">
         <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Your Result</h2>
         <p className="text-muted-foreground">How close were you to Giotto's perfection?</p>
@@ -121,12 +126,13 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           targetCircle={targetCircle}
           drawnPoints={drawnPoints}
           isGoodScore={isGoodScore}
+          trailStyle={getEquippedValue('trail')}
         />
       </div>
       
       <div className="space-y-6 w-full mt-2">
         <div>
-          <div className={`text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400 ${isGoodScore ? 'animate-pulse-slow' : ''}`}>
+          <div className={`text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400 ${isGoodScore ? animationStyle : ''}`}>
             {roundedAccuracy}%
           </div>
           

@@ -1,14 +1,22 @@
-
-import React from 'react';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowLeft, Ghost, Pencil, Share2, BadgeDollarSign } from "lucide-react";
+import {
+  Play,
+  History,
+  Settings,
+  Trophy,
+  HelpCircle,
+  Tag,
+  Palette
+} from "lucide-react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import LogoAnimation from './LogoAnimation';
-import { Dialog } from '@capacitor/dialog';
 
-interface HomeScreenProps { 
-  onStart: () => void; 
-  showLeaderboard?: () => void; 
-  onBackToHome?: () => void;
+interface HomeScreenProps {
+  onStart: () => void;
+  showLeaderboard?: () => void;
   isGuestMode?: boolean;
   onRemoveAds?: () => void;
 }
@@ -16,103 +24,126 @@ interface HomeScreenProps {
 const HomeScreen: React.FC<HomeScreenProps> = ({ 
   onStart, 
   showLeaderboard, 
-  onBackToHome,
   isGuestMode,
-  onRemoveAds
+  onRemoveAds 
 }) => {
-  const handleShare = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: 'Giotto - The Art of the Perfect Circle',
-          text: 'Challenge yourself to draw the perfect circle! Try Giotto, a fun game inspired by Renaissance master Giotto.',
-          url: window.location.href
-        });
-      } else {
-        // Fallback to copy to clipboard
-        await navigator.clipboard.writeText(window.location.href);
-        
-        // Use capacitor dialog for native alert
-        await Dialog.alert({
-          title: 'Link copied',
-          message: 'Link copied to clipboard!',
-        });
-      }
-    } catch (error) {
-      console.error('Error sharing:', error);
-    }
+  const navigate = useNavigate();
+  const [currentTipIndex, setCurrentTipIndex] = useState(0);
+  
+  const tips = [
+    "Focus on smooth, consistent strokes.",
+    "Adjust difficulty for optimal challenge.",
+    "Experiment with different drawing speeds.",
+    "Visualize the target before drawing.",
+    "Take breaks to avoid mental fatigue."
+  ];
+  
+  const handleNextTip = () => {
+    setCurrentTipIndex(prev => (prev + 1) % tips.length);
   };
-
+  
+  const handlePrevTip = () => {
+    setCurrentTipIndex(prev => (prev - 1 + tips.length) % tips.length);
+  };
+  
   return (
-    <div className="min-h-[100dvh] flex flex-col items-center justify-center gap-6 animate-fade-in p-6 pb-24 text-center overflow-y-auto">
-      {onBackToHome && (
-        <Button 
-          variant="ghost" 
-          onClick={onBackToHome}
-          className="absolute top-4 left-4"
-          size="icon"
-        >
-          <ArrowLeft className="h-6 w-6" />
-        </Button>
-      )}
-
-      <div className="space-y-2 text-center">
-        <div className="w-[240px] mx-auto">
-          <LogoAnimation />
-        </div>
-        <p className="text-2xl font-bold text-[#765ED8] text-center">The art of the perfect circle</p>
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 py-12 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-zinc-900 to-zinc-800 opacity-30 z-0" />
       
-      <div className="max-w-md space-y-4 text-center">
-        <p className="text-center">
-          Draw a perfect circle with your finger, just like the Renaissance master Giotto.
-        </p>
-        <ol className="text-center space-y-2 text-sm text-muted-foreground mb-48">
-          <li>1. You'll be shown a perfect circle for 3 seconds</li>
-          <li>2. Then try to recreate it in the same location</li>
-          <li>3. Your accuracy will be calculated as a percentage</li>
-        </ol>
-      </div>
+      <LogoAnimation className="z-10" />
       
-      <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
+      <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-4 z-10">
+        Giotto
+      </h1>
+      <p className="text-md md:text-lg text-zinc-400 text-center mb-8 z-10">
+        Master the art of freehand circles.
+      </p>
+      
+      <div className="space-y-4 w-full max-w-md z-10 mt-8">
         <Button 
-          onClick={onStart}
-          className="px-8 py-6 text-lg rounded-full animate-pulse-slow"
+          onClick={onStart} 
+          size="lg" 
+          className="w-full text-lg font-medium"
         >
-          <Pencil className="mr-2" size={20} />
-          Draw Now
+          Start Drawing
         </Button>
         
-        {showLeaderboard && !isGuestMode && (
+        <div className="grid grid-cols-2 gap-4">
           <Button 
-            onClick={showLeaderboard}
+            onClick={() => navigate("/store")}
             variant="outline"
-            className="px-8 py-6 text-lg rounded-full text-primary"
+            className="flex gap-2 items-center justify-center"
           >
-            <Trophy className="mr-2 h-5 w-5" />
-            Leaderboard
+            <Palette className="h-4 w-4" />
+            Reward Store
+          </Button>
+          
+          <Button 
+            onClick={() => navigate("/history")}
+            variant="outline"
+            className="flex gap-2 items-center justify-center"
+          >
+            <History className="h-4 w-4" />
+            History
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <Button 
+            onClick={() => navigate("/tutorial")}
+            variant="secondary"
+            className="flex gap-2 items-center justify-center"
+          >
+            <HelpCircle className="h-4 w-4" />
+            Tutorial
+          </Button>
+          
+          <Button 
+            onClick={() => navigate("/settings")}
+            variant="secondary"
+            className="flex gap-2 items-center justify-center"
+          >
+            <Settings className="h-4 w-4" />
+            Settings
+          </Button>
+        </div>
+        
+        {showLeaderboard && (
+          <Button 
+            onClick={showLeaderboard} 
+            variant="ghost"
+            className="w-full flex gap-2 items-center justify-center"
+            disabled={isGuestMode}
+          >
+            <Trophy className="h-4 w-4" />
+            {isGuestMode ? 'Sign in for Leaderboard' : 'Show Leaderboard'}
           </Button>
         )}
-
-        <Button
-          onClick={handleShare}
-          variant="secondary"
-          className="px-8 py-6 text-lg rounded-full bg-white border-[#765ED8] border text-[#765ED8] hover:bg-[#765ED8]/5"
-        >
-          <Share2 className="mr-2 h-5 w-5" />
-          Share Giotto
-        </Button>
-
+        
         {onRemoveAds && (
-          <Button
-            onClick={onRemoveAds}
+          <Button 
+            onClick={onRemoveAds} 
             variant="ghost"
-            className="text-yellow-500 hover:text-yellow-600 hover:bg-transparent"
+            className="w-full flex gap-2 items-center justify-center"
           >
-            <BadgeDollarSign className="h-5 w-5" />
+            <Tag className="h-4 w-4" />
             Remove Ads
           </Button>
         )}
+      </div>
+      
+      <div className="absolute bottom-4 left-0 right-0 p-4 z-10">
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="icon" onClick={handlePrevTip}>
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <p className="text-sm text-zinc-500 italic text-center max-w-[240px]">
+            {tips[currentTipIndex]}
+          </p>
+          <Button variant="ghost" size="icon" onClick={handleNextTip}>
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );
