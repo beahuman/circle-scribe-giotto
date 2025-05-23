@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
@@ -10,6 +9,7 @@ import NotificationSettings from '@/components/settings/NotificationSettings';
 import AppearanceSettings from '@/components/settings/AppearanceSettings';
 import GhostCircleSettings from '@/components/settings/GhostCircleSettings';
 import PenaltyModeSettings from '@/components/settings/PenaltyModeSettings';
+import SubmetricsSettings from '@/components/settings/SubmetricsSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ const Settings = () => {
     displayDuration,
     showGhostCircle,
     penaltyModeEnabled,
+    showSubmetrics,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
@@ -31,6 +32,7 @@ const Settings = () => {
     handleDurationChange,
     handleGhostCircleToggle,
     handlePenaltyModeToggle,
+    handleSubmetricsToggle,
   } = useSettings();
 
   return (
@@ -76,6 +78,13 @@ const Settings = () => {
         <GhostCircleSettings
           showGhostCircle={showGhostCircle}
           onGhostCircleChange={handleGhostCircleToggle}
+        />
+
+        <Separator className="bg-purple-300/20" />
+
+        <SubmetricsSettings
+          showSubmetrics={showSubmetrics}
+          onSubmetricsChange={handleSubmetricsToggle}
         />
 
         <Separator className="bg-purple-300/20" />

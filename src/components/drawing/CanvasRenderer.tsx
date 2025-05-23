@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Point } from '@/types/shapes';
 import { calculatePointToCircleDistance } from '@/utils/circleUtils';
+import ScoringOverlay from './ScoringOverlay';
 
 interface CanvasRendererProps {
   drawingPoints: Point[];
@@ -26,6 +27,9 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
   const trailPointsRef = useRef<Point[]>([]);
   const lastDrawnPointsRef = useRef<number>(0);
   const [fadeOpacity, setFadeOpacity] = useState(1);
+  const [showSubmetrics, setShowSubmetrics] = useState(() => {
+    return localStorage.getItem('showSubmetrics') === 'true';
+  });
   
   // Handle fade-out effect for completed drawings
   useEffect(() => {
@@ -235,10 +239,20 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="touch-none absolute top-0 left-0 w-full h-full"
-    />
+    <div className="relative w-full h-full">
+      <canvas
+        ref={canvasRef}
+        className="touch-none absolute top-0 left-0 w-full h-full"
+      />
+      
+      <ScoringOverlay
+        drawingPoints={drawingPoints}
+        targetCircle={targetCircle}
+        showSubmetrics={showSubmetrics}
+        visible={showCompletedDrawing}
+        fadeOpacity={fadeOpacity}
+      />
+    </div>
   );
 };
 

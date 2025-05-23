@@ -19,6 +19,9 @@ export const useSettings = () => {
   const [penaltyModeEnabled, setPenaltyModeEnabled] = useState(() => {
     return localStorage.getItem('penaltyModeEnabled') === 'true';
   });
+  const [showSubmetrics, setShowSubmetrics] = useState(() => {
+    return localStorage.getItem('showSubmetrics') === 'true';
+  });
   const { toast } = useToast();
 
   const handleNotificationToggle = (checked: boolean) => {
@@ -85,6 +88,15 @@ export const useSettings = () => {
     });
   };
 
+  const handleSubmetricsToggle = (checked: boolean) => {
+    setShowSubmetrics(checked);
+    localStorage.setItem('showSubmetrics', String(checked));
+    toast({
+      title: "Visual Analytics",
+      description: checked ? "Submetrics overlay enabled" : "Submetrics overlay disabled"
+    });
+  };
+
   return {
     notifications,
     darkMode,
@@ -93,6 +105,7 @@ export const useSettings = () => {
     displayDuration,
     showGhostCircle,
     penaltyModeEnabled,
+    showSubmetrics,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
@@ -100,5 +113,6 @@ export const useSettings = () => {
     handleDurationChange,
     handleGhostCircleToggle,
     handlePenaltyModeToggle,
+    handleSubmetricsToggle,
   };
 };
