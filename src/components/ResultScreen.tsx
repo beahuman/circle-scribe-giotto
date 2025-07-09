@@ -9,10 +9,15 @@ import ResultControls from './results/ResultControls';
 import XpProgressBar from './results/XpProgressBar';
 import ScoreDisplay from './results/ScoreDisplay';
 import ScientificFactCard from './results/ScientificFactCard';
+import DetailedScoreDisplay from './results/DetailedScoreDisplay';
+import CircleOverlay from './results/CircleOverlay';
+import PersonalStats from './results/PersonalStats';
 import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 import { useCosmetics } from '@/hooks/useCosmetics';
 import { useImprovementCalculator } from './results/ImprovementCalculator';
 import { useResultActions } from './results/useResultActions';
+import { calculateGeometricScore, type GeometricSubscores } from '@/utils/circleUtils';
+import { useLocalProgress } from '@/hooks/useLocalProgress';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -49,8 +54,10 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const isGoodScore = roundedAccuracy >= 80;
   const playerProgress = usePlayerProgress();
   const { getEquippedValue } = useCosmetics();
+  const { stats } = useLocalProgress();
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
   const [showFactCard, setShowFactCard] = useState(false);
+  const [subscores, setSubscores] = useState<GeometricSubscores | null>(null);
   
   // Get equipped cosmetics
   const backgroundStyle = getEquippedValue('background');
@@ -62,6 +69,19 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   // Handle actions like sharing and vibration feedback
   const { handleShare } = useResultActions(roundedAccuracy, difficultyLevel, isPenaltyMode);
   
+  // Calculate detailed subscores
+  useEffect(() => {
+    if (drawnPoints.length > 0) {
+      const geometricResult = calculateGeometricScore(
+        drawnPoints,
+        targetCircle,
+        difficultyLevel,
+        isPenaltyMode
+      );
+      setSubscores(geometricResult);
+    }
+  }, [drawnPoints, targetCircle, difficultyLevel, isPenaltyMode]);
+
   // Add XP based on accuracy
   useEffect(() => {
     const result = playerProgress.addXp(roundedAccuracy);
@@ -119,25 +139,29 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       )}
       
-      {/* Circle visualization component with proper vertical space */}
-      <div className="w-full my-8">
-        <CircleVisualization 
-          targetCircle={targetCircle}
-          drawnPoints={drawnPoints}
-          isGoodScore={isGoodScore}
-          trailStyle={getEquippedValue('trail')}
+      {/* Detailed Score Display */}
+      {subscores && (
+        <DetailedScoreDisplay 
+          subscores={subscores}
+          overallScore={roundedAccuracy}
+          className="mb-6"
         />
-      </div>
-      
-      {/* Score display component */}
-      <ScoreDisplay 
-        roundedAccuracy={roundedAccuracy}
-        difficultyLevel={difficultyLevel}
-        improvement={improvement}
-        isPenaltyMode={isPenaltyMode}
-        sessionRoundsPlayed={sessionRoundsPlayed}
-        animationStyle={animationStyle}
-        progressResult={progressResult}
+      )}
+
+      {/* Circle Overlay Visualization */}
+      <CircleOverlay 
+        drawnPoints={drawnPoints}
+        targetCircle={targetCircle}
+        showDeviations={true}
+        className="mb-6"
+      />
+
+      {/* Personal Stats */}
+      <PersonalStats 
+        stats={stats}
+        currentScore={roundedAccuracy}
+        streakCount={0} // This would come from streak tracking
+        className="mb-6"
       />
       
       {/* XP Progress Bar */}
