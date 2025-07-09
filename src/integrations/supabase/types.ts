@@ -14,6 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
+      badges: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          rarity: string
+          requirement_data: Json | null
+          requirement_type: string
+          requirement_value: number | null
+          xp_reward: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          name: string
+          rarity?: string
+          requirement_data?: Json | null
+          requirement_type: string
+          requirement_value?: number | null
+          xp_reward?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          rarity?: string
+          requirement_data?: Json | null
+          requirement_type?: string
+          requirement_value?: number | null
+          xp_reward?: number
+        }
+        Relationships: []
+      }
+      daily_challenges: {
+        Row: {
+          created_at: string
+          date: string
+          difficulty_level: number
+          id: string
+          target_score: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          difficulty_level: number
+          id?: string
+          target_score?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          difficulty_level?: number
+          id?: string
+          target_score?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      daily_completions: {
+        Row: {
+          attempts: number
+          challenge_date: string
+          completed_at: string
+          created_at: string
+          id: string
+          score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          challenge_date: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          score: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          challenge_date?: string
+          completed_at?: string
+          created_at?: string
+          id?: string
+          score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       game_scores: {
         Row: {
           created_at: string
@@ -43,7 +145,10 @@ export type Database = {
           avatar_color: string | null
           avatar_image: string | null
           created_at: string | null
+          current_streak: number
           id: string
+          longest_streak: number
+          total_daily_completions: number
           updated_at: string | null
           username: string | null
         }
@@ -51,7 +156,10 @@ export type Database = {
           avatar_color?: string | null
           avatar_image?: string | null
           created_at?: string | null
+          current_streak?: number
           id: string
+          longest_streak?: number
+          total_daily_completions?: number
           updated_at?: string | null
           username?: string | null
         }
@@ -59,18 +167,56 @@ export type Database = {
           avatar_color?: string | null
           avatar_image?: string | null
           created_at?: string | null
+          current_streak?: number
           id?: string
+          longest_streak?: number
+          total_daily_completions?: number
           updated_at?: string | null
           username?: string | null
         }
         Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          created_at: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          created_at?: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          created_at?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_daily_challenge: {
+        Args: { target_date?: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

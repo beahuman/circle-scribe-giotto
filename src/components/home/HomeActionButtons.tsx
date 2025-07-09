@@ -2,11 +2,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Calendar, Trophy } from "lucide-react";
+import { Calendar, Trophy, Target } from "lucide-react";
 
 interface HomeActionButtonsProps {
   onStart: () => void;
   onStartDailyCalibration: () => void;
+  onStartDailyChallenge: () => void;
   showLeaderboard?: () => void;
 }
 
@@ -19,6 +20,7 @@ const fadeVariants = {
 const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
   onStart,
   onStartDailyCalibration,
+  onStartDailyChallenge,
   showLeaderboard
 }) => {
   return (
@@ -40,6 +42,17 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
         >
           <Calendar className="mr-2 h-5 w-5" />
           Daily Calibration
+        </Button>
+      </motion.div>
+      
+      <motion.div variants={fadeVariants}>
+        <Button 
+          onClick={onStartDailyChallenge}
+          variant="outline"
+          className="px-8 py-6 text-lg rounded-full border-2 border-purple-500/20 hover:border-purple-500/40 hover:bg-purple-500/5 w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 min-h-[56px]"
+        >
+          <Target className="mr-2 h-5 w-5" />
+          Daily Challenge
         </Button>
       </motion.div>
       

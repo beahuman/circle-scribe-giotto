@@ -18,6 +18,8 @@ import { useImprovementCalculator } from './results/ImprovementCalculator';
 import { useResultActions } from './results/useResultActions';
 import { calculateGeometricScore, type GeometricSubscores } from '@/utils/circleUtils';
 import { useLocalProgress } from '@/hooks/useLocalProgress';
+import DailyChallengeResult from './DailyChallengeResult';
+import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -33,6 +35,7 @@ interface ResultScreenProps {
   sessionRoundsPlayed?: number;
   isDailyMode?: boolean;
   dailyCompleted?: boolean;
+  isDailyChallengeMode?: boolean;
 }
 
 const ResultScreen: React.FC<ResultScreenProps> = ({
@@ -48,13 +51,15 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   isPenaltyMode = false,
   sessionRoundsPlayed = 0,
   isDailyMode = false,
-  dailyCompleted = false
+  dailyCompleted = false,
+  isDailyChallengeMode = false
 }) => {
   const roundedAccuracy = Math.round(accuracy * 100) / 100;
   const isGoodScore = roundedAccuracy >= 80;
   const playerProgress = usePlayerProgress();
   const { getEquippedValue } = useCosmetics();
   const { stats } = useLocalProgress();
+  const { todaysChallenge } = useDailyChallenges();
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
   const [showFactCard, setShowFactCard] = useState(false);
   const [subscores, setSubscores] = useState<GeometricSubscores | null>(null);
@@ -106,6 +111,27 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const handleFactCardComplete = () => {
     setShowFactCard(false);
   };
+  // Check if we should show daily challenge results
+  const showDailyChallengeResult = isDailyChallengeMode && todaysChallenge;
+
+  if (showDailyChallengeResult) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col items-center justify-start gap-6 p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]"
+      >
+        <DailyChallengeResult
+          score={roundedAccuracy}
+          targetScore={todaysChallenge.target_score}
+          difficultyLevel={todaysChallenge.difficulty_level}
+          onContinue={() => window.location.href = '/'}
+        />
+      </motion.div>
+    );
+  }
   
   return (
     <motion.div

@@ -87,8 +87,9 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Add daily calibration hook
   const { todayCompleted, recordDailyAccuracy } = useDailyCalibration();
   
-  // Check if we're in daily calibration mode
+  // Check if we're in daily calibration mode or daily challenge mode
   const isDailyMode = new URLSearchParams(window.location.search).get('daily') === 'true';
+  const isDailyChallengeMode = new URLSearchParams(window.location.search).get('mode') === 'daily-challenge';
   
   // Enhanced drawing complete handler to record round stats and daily calibration
   const handleEnhancedDrawingComplete = async (score: number, points: Point[]) => {
@@ -104,25 +105,32 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
       }
     }
     
+    // If in daily challenge mode, handle completion differently
+    if (isDailyChallengeMode) {
+      // Record daily challenge completion
+      // This will be handled by the daily challenge hook
+      console.log('Daily challenge completed:', score);
+    }
+    
     // Call the original handler
     await handleDrawingComplete(score, points);
   };
   
-  // Override replay handler for daily mode
+  // Override replay handler for daily mode and daily challenge mode
   const handleDailyAwareReplay = () => {
-    if (isDailyMode && todayCompleted) {
+    if ((isDailyMode || isDailyChallengeMode) && todayCompleted) {
       toast({
-        title: "Daily calibration complete",
+        title: isDailyChallengeMode ? "Daily challenge complete" : "Daily calibration complete",
         description: "Return tomorrow for your next session!",
         duration: 3000
       });
       return;
     }
 
-    // Show educational modal every 3rd round (after first completion)
-    const shouldShowEducational = sessionDrawings > 0 && (sessionDrawings + 1) % 3 === 0;
+    // Show educational modal every 3rd round (after first completion) - but not in daily modes
+    const shouldShowEducational = sessionDrawings > 0 && (sessionDrawings + 1) % 3 === 0 && !isDailyMode && !isDailyChallengeMode;
     
-    if (shouldShowEducational && !isDailyMode) {
+    if (shouldShowEducational && !isDailyMode && !isDailyChallengeMode) {
       setPendingGameState('showing');
       setShowEducationalModal(true);
     } else {
@@ -220,7 +228,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
             <ResultScreen 
               accuracy={accuracy}
               difficultyLevel={difficultyLevel}
-              onReplay={isDailyMode ? handleDailyAwareReplay : handleReplay}
+              onReplay={(isDailyMode || isDailyChallengeMode) ? handleDailyAwareReplay : handleReplay}
               showLeaderboard={isGameServiceAvailable ? showLeaderboard : undefined}
               targetCircle={targetCircle}
               drawnPoints={drawnPoints}
@@ -230,6 +238,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
               onViewStats={handleViewStats}
               sessionRoundsPlayed={sessionStats.roundsPlayed}
               isDailyMode={isDailyMode}
+              isDailyChallengeMode={isDailyChallengeMode}
               dailyCompleted={todayCompleted}
             />
           </motion.div>

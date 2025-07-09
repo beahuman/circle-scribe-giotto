@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import WelcomeScreen from './WelcomeScreen';
 import DailyCalibrationScreen from './DailyCalibrationScreen';
+import DailyChallengeScreen from './DailyChallengeScreen';
 import ProgressDashboard from './ProgressDashboard';
 import HomeHeader from './home/HomeHeader';
 import HomeActionButtons from './home/HomeActionButtons';
@@ -33,6 +34,7 @@ const staggerContainer = {
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
   const [showWelcome, setShowWelcome] = useState(true);
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
+  const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
   useEffect(() => {
@@ -52,6 +54,36 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const handleStartDailyCalibration = () => {
     setShowDailyCalibration(true);
   };
+
+  const handleStartDailyChallenge = () => {
+    setShowDailyChallenge(true);
+  };
+
+  const handleStartChallengeGame = () => {
+    setShowDailyChallenge(false);
+    // Navigate to game with daily challenge mode
+    window.location.href = '/?mode=daily-challenge';
+  };
+
+  if (showDailyChallenge) {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="daily-challenge"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+        >
+          <DailyChallengeScreen 
+            onStartChallenge={handleStartChallengeGame}
+            onBack={() => setShowDailyChallenge(false)}
+          />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   if (showDailyCalibration) {
     return (
@@ -125,6 +157,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
           <HomeActionButtons
             onStart={onStart}
             onStartDailyCalibration={handleStartDailyCalibration}
+            onStartDailyChallenge={handleStartDailyChallenge}
             showLeaderboard={showLeaderboard}
           />
 
