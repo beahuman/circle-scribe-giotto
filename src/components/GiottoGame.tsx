@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CircleDisplay from './CircleDisplay';
 import DrawingCanvas from './DrawingCanvas';
 import ResultScreen from './ResultScreen';
 import SessionStatsView from './SessionStatsView';
+import EducationalModal from './modal/EducationalModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { GameProps } from '@/types/game';
 import { useGameState } from '@/hooks/useGameState';
@@ -16,6 +17,10 @@ import { Point } from '@/types/shapes';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
+  // Educational modal state
+  const [showEducationalModal, setShowEducationalModal] = useState(false);
+  const [pendingGameState, setPendingGameState] = useState<'showing' | null>(null);
+
   // Game state management
   const {
     gameState,
@@ -113,7 +118,30 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
       });
       return;
     }
-    handleReplay();
+
+    // Show educational modal every 3rd round (after first completion)
+    const shouldShowEducational = sessionDrawings > 0 && (sessionDrawings + 1) % 3 === 0;
+    
+    if (shouldShowEducational && !isDailyMode) {
+      setPendingGameState('showing');
+      setShowEducationalModal(true);
+    } else {
+      handleReplay();
+    }
+  };
+
+  // Handle educational modal completion
+  const handleEducationalComplete = () => {
+    setShowEducationalModal(false);
+    if (pendingGameState) {
+      handleReplay();
+      setPendingGameState(null);
+    }
+  };
+
+  const handleEducationalClose = () => {
+    setShowEducationalModal(false);
+    setPendingGameState(null);
   };
   
   // View stats handler
@@ -225,6 +253,13 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Educational Modal */}
+      <EducationalModal
+        isOpen={showEducationalModal}
+        onClose={handleEducationalClose}
+        onContinue={handleEducationalComplete}
+      />
     </div>
   );
 };
