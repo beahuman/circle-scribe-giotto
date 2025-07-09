@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import WelcomeScreen from './WelcomeScreen';
 import DailyCalibrationScreen from './DailyCalibrationScreen';
 import DailyChallengeScreen from './DailyChallengeScreen';
+import OnboardingSequence from './OnboardingSequence';
 import ProgressDashboard from './ProgressDashboard';
 import HomeHeader from './home/HomeHeader';
 import HomeActionButtons from './home/HomeActionButtons';
@@ -33,18 +34,26 @@ const staggerContainer = {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
   const [showWelcome, setShowWelcome] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
   useEffect(() => {
+    // Check if user has completed onboarding
+    const hasCompletedOnboarding = localStorage.getItem('onboardingCompleted');
+    
     // Check if the user is returning from the game
     const returningFromGame = sessionStorage.getItem('returningFromGame');
     if (returningFromGame === 'true') {
       setShowWelcome(false);
       sessionStorage.removeItem('returningFromGame');
+    } else if (!hasCompletedOnboarding) {
+      // Show onboarding for new users
+      setShowOnboarding(true);
+      setShowWelcome(false);
     } else {
-      // Show welcome screen on first visit or refresh
+      // Show welcome screen briefly for returning users
       setTimeout(() => {
         setShowWelcome(false);
       }, 2000);
@@ -64,6 +73,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
     // Navigate to game with daily challenge mode
     window.location.href = '/?mode=daily-challenge';
   };
+
+  // Show onboarding sequence for new users
+  if (showOnboarding) {
+    return (
+      <OnboardingSequence 
+        onComplete={() => setShowOnboarding(false)}
+        onSkip={() => setShowOnboarding(false)}
+      />
+    );
+  }
 
   if (showDailyChallenge) {
     return (
