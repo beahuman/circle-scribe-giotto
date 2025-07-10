@@ -75,8 +75,10 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
   return (
     <canvas
       ref={canvasRef}
-      className="touch-none absolute top-0 left-0 w-full h-full"
+      className="touch-none absolute top-0 left-0"
       style={{ 
+        width: canvasDimensions.width,
+        height: canvasDimensions.height,
         touchAction: 'none', // Prevent browser touch handling for better performance
         willChange: 'transform' // Hint to browser for GPU acceleration
       }}

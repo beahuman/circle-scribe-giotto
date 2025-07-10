@@ -92,7 +92,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   }, [handleEnd, finalizeDrawing]);
 
   return (
-    <div className="absolute inset-0 pb-16">
+    <div className="absolute inset-0" style={{ paddingBottom: '64px' }}>
       <InstructionOverlay 
         visible={instructionVisible} 
         message="Draw the circle"
