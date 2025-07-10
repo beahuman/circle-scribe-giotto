@@ -15,6 +15,9 @@ import { useGameHandlers } from '@/features/game/gameHandlers';
 import MobileWarning from './game/MobileWarning';
 import { Point } from '@/types/shapes';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
+import { useBlindDrawMode } from '@/hooks/useBlindDrawMode';
+import BlindDrawCanvas from './BlindDrawCanvas';
+import BlindDrawUnlockModal from './BlindDrawUnlockModal';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Educational modal state
@@ -87,11 +90,16 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Add daily calibration hook
   const { todayCompleted, recordDailyAccuracy } = useDailyCalibration();
   
+  // Add blind draw mode hook
+  const { shouldShowUnlockModal, recordBlindDrawScore, markUnlockModalShown } = useBlindDrawMode();
+  const [showBlindUnlockModal, setShowBlindUnlockModal] = useState(false);
+  
   // Check if we're in daily calibration mode or daily challenge mode
   const isDailyMode = new URLSearchParams(window.location.search).get('daily') === 'true';
   const isDailyChallengeMode = new URLSearchParams(window.location.search).get('mode') === 'daily-challenge';
+  const isBlindDrawMode = new URLSearchParams(window.location.search).get('mode') === 'blind-draw';
   
-  // Enhanced drawing complete handler to record round stats and daily calibration
+  // Enhanced drawing complete handler for all modes
   const handleEnhancedDrawingComplete = async (score: number, points: Point[]) => {
     // Record the round in session stats
     recordRound(score);
@@ -100,20 +108,38 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
     if (isDailyMode) {
       const success = recordDailyAccuracy(score);
       if (success) {
-        // In daily mode, we don't allow retries
         console.log('Daily calibration recorded:', score);
       }
     }
     
     // If in daily challenge mode, handle completion differently
     if (isDailyChallengeMode) {
-      // Record daily challenge completion
-      // This will be handled by the daily challenge hook
       console.log('Daily challenge completed:', score);
+    }
+    
+    // If in blind draw mode, record blind draw score
+    if (isBlindDrawMode) {
+      recordBlindDrawScore(score);
+      console.log('Blind draw score recorded:', score);
     }
     
     // Call the original handler
     await handleDrawingComplete(score, points);
+  };
+
+  // Check if should show unlock modal on game start
+  React.useEffect(() => {
+    if (shouldShowUnlockModal) {
+      setShowBlindUnlockModal(true);
+    }
+  }, [shouldShowUnlockModal]);
+
+  // Handle starting blind draw from unlock modal
+  const handleStartBlindDrawFromModal = () => {
+    setShowBlindUnlockModal(false);
+    markUnlockModalShown();
+    // Navigate to blind draw mode
+    window.location.href = '/?mode=blind-draw';
   };
   
   // Override replay handler for daily mode and daily challenge mode
@@ -208,11 +234,18 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
             transition={{ duration: 0.3 }}
             className="w-full h-full"
           >
-            <DrawingCanvas 
-              onComplete={handleEnhancedDrawingComplete}
-              targetCircle={targetCircle}
-              difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
-            />
+            {isBlindDrawMode ? (
+              <BlindDrawCanvas 
+                onComplete={handleEnhancedDrawingComplete}
+                targetCircle={targetCircle}
+              />
+            ) : (
+              <DrawingCanvas 
+                onComplete={handleEnhancedDrawingComplete}
+                targetCircle={targetCircle}
+                difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
+              />
+            )}
           </motion.div>
         )}
         
@@ -268,6 +301,16 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
         isOpen={showEducationalModal}
         onClose={handleEducationalClose}
         onContinue={handleEducationalComplete}
+      />
+
+      {/* Blind Draw Unlock Modal */}
+      <BlindDrawUnlockModal
+        open={showBlindUnlockModal}
+        onClose={() => {
+          setShowBlindUnlockModal(false);
+          markUnlockModalShown();
+        }}
+        onStartBlindDraw={handleStartBlindDrawFromModal}
       />
     </div>
   );
