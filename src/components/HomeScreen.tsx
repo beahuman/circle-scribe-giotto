@@ -11,6 +11,9 @@ import HomeNavigationMenu from './home/HomeNavigationMenu';
 import HomeFooter from './home/HomeFooter';
 import AdRewardCenter from './ads/AdRewardCenter';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useSettings } from '@/hooks/useSettings';
+import { useDailyCalibration } from '@/hooks/useDailyCalibration';
+import { useLocalProgress } from '@/hooks/useLocalProgress';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -35,11 +38,33 @@ const staggerContainer = {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
   const { isPremium } = useSubscription();
+  const { settings } = useSettings();
+  const { streak, todaysCompletion } = useDailyCalibration();
+  const { stats } = useLocalProgress();
   const [showWelcome, setShowWelcome] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+
+  const getMotivationalPhrase = () => {
+    const tone = settings.feedbackTone || 'playful';
+    switch (tone) {
+      case 'playful':
+        return "Today's a good day to impress your thumb.";
+      case 'calm':
+        return "One stroke. One breath. One circle.";
+      case 'formal':
+        return "Precision through repetition and neural optimization.";
+      case 'sarcastic':
+        return "Back for more punishment, are we?";
+      default:
+        return "Draw your way to motor mastery.";
+    }
+  };
+
+  // Check if user is new (no scores or streaks)
+  const isNewUser = stats.totalGames === 0 && streak.current === 0;
 
   useEffect(() => {
     // Check if user has completed onboarding
@@ -155,46 +180,161 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
     <AnimatePresence mode="wait">
       <motion.div
         key="home"
+        className="min-h-screen bg-gradient-to-br from-slate-50 to-white"
         variants={fadeVariants}
         initial="initial"
         animate="animate"
         exit="exit"
         transition={{ duration: 0.4 }}
-        className="flex flex-col items-center justify-center gap-8 p-6 text-center min-h-screen bg-gradient-to-b from-primary/5 to-background"
       >
-        <HomeHeader />
-
-        {/* Add Ad Reward Center for non-premium users */}
-        {!isPremium && (
-          <motion.div variants={fadeVariants}>
-            <AdRewardCenter />
+        <div className="max-w-md mx-auto px-6 py-8 space-y-8">
+          {/* Header Area with Logo and Dynamic Phrase */}
+          <motion.div 
+            className="text-center space-y-4"
+            variants={fadeVariants}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="w-[200px] mx-auto">
+              <HomeHeader />
+            </div>
+            <motion.p 
+              className="text-slate-600 font-light text-lg italic leading-relaxed"
+              key={settings.feedbackTone} // Re-animate when tone changes
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {getMotivationalPhrase()}
+            </motion.p>
           </motion.div>
-        )}
 
-        <motion.div 
-          className="flex flex-col gap-4 w-full max-w-xs"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
-          <motion.div variants={fadeVariants}>
-            <ProgressDashboard 
-              isOpen={isDashboardOpen}
-              onToggle={() => setIsDashboardOpen(!isDashboardOpen)}
-            />
+          {/* New User Guidance Banner */}
+          {isNewUser && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-center"
+            >
+              <p className="text-sm text-primary font-medium">
+                Start with Daily Calibration to begin your motor mastery journey.
+              </p>
+            </motion.div>
+          )}
+
+          {/* Primary Mode CTAs */}
+          <motion.div 
+            className="space-y-4"
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            {/* Practice Mode Card */}
+            <motion.div variants={fadeVariants}>
+              <button
+                onClick={onStart}
+                className="w-full bg-white border border-slate-200 rounded-xl p-6 text-left shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 transform hover:scale-[1.02]"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-slate-800">Free Draw Practice</h3>
+                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
+                    <div className="w-3 h-3 bg-slate-400 rounded-full"></div>
+                  </div>
+                </div>
+                <p className="text-sm text-slate-600 mb-2">No pressure. Improve your form.</p>
+                {stats.lastAttempt !== null && (
+                  <p className="text-xs text-slate-500">Last score: {stats.lastAttempt}%</p>
+                )}
+              </button>
+            </motion.div>
+
+            {/* Daily Calibration Card */}
+            <motion.div variants={fadeVariants}>
+              <button
+                onClick={handleStartDailyCalibration}
+                className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 text-left shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200 transform hover:scale-[1.02]"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-blue-800">Daily Calibration</h3>
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  </div>
+                </div>
+                <p className="text-sm text-blue-700 mb-2">One shot. Once a day.</p>
+                {streak.current > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
+                      Day {streak.current} streak 🔥
+                    </div>
+                  </div>
+                )}
+                {todaysCompletion && (
+                  <p className="text-xs text-blue-600 mt-1">
+                    Today: {Math.round(todaysCompletion.accuracy)}% ✓
+                  </p>
+                )}
+              </button>
+            </motion.div>
           </motion.div>
 
-          <HomeActionButtons
-            onStart={onStart}
-            onStartDailyCalibration={handleStartDailyCalibration}
-            onStartDailyChallenge={handleStartDailyChallenge}
-            showLeaderboard={showLeaderboard}
-          />
+          {/* Progress Preview Widget */}
+          <motion.div 
+            variants={fadeVariants}
+            transition={{ delay: 0.3 }}
+          >
+            <button
+              onClick={() => window.location.href = '/progress'}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-left hover:bg-slate-100 transition-colors duration-200"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-sm font-medium text-slate-700">Your Progress</h4>
+                <div className="text-slate-400">→</div>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-slate-600">
+                {todaysCompletion && (
+                  <div className="flex items-center gap-1">
+                    <span>Yesterday:</span>
+                    <span className="text-lg">
+                      {todaysCompletion.accuracy >= 90 ? '🥇' : 
+                       todaysCompletion.accuracy >= 80 ? '🥈' : 
+                       todaysCompletion.accuracy >= 70 ? '🥉' : '⚪'}
+                    </span>
+                  </div>
+                )}
+                {streak.current >= 3 && (
+                  <div className="text-green-600">Next unlock: Blind Draw Mode</div>
+                )}
+              </div>
+            </button>
+          </motion.div>
 
-          <HomeNavigationMenu isGuestMode={isGuestMode} />
-        </motion.div>
+          {/* Ad Reward Center for non-premium users */}
+          {!isPremium && (
+            <motion.div variants={fadeVariants} transition={{ delay: 0.4 }}>
+              <AdRewardCenter />
+            </motion.div>
+          )}
 
-        <HomeFooter />
+          {/* Floating Bottom Actions */}
+          <motion.div 
+            className="flex items-center justify-center gap-6 pt-4"
+            variants={fadeVariants}
+            transition={{ delay: 0.5 }}
+          >
+            <HomeNavigationMenu isGuestMode={isGuestMode} />
+          </motion.div>
+
+          {/* Rotating Neuroscience Facts */}
+          <motion.div 
+            className="text-center pt-2"
+            variants={fadeVariants}
+            transition={{ delay: 0.6 }}
+          >
+            <p className="text-xs text-slate-400 italic">
+              Fact: Your cerebellum gets smarter with every circle
+            </p>
+          </motion.div>
+
+        </div>
       </motion.div>
     </AnimatePresence>
   );

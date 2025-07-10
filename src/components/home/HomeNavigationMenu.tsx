@@ -2,9 +2,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Settings, Info, Store, History, UserCircle, Trophy, Crown } from "lucide-react";
+import { Settings, Info, BarChart3, HelpCircle } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { useSubscription } from "@/hooks/useSubscription";
+import WhyCirclesModal from '../WhyCirclesModal';
 
 interface HomeNavigationMenuProps {
   isGuestMode?: boolean;
@@ -18,91 +18,46 @@ const fadeVariants = {
 
 const HomeNavigationMenu: React.FC<HomeNavigationMenuProps> = ({ isGuestMode }) => {
   const navigate = useNavigate();
-  const { isPremium } = useSubscription();
   
   return (
-    <>
-      {!isGuestMode && (
-        <motion.div variants={fadeVariants}>
-          <Button 
-            variant="ghost" 
-            className="justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
-            onClick={() => navigate('/account')}
-          >
-            <UserCircle className="mr-2 h-4 w-4" />
-            Account
-          </Button>
-        </motion.div>
-      )}
+    <motion.div 
+      className="flex items-center justify-center gap-4"
+      variants={fadeVariants}
+    >
+      {/* Progress */}
+      <Button 
+        variant="ghost" 
+        size="sm"
+        className="flex flex-col items-center gap-1 p-2 h-auto text-xs text-slate-600 hover:text-slate-800"
+        onClick={() => navigate('/progress')}
+      >
+        <BarChart3 className="h-4 w-4" />
+        Progress
+      </Button>
 
-      <motion.div variants={fadeVariants}>
+      {/* Why Circles? */}
+      <WhyCirclesModal>
         <Button 
           variant="ghost" 
-          className="justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
-          onClick={() => navigate('/achievements')}
+          size="sm"
+          className="flex flex-col items-center gap-1 p-2 h-auto text-xs text-slate-600 hover:text-slate-800"
         >
-          <Trophy className="mr-2 h-4 w-4" />
-          Achievements
+          <HelpCircle className="h-4 w-4" />
+          Why Circles?
         </Button>
-      </motion.div>
+      </WhyCirclesModal>
 
-      <motion.div variants={fadeVariants}>
-        <Button 
-          variant="ghost" 
-          className="justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
-          onClick={() => navigate('/settings')}
-        >
-          <Settings className="mr-2 h-4 w-4" />
-          Settings
-        </Button>
-      </motion.div>
-
-      <motion.div variants={fadeVariants}>
-        <Button 
-          variant="ghost" 
-          className="justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
-          onClick={() => navigate('/history')}
-        >
-          <History className="mr-2 h-4 w-4" />
-          History
-        </Button>
-      </motion.div>
-
-      <motion.div variants={fadeVariants}>
-        <Button 
-          variant="ghost" 
-          className="justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
-          onClick={() => navigate('/store')}
-        >
-          <Store className="mr-2 h-4 w-4" />
-          Store
-        </Button>
-      </motion.div>
-
-      <motion.div variants={fadeVariants}>
-        <Button 
-          variant="ghost" 
-          className={`justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 ${
-            isPremium ? 'text-primary' : ''
-          }`}
-          onClick={() => navigate('/subscription')}
-        >
-          <Crown className="mr-2 h-4 w-4" />
-          Premium {isPremium && <span className="ml-auto text-xs">Active</span>}
-        </Button>
-      </motion.div>
-
-      <motion.div variants={fadeVariants}>
-        <Button 
-          variant="ghost" 
-          className="justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200"
-          onClick={() => navigate('/about')}
-        >
-          <Info className="mr-2 h-4 w-4" />
-          About
-        </Button>
-      </motion.div>
-    </>
+      {/* Settings */}
+      <Button 
+        variant="ghost" 
+        size="sm"
+        className="flex flex-col items-center gap-1 p-2 h-auto text-xs text-slate-600 hover:text-slate-800"
+        onClick={() => navigate('/settings')}
+      >
+        <Settings className="h-4 w-4" />
+        Settings
+      </Button>
+    </motion.div>
   );
 };
 
