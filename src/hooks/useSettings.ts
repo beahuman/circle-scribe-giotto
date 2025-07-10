@@ -125,7 +125,8 @@ export const useSettings = () => {
     difficultyLevel,
     displayDuration,
     penaltyModeEnabled,
-    showGhostCircle
+    showGhostCircle,
+    mirrorOffsetEnabled
   };
 
   return {
