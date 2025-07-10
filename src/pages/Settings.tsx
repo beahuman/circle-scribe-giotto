@@ -3,6 +3,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import BottomNav from '@/components/BottomNav';
 import DifficultySettings from '@/components/settings/DifficultySettings';
 import DrawingSettings from '@/components/settings/DrawingSettings';
@@ -17,7 +19,7 @@ import BrushSettings from '@/components/settings/BrushSettings';
 import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
 import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSettings';
 import { useSettings } from '@/hooks/useSettings';
-import { Button } from "@/components/ui/button";
+
 import { useNavigate } from 'react-router-dom';
 
 const fadeVariants = {
@@ -191,6 +193,27 @@ const Settings = () => {
 
         <motion.div variants={fadeVariants}>
           <InfinitePracticeSettings />
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Onboarding</CardTitle>
+              <CardDescription>
+                Replay the first-time user experience
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  localStorage.removeItem('giottoOnboardingCompleted');
+                  window.location.reload();
+                }}
+                className="w-full"
+              >
+                Replay Onboarding
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
       

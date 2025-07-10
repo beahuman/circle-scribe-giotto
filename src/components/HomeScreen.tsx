@@ -16,6 +16,7 @@ import { useSettings } from '@/hooks/useSettings';
 import { useToneSystem } from '@/hooks/useToneSystem';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 import { useLocalProgress } from '@/hooks/useLocalProgress';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -44,8 +45,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const { streak, todaysCompletion } = useDailyCalibration();
   const { getMotivationalPhraseForTone, getActiveThemeStyles } = useToneSystem();
   const { stats } = useLocalProgress();
+  const { hasCompletedOnboarding } = useOnboarding();
   const [showWelcome, setShowWelcome] = useState(true);
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -65,8 +66,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
       setShowWelcome(false);
       sessionStorage.removeItem('returningFromGame');
     } else if (!hasCompletedOnboarding) {
-      // Show onboarding for new users
-      setShowOnboarding(true);
+      // Onboarding will be handled by the hook
       setShowWelcome(false);
     } else {
       // Show welcome screen briefly for returning users
@@ -91,11 +91,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   };
 
   // Show onboarding sequence for new users
-  if (showOnboarding) {
+  if (!hasCompletedOnboarding) {
     return (
       <OnboardingSequence 
-        onComplete={() => setShowOnboarding(false)}
-        onSkip={() => setShowOnboarding(false)}
+        onComplete={(selectedMode) => {
+          // Navigate to the selected mode if one was chosen
+          if (selectedMode === 'daily') {
+            window.location.href = '/?daily=true';
+          }
+          // Otherwise stay on home screen for practice mode
+        }}
       />
     );
   }

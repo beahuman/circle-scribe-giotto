@@ -1,164 +1,87 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Zap, Target, TrendingUp, Heart, Users, SkipForward } from 'lucide-react';
-import LogoAnimation from '../LogoAnimation';
+import { Circle, Sparkles } from 'lucide-react';
 
 interface OnboardingWelcomeProps {
-  onNext: () => void;
+  onContinue: () => void;
   onSkip: () => void;
+  tone: 'playful' | 'calm' | 'formal' | 'sarcastic';
 }
 
-const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ onNext, onSkip }) => {
-  const benefits = [
-    {
-      icon: Brain,
-      title: "Enhanced Neuroplasticity",
-      description: "Circle drawing strengthens neural pathways between your brain and muscles, improving motor control precision.",
-      color: "text-blue-500"
-    },
-    {
-      icon: Zap,
-      title: "Motor Cortex Training",
-      description: "Repetitive practice activates your primary motor cortex, creating lasting improvements in hand-eye coordination.",
-      color: "text-purple-500"
-    },
-    {
-      icon: Target,
-      title: "Cognitive Focus",
-      description: "Drawing perfect circles requires intense concentration, training your attention and mindfulness abilities.",
-      color: "text-green-500"
-    },
-    {
-      icon: Heart,
-      title: "Stress Reduction",
-      description: "The meditative nature of circle drawing has been shown to reduce cortisol levels and promote relaxation.",
-      color: "text-red-500"
-    }
-  ];
+const toneMessages = {
+  playful: "Draw circles. Get better. Repeat. You got this.",
+  calm: "Precision is presence. Let's begin.",
+  formal: "This app measures your spatial control. Begin when ready.",
+  sarcastic: "So you think you can circle?"
+};
 
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
+const toneCTAs = {
+  playful: "Start Onboarding",
+  calm: "Continue in Silence",
+  formal: "Begin Assessment",
+  sarcastic: "Prove It"
+};
 
+const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({
+  onContinue,
+  onSkip,
+  tone
+}) => {
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUpVariants}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center space-y-4"
+        className="w-full max-w-md"
       >
-        <div className="w-[200px] mx-auto mb-4">
-          <LogoAnimation />
-        </div>
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-          Welcome to Giotto
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Train your brain through the ancient art of perfect circle drawing. 
-          Backed by neuroscience, designed for mastery.
-        </p>
-      </motion.div>
-
-      {/* The Science Section */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUpVariants}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <Card className="bg-gradient-to-br from-primary/5 to-purple-500/5 border-primary/20">
-          <CardContent className="p-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold mb-2">The Science Behind Circle Drawing</h2>
-              <p className="text-muted-foreground">
-                Research shows that precise motor tasks like circle drawing create measurable 
-                improvements in brain function and neural connectivity.
-              </p>
+        <Card className="border-primary/20 shadow-lg">
+          <CardHeader className="text-center space-y-4">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="w-16 h-16 mx-auto"
+            >
+              <Circle className="w-full h-full text-primary" strokeWidth={1.5} />
+            </motion.div>
+            
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Welcome to Giotto
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="space-y-6 text-center">
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {toneMessages[tone]}
+            </p>
+            
+            <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+              <Sparkles className="w-4 h-4" />
+              <span>Named after the master who drew the perfect circle</span>
+              <Sparkles className="w-4 h-4" />
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={benefit.title}
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeUpVariants}
-                  transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                  className="flex items-start gap-3 p-4 bg-background/50 rounded-lg"
-                >
-                  <benefit.icon className={`h-6 w-6 mt-1 ${benefit.color}`} />
-                  <div>
-                    <h3 className="font-semibold mb-1">{benefit.title}</h3>
-                    <p className="text-sm text-muted-foreground">{benefit.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+            
+            <div className="space-y-3 pt-4">
+              <Button 
+                onClick={onContinue}
+                className="w-full"
+                size="lg"
+              >
+                {toneCTAs[tone]}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                onClick={onSkip}
+                className="w-full text-muted-foreground hover:text-foreground"
+              >
+                Skip Introduction
+              </Button>
             </div>
           </CardContent>
         </Card>
-      </motion.div>
-
-      {/* Historical Context */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUpVariants}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-4xl mb-3">🎨</div>
-            <h3 className="text-lg font-semibold mb-2">Giotto's Legacy</h3>
-            <p className="text-sm text-muted-foreground">
-              Legend says that when Pope Boniface VIII asked for proof of Giotto's skill, 
-              the Renaissance master simply drew a perfect circle freehand. This became 
-              the ultimate test of artistic mastery.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-4xl mb-3">🔬</div>
-            <h3 className="text-lg font-semibold mb-2">Modern Application</h3>
-            <p className="text-sm text-muted-foreground">
-              Today, neuroscientists use circle drawing tasks to study motor control, 
-              brain plasticity, and cognitive function. Your practice contributes to 
-              understanding human potential.
-            </p>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Call to Action */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUpVariants}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="text-center space-y-4"
-      >
-        <h2 className="text-2xl font-bold">Ready to Train Your Brain?</h2>
-        <p className="text-muted-foreground">
-          Let's start with a quick tutorial to understand how the scoring system works.
-        </p>
-        
-        <div className="flex items-center justify-center gap-4">
-          <Button variant="outline" onClick={onSkip}>
-            <SkipForward className="h-4 w-4 mr-2" />
-            Skip Tutorial
-          </Button>
-          <Button onClick={onNext} size="lg">
-            Start Tutorial
-          </Button>
-        </div>
       </motion.div>
     </div>
   );
