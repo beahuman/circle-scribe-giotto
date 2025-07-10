@@ -1,7 +1,15 @@
 
 import React from 'react';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const AdBanner: React.FC = () => {
+  const { isPremium } = useSubscription();
+  
+  // Don't show ads for premium users
+  if (isPremium) {
+    return null;
+  }
+  
   // Placeholder for AdMob banner ad
   return (
     <div 

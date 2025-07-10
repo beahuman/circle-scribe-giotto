@@ -17,6 +17,7 @@ import Auth from "./pages/Auth";
 import Tutorial from "./pages/Tutorial";
 import Store from "./pages/Store";
 import Achievements from "./pages/Achievements";
+import Subscription from "./pages/Subscription";
 import BottomNav from "@/components/BottomNav";
 
 // Create the client outside of the component
@@ -40,6 +41,7 @@ const App = () => {
                 <Route path="/about" element={<About />} />
                 <Route path="/tutorial" element={<Tutorial />} />
                 <Route path="/store" element={<Store />} />
+                <Route path="/subscription" element={<Subscription />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/account/edit" element={<EditAccount />} />
                 <Route path="/achievements" element={<Achievements />} />

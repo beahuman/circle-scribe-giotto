@@ -121,6 +121,8 @@ export type Database = {
           created_at: string
           game_center_synced: boolean | null
           id: string
+          premium_analytics: Json | null
+          premium_metadata: Json | null
           score: number
           user_id: string
         }
@@ -128,6 +130,8 @@ export type Database = {
           created_at?: string
           game_center_synced?: boolean | null
           id?: string
+          premium_analytics?: Json | null
+          premium_metadata?: Json | null
           score: number
           user_id: string
         }
@@ -135,8 +139,55 @@ export type Database = {
           created_at?: string
           game_center_synced?: boolean | null
           id?: string
+          premium_analytics?: Json | null
+          premium_metadata?: Json | null
           score?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      premium_badges: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          premium_only: boolean
+          rarity: string
+          requirement_data: Json | null
+          requirement_type: string
+          requirement_value: number | null
+          xp_reward: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          name: string
+          premium_only?: boolean
+          rarity?: string
+          requirement_data?: Json | null
+          requirement_type: string
+          requirement_value?: number | null
+          xp_reward?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          premium_only?: boolean
+          rarity?: string
+          requirement_data?: Json | null
+          requirement_type?: string
+          requirement_value?: number | null
+          xp_reward?: number
         }
         Relationships: []
       }
@@ -173,6 +224,42 @@ export type Database = {
           total_daily_completions?: number
           updated_at?: string | null
           username?: string | null
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          stripe_customer_id: string | null
+          subscribed: boolean
+          subscription_end: string | null
+          subscription_tier: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }

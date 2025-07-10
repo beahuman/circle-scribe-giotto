@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Calendar, Trophy, Target } from "lucide-react";
+import { Calendar, Trophy, Target, Crown } from "lucide-react";
+import { useSubscription } from "@/hooks/useSubscription";
+import PremiumModal from "@/components/subscription/PremiumModal";
 
 interface HomeActionButtonsProps {
   onStart: () => void;
@@ -23,6 +25,8 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
   onStartDailyChallenge,
   showLeaderboard
 }) => {
+  const { isPremium } = useSubscription();
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
   return (
     <>
       <motion.div variants={fadeVariants}>
@@ -68,6 +72,24 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
           </Button>
         </motion.div>
       )}
+      
+      {!isPremium && (
+        <motion.div variants={fadeVariants}>
+          <Button 
+            onClick={() => setShowPremiumModal(true)}
+            variant="outline"
+            className="px-8 py-4 rounded-full w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 min-h-[52px] border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-purple-400/5"
+          >
+            <Crown className="mr-2 h-5 w-5 text-primary" />
+            Get Premium
+          </Button>
+        </motion.div>
+      )}
+      
+      <PremiumModal 
+        open={showPremiumModal} 
+        onOpenChange={setShowPremiumModal} 
+      />
     </>
   );
 };

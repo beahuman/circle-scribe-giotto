@@ -2,8 +2,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Settings, Info, Store, History, UserCircle, Trophy } from "lucide-react";
+import { Settings, Info, Store, History, UserCircle, Trophy, Crown } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import { useSubscription } from "@/hooks/useSubscription";
 
 interface HomeNavigationMenuProps {
   isGuestMode?: boolean;
@@ -17,6 +18,7 @@ const fadeVariants = {
 
 const HomeNavigationMenu: React.FC<HomeNavigationMenuProps> = ({ isGuestMode }) => {
   const navigate = useNavigate();
+  const { isPremium } = useSubscription();
   
   return (
     <>
@@ -74,6 +76,19 @@ const HomeNavigationMenu: React.FC<HomeNavigationMenuProps> = ({ isGuestMode }) 
         >
           <Store className="mr-2 h-4 w-4" />
           Store
+        </Button>
+      </motion.div>
+
+      <motion.div variants={fadeVariants}>
+        <Button 
+          variant="ghost" 
+          className={`justify-start w-full transform hover:scale-[1.02] active:scale-[0.98] active:brightness-90 transition-all duration-200 ${
+            isPremium ? 'text-primary' : ''
+          }`}
+          onClick={() => navigate('/subscription')}
+        >
+          <Crown className="mr-2 h-4 w-4" />
+          Premium {isPremium && <span className="ml-auto text-xs">Active</span>}
         </Button>
       </motion.div>
 

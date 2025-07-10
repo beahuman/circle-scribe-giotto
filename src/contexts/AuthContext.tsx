@@ -23,6 +23,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // Check subscription status when auth state changes
+        if (session?.user) {
+          setTimeout(() => {
+            supabase.functions.invoke('check-subscription').catch(console.error);
+          }, 0);
+        }
       }
     );
 
