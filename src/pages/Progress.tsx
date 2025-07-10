@@ -8,6 +8,7 @@ import { useLocalProgress } from '@/hooks/useLocalProgress';
 import { useBadgeSystem } from '@/hooks/useBadgeSystem';
 import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 import { useSettings } from '@/hooks/useSettings';
+import VisualIdentitySection from '@/components/VisualIdentitySection';
 
 const Progress: React.FC = () => {
   const { settings } = useSettings();
@@ -387,11 +388,14 @@ const Progress: React.FC = () => {
           </motion.div>
         )}
 
+        {/* Visual Identity Section */}
+        <VisualIdentitySection tone={settings.feedbackTone || 'meditative'} />
+
         {/* Share Progress */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
         >
           <Card className="bg-gradient-to-r from-primary/5 to-purple-400/5 border-primary/20">
             <CardContent className="p-6 text-center">
@@ -416,7 +420,7 @@ const Progress: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
         >
           <Button
             variant="outline"
