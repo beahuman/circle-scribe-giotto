@@ -1,26 +1,31 @@
 
 import React, { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
+import { preloadAnimation } from '@/utils/animationLoader';
+import logoAnimationData from '@/assets/logo-animation.json';
 
 interface LogoAnimationProps {
   className?: string;
 }
 
 const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '' }) => {
-  const [animationData, setAnimationData] = useState<any>(null);
+  const [animationData, setAnimationData] = useState<any>(logoAnimationData);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    // Fetch the JSON file from the public directory
-    fetch('/GiottoAnimatedLogo.json')
-      .then(response => response.json())
-      .then(data => setAnimationData(data))
-      .catch(error => console.error('Error loading animation:', error));
+    // Try to load the main animation, fallback to local if it fails
+    setIsLoading(true);
+    preloadAnimation('/GiottoAnimatedLogo.json')
+      .then(data => {
+        setAnimationData(data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.warn('Using fallback animation:', error);
+        setAnimationData(logoAnimationData);
+        setIsLoading(false);
+      });
   }, []);
-
-  if (!animationData) {
-    // Show a simple loading state while the animation loads
-    return <div className={`w-[240px] h-[240px] ${className}`}>Loading...</div>;
-  }
 
   return (
     <div className={`w-[240px] ${className}`}>
@@ -28,6 +33,7 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '' }) => {
         animationData={animationData}
         loop={true}
         autoplay={true}
+        className="w-full h-auto"
       />
     </div>
   );
