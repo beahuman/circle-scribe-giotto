@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
-import { useDailyCalibration } from '@/hooks/useDailyCalibration';
-import { useDailyChallenges } from '@/hooks/useDailyChallenges';
-import { useSessionStats } from '@/hooks/useSessionStats';
-import { useSubscription } from '@/hooks/useSubscription';
+import WelcomeScreen from './WelcomeScreen';
+import DailyChallengeScreen from './DailyChallengeScreen';
+import OnboardingSequence from './OnboardingSequence';
+import ProgressDashboard from './ProgressDashboard';
 import HomeHeader from './home/HomeHeader';
 import HomeActionButtons from './home/HomeActionButtons';
 import HomeNavigationMenu from './home/HomeNavigationMenu';
-import OnboardingOverlay from './OnboardingOverlay';
-import ProgressDashboard from './ProgressDashboard';
-import DailyCalibrationScreen from './DailyCalibrationScreen';
-import DailyChallengeScreen from './DailyChallengeScreen';
-import SessionStatsView from './SessionStatsView';
+import HomeFooter from './home/HomeFooter';
 import AdRewardCenter from './ads/AdRewardCenter';
-import AdBanner from './AdBanner';
+import { useSubscription } from '@/hooks/useSubscription';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -38,102 +33,101 @@ const staggerContainer = {
 };
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
-  const { user } = useAuth();
   const { isPremium } = useSubscription();
-  const { 
-    todayCompleted: hasCompletedCalibrationToday,
-    recordDailyAccuracy
-  } = useDailyCalibration();
-  
-  const { 
-    todaysChallenge,
-    completeChallenge,
-    hasCompletedToday: hasCompletedChallengeToday 
-  } = useDailyChallenges();
-  
-  const { sessionStats } = useSessionStats();
-  
+  const [showWelcome, setShowWelcome] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [showCalibration, setShowCalibration] = useState(false);
-  const [showChallenge, setShowChallenge] = useState(false);
-  const [showSessionStats, setShowSessionStats] = useState(false);
+  const [showDailyCalibration, setShowDailyCalibration] = useState(false);
+  const [showDailyChallenge, setShowDailyChallenge] = useState(false);
+  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user needs onboarding
-    const needsOnboarding = !localStorage.getItem('hasSeenOnboarding') && !isGuestMode;
-    if (needsOnboarding) {
+    // Check if user has completed onboarding
+    const hasCompletedOnboarding = localStorage.getItem('onboardingCompleted');
+    
+    // Check if the user is returning from the game
+    const returningFromGame = sessionStorage.getItem('returningFromGame');
+    if (returningFromGame === 'true') {
+      setShowWelcome(false);
+      sessionStorage.removeItem('returningFromGame');
+    } else if (!hasCompletedOnboarding) {
+      // Show onboarding for new users
       setShowOnboarding(true);
+      setShowWelcome(false);
+    } else {
+      // Show welcome screen briefly for returning users
+      setTimeout(() => {
+        setShowWelcome(false);
+      }, 2000);
     }
-  }, [isGuestMode]);
+  }, []);
 
-  const handleStartCalibration = () => {
-    if (!hasCompletedCalibrationToday) {
-      const calibration = startCalibration();
-      if (calibration) {
-        setShowCalibration(true);
-      }
-    }
-  };
-
-  const handleFinishCalibration = (averageScore: number) => {
-    finishCalibration(averageScore);
-    setShowCalibration(false);
-    setShowSessionStats(true);
+  const handleStartDailyCalibration = () => {
+    setShowDailyCalibration(true);
   };
 
   const handleStartDailyChallenge = () => {
-    if (!hasCompletedChallengeToday) {
-      const challenge = startChallenge();
-      if (challenge) {
-        setShowChallenge(true);
-      }
-    }
+    setShowDailyChallenge(true);
   };
 
-  const handleFinishChallenge = (score: number) => {
-    finishChallenge(score);
-    setShowChallenge(false);
-    setShowSessionStats(true);
+  const handleStartChallengeGame = () => {
+    setShowDailyChallenge(false);
+    // Navigate to game with daily challenge mode
+    window.location.href = '/?mode=daily-challenge';
   };
 
+  // Show onboarding sequence for new users
   if (showOnboarding) {
     return (
-      <OnboardingOverlay 
-        onComplete={() => {
-          localStorage.setItem('hasSeenOnboarding', 'true');
-          setShowOnboarding(false);
-        }}
+      <OnboardingSequence 
+        onComplete={() => setShowOnboarding(false)}
+        onSkip={() => setShowOnboarding(false)}
       />
     );
   }
 
-  if (showCalibration && currentCalibration) {
+  if (showDailyChallenge) {
     return (
-      <DailyCalibrationScreen
-        calibration={currentCalibration}
-        onComplete={handleFinishCalibration}
-        onExit={() => setShowCalibration(false)}
-      />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="daily-challenge"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+        >
+          <DailyChallengeScreen 
+            onStartChallenge={handleStartChallengeGame}
+            onBack={() => setShowDailyChallenge(false)}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
-  if (showChallenge && currentChallenge) {
-    return (
-      <DailyChallengeScreen
-        challenge={currentChallenge}
-        onComplete={handleFinishChallenge}
-        onExit={() => setShowChallenge(false)}
-      />
-    );
+  if (showDailyCalibration) {
+    // Navigate directly to game with calibration mode
+    onStart();
+    return null;
   }
 
-  if (showSessionStats) {
-    const stats = getSessionStats();
+  if (showWelcome) {
     return (
-      <SessionStatsView
-        stats={stats}
-        onContinue={() => setShowSessionStats(false)}
-      />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="welcome"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+        >
+          <WelcomeScreen 
+            onStart={onStart} 
+            showLeaderboard={showLeaderboard}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
@@ -141,66 +135,46 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
     <AnimatePresence mode="wait">
       <motion.div
         key="home"
-        variants={staggerContainer}
+        variants={fadeVariants}
         initial="initial"
         animate="animate"
         exit="exit"
-        className="container max-w-md mx-auto p-4 min-h-screen flex flex-col"
+        transition={{ duration: 0.4 }}
+        className="flex flex-col items-center justify-center gap-8 p-6 text-center min-h-screen bg-gradient-to-b from-primary/5 to-background"
       >
-        <div className="space-y-6">
-          <HomeHeader />
-          
-          {!isPremium && (
-            <motion.div
-              variants={fadeVariants}
-              initial="initial"
-              animate="animate"
-              transition={{ delay: 0.2 }}
-            >
-              <AdRewardCenter />
-            </motion.div>
-          )}
-          
-          <motion.div 
-            className="space-y-4"
-            variants={fadeVariants}
-            initial="initial"
-            animate="animate"
-            transition={{ delay: 0.3 }}
-          >
-            <HomeActionButtons 
-              onStart={onStart}
-              onStartDailyCalibration={handleStartCalibration}
-              onStartDailyChallenge={handleStartDailyChallenge}
-              showLeaderboard={showLeaderboard}
-            />
-          </motion.div>
+        <HomeHeader />
 
-          <motion.div
-            variants={fadeVariants}
-            initial="initial"
-            animate="animate"
-            transition={{ delay: 0.4 }}
-          >
+        {/* Add Ad Reward Center for non-premium users */}
+        {!isPremium && (
+          <motion.div variants={fadeVariants}>
+            <AdRewardCenter />
+          </motion.div>
+        )}
+
+        <motion.div 
+          className="flex flex-col gap-4 w-full max-w-xs"
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+        >
+          <motion.div variants={fadeVariants}>
             <ProgressDashboard 
-              isOpen={false}
-              onToggle={() => {}}
+              isOpen={isDashboardOpen}
+              onToggle={() => setIsDashboardOpen(!isDashboardOpen)}
             />
           </motion.div>
 
-          <motion.div
-            variants={fadeVariants}
-            initial="initial"
-            animate="animate"
-            transition={{ delay: 0.5 }}
-          >
-            <HomeNavigationMenu isGuestMode={isGuestMode} />
-          </motion.div>
-        </div>
+          <HomeActionButtons
+            onStart={onStart}
+            onStartDailyCalibration={handleStartDailyCalibration}
+            onStartDailyChallenge={handleStartDailyChallenge}
+            showLeaderboard={showLeaderboard}
+          />
 
-        <div className="mt-auto pt-8">
-          <AdBanner />
-        </div>
+          <HomeNavigationMenu isGuestMode={isGuestMode} />
+        </motion.div>
+
+        <HomeFooter />
       </motion.div>
     </AnimatePresence>
   );
