@@ -19,6 +19,7 @@ import BrushSettings from '@/components/settings/BrushSettings';
 import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
 import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSettings';
 import { useSettings } from '@/hooks/useSettings';
+import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -38,6 +39,7 @@ const staggerContainer = {
 
 const Settings = () => {
   const navigate = useNavigate();
+  const { showAllModes, toggleShowAllModes } = useModeUnlockSystem();
   const {
     notifications,
     darkMode,
@@ -193,7 +195,45 @@ const Settings = () => {
 
         <motion.div variants={fadeVariants}>
           <InfinitePracticeSettings />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Mode Discovery</CardTitle>
+              <CardDescription>
+                Control how new gameplay modes are revealed
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Show all locked modes</p>
+                  <p className="text-sm text-muted-foreground">
+                    Preview future challenges (disabled by default)
+                  </p>
+                </div>
+                <Button
+                  variant={showAllModes ? "default" : "outline"}
+                  size="sm"
+                  onClick={toggleShowAllModes}
+                >
+                  {showAllModes ? "Hide" : "Show"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
           
+        <motion.div variants={fadeVariants}>
           <Card>
             <CardHeader>
               <CardTitle>Onboarding</CardTitle>

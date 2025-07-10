@@ -17,6 +17,7 @@ import { useToneSystem } from '@/hooks/useToneSystem';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 import { useLocalProgress } from '@/hooks/useLocalProgress';
 import { useOnboarding } from '@/hooks/useOnboarding';
+import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -46,6 +47,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const { getMotivationalPhraseForTone, getActiveThemeStyles } = useToneSystem();
   const { stats } = useLocalProgress();
   const { hasCompletedOnboarding } = useOnboarding();
+  const { getProgressNudge } = useModeUnlockSystem();
   const [showWelcome, setShowWelcome] = useState(true);
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
@@ -286,8 +288,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
                     </span>
                   </div>
                 )}
-                {streak.current >= 3 && (
-                  <div className="text-green-600">Next unlock: Blind Draw Mode</div>
+                {getProgressNudge() && (
+                  <div className="text-green-600">{getProgressNudge()}</div>
                 )}
               </div>
             </button>
