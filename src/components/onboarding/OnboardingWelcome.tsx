@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Brain, Zap, Target, TrendingUp, Heart, Users, SkipForward } from 'lucide-react';
+import LogoAnimation from '../LogoAnimation';
 
 interface OnboardingWelcomeProps {
   onNext: () => void;
@@ -52,7 +53,9 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ onNext, onSkip })
         transition={{ duration: 0.6 }}
         className="text-center space-y-4"
       >
-        <div className="text-6xl mb-4">🧠</div>
+        <div className="w-[200px] mx-auto mb-4">
+          <LogoAnimation />
+        </div>
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
           Welcome to Giotto
         </h1>
