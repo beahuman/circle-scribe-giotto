@@ -24,10 +24,10 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
   const animationRef = useRef<number | null>(null);
   const trailPointsRef = useRef<Point[]>([]);
   
-  // Memoize canvas dimensions to avoid recalculation
+  // Memoize canvas dimensions to match CircleDisplay
   const canvasDimensions = useMemo(() => ({
     width: window.innerWidth,
-    height: window.innerHeight - 70
+    height: window.innerHeight - 70 // Account for bottom nav (64px) + padding
   }), []);
 
   // Cleanup animation on unmount

@@ -39,7 +39,7 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
   }, [onComplete]);
   
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
+    <div className="absolute inset-0 pb-16"> {/* Account for bottom nav */}
       <div 
         className="absolute animate-fade-in"
         style={{
