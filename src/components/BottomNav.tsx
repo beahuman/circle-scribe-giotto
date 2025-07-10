@@ -43,9 +43,9 @@ const BottomNav: React.FC = () => {
         </Link>
         
         <Link
-          to="/history"
+          to="/progress"
           className={`flex flex-col items-center justify-center text-xs min-h-[44px] min-w-[44px] touch-manipulation ${
-            isActive('/history') ? 'text-primary' : 'text-muted-foreground'
+            isActive('/progress') ? 'text-primary' : 'text-muted-foreground'
           }`}
           style={{ 
             touchAction: 'manipulation',
@@ -53,7 +53,7 @@ const BottomNav: React.FC = () => {
           }}
         >
           <LineChart className="h-5 w-5 mb-1" />
-          <span>History</span>
+          <span>Progress</span>
         </Link>
         
         <Link

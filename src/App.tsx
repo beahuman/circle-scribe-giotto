@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
+import Progress from "./pages/Progress";
 import About from "./pages/About";
 import Account from "./pages/Account";
 import EditAccount from "./pages/EditAccount";
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path="/" element={<Index />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/history" element={<History />} />
+                <Route path="/progress" element={<Progress />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/tutorial" element={<Tutorial />} />
                 <Route path="/store" element={<Store />} />
