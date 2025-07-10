@@ -138,7 +138,7 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
                 <Crown className="h-5 w-5 text-yellow-500" />
                 Latest Badges
               </h3>
-              <BadgeShowcase badges={userBadges.slice(0, 3)} />
+              <BadgeShowcase />
             </CardContent>
           </Card>
         </motion.div>

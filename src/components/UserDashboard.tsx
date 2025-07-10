@@ -115,7 +115,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onBack }) => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <BadgeShowcase badges={userBadges} />
+                <BadgeShowcase />
               </CardContent>
             </Card>
           </TabsContent>

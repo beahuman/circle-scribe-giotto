@@ -16,6 +16,7 @@ import EditAccount from "./pages/EditAccount";
 import Auth from "./pages/Auth";
 import Tutorial from "./pages/Tutorial";
 import Store from "./pages/Store";
+import Achievements from "./pages/Achievements";
 import BottomNav from "@/components/BottomNav";
 
 // Create the client outside of the component
@@ -41,6 +42,7 @@ const App = () => {
                 <Route path="/store" element={<Store />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/account/edit" element={<EditAccount />} />
+                <Route path="/achievements" element={<Achievements />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <BottomNav />
