@@ -1,7 +1,10 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { RotateCcw, Calendar } from "lucide-react";
+import { RotateCcw, Calendar, Zap, Gift } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import AdRewardButton from "@/components/ads/AdRewardButton";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useRewardedAds } from "@/hooks/useRewardedAds";
 
 interface ResultControlsProps {
   onReplay: () => void;
@@ -30,6 +33,10 @@ const ResultControls: React.FC<ResultControlsProps> = ({
   dailyCompleted = false,
   className
 }) => {
+  const { isPremium } = useSubscription();
+  const { canWatchAd, remainingAds } = useRewardedAds();
+  const showAdRewards = !isPremium && canWatchAd && remainingAds > 0;
+
   return (
     <div className={`flex flex-col gap-4 w-full max-w-xs ${className}`}>
       {isPenaltyMode && (
@@ -58,6 +65,32 @@ const ResultControls: React.FC<ResultControlsProps> = ({
             <RotateCcw className="mr-3 h-5 w-5" />
             {isDailyMode ? 'Try Again' : 'Play Again'}
           </Button>
+        )}
+
+        {/* Ad Reward Section */}
+        {showAdRewards && !isDailyMode && (
+          <Card className="border-dashed border-primary/30 bg-gradient-to-r from-primary/5 to-purple-400/5">
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-2 text-sm">
+                  <Gift className="h-4 w-4 text-primary" />
+                  <span className="font-medium">Earn Bonus Rewards</span>
+                </div>
+                
+                <div className="flex gap-2">
+                  <AdRewardButton 
+                    type="xp" 
+                    size="sm"
+                    className="flex-1 h-auto py-2 text-xs"
+                  />
+                </div>
+                
+                <p className="text-xs text-muted-foreground text-center">
+                  Watch a short ad to boost your XP
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         )}
         
         {onViewStats && (
@@ -88,7 +121,7 @@ const ResultControls: React.FC<ResultControlsProps> = ({
           Share Result
         </Button>
         
-        {onRemoveAds && (
+        {onRemoveAds && !isPremium && (
           <Button 
             onClick={onRemoveAds}
             variant="destructive"
