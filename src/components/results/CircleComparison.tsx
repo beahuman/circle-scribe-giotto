@@ -9,7 +9,7 @@ interface CircleComparisonProps {
   targetCircle: { x: number; y: number; radius: number };
   showAdvancedOverlay: boolean;
   onToggleOverlay: () => void;
-  subscores: GeometricSubscores;
+  subscores?: GeometricSubscores | null;
 }
 
 const CircleComparison: React.FC<CircleComparisonProps> = ({
@@ -171,7 +171,7 @@ const CircleComparison: React.FC<CircleComparisonProps> = ({
     drawUserCircle(ctx, transformedPoints);
 
     // Show start/end alignment if there's significant offset
-    if (subscores.completionOffset < 85 && transformedPoints.length > 1) {
+    if ((subscores?.completionOffset ?? 100) < 85 && transformedPoints.length > 1) {
       const startPoint = transformedPoints[0];
       const endPoint = transformedPoints[transformedPoints.length - 1];
 

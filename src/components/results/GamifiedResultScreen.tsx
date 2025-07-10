@@ -32,7 +32,7 @@ interface GamifiedResultScreenProps {
   isDailyMode?: boolean;
   dailyCompleted?: boolean;
   isDailyChallengeMode?: boolean;
-  subscores: GeometricSubscores;
+  subscores?: GeometricSubscores | null;
 }
 
 type MedalType = 'none' | 'bronze' | 'silver' | 'gold';
@@ -84,6 +84,8 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
 
   // Check for badge achievements
   useEffect(() => {
+    if (!subscores) return; // Guard against null subscores
+    
     const badges: string[] = [];
     
     // First perfect symmetry

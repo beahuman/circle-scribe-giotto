@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { GeometricSubscores } from '@/utils/scoring/geometricScoring';
 
 interface ScoreBreakdownProps {
-  subscores: GeometricSubscores;
+  subscores?: GeometricSubscores | null;
   overallScore: number;
   feedbackTone: 'playful' | 'calm' | 'formal' | 'sarcastic';
 }
@@ -111,7 +111,7 @@ const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({
   const scoreItems = [
     {
       label: "Symmetry Accuracy",
-      score: subscores.strokeDeviation,
+      score: subscores?.strokeDeviation ?? 0,
       description: "How well your circle follows the perfect circular path",
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-500/10",
@@ -120,7 +120,7 @@ const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({
     },
     {
       label: "Stroke Smoothness", 
-      score: subscores.angularSmoothness,
+      score: subscores?.angularSmoothness ?? 0,
       description: "The fluidity and consistency of your drawing motion",
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-500/10",
@@ -129,7 +129,7 @@ const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({
     },
     {
       label: "Start/End Alignment",
-      score: subscores.completionOffset,
+      score: subscores?.completionOffset ?? 0,
       description: "How well you connected the beginning and end points",
       color: "from-purple-500 to-purple-600", 
       bgColor: "bg-purple-500/10",

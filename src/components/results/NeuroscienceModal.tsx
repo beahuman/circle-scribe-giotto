@@ -7,7 +7,7 @@ import { GeometricSubscores } from '@/utils/scoring/geometricScoring';
 interface NeuroscienceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  subscores: GeometricSubscores;
+  subscores?: GeometricSubscores | null;
 }
 
 const NeuroscienceModal: React.FC<NeuroscienceModalProps> = ({
@@ -19,7 +19,7 @@ const NeuroscienceModal: React.FC<NeuroscienceModalProps> = ({
     {
       icon: Target,
       title: 'Symmetry & Spatial Awareness',
-      score: subscores.strokeDeviation,
+      score: subscores?.strokeDeviation ?? 0,
       color: 'from-blue-500 to-blue-600',
       content: [
         "Your parietal cortex processes spatial relationships and maintains awareness of circular geometry.",
@@ -31,7 +31,7 @@ const NeuroscienceModal: React.FC<NeuroscienceModalProps> = ({
     {
       icon: Waves,
       title: 'Motor Smoothness & Control',
-      score: subscores.angularSmoothness,
+      score: subscores?.angularSmoothness ?? 0,
       color: 'from-green-500 to-green-600',
       content: [
         "The cerebellum fine-tunes your movements, ensuring smooth and coordinated motion.",
@@ -43,7 +43,7 @@ const NeuroscienceModal: React.FC<NeuroscienceModalProps> = ({
     {
       icon: Link,
       title: 'Completion & Planning',
-      score: subscores.completionOffset,
+      score: subscores?.completionOffset ?? 0,
       color: 'from-purple-500 to-purple-600',
       content: [
         "The prefrontal cortex plans and monitors the entire circular movement sequence.",
