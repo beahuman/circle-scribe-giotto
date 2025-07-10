@@ -18,34 +18,37 @@ interface WhyCirclesTabContentProps {
 
 const tabContentData: Record<TabId, TabContentData> = {
   brain: {
-    headline: 'Circles & Cognitive Assessment',
+    headline: 'The Neuroscience of Circle Drawing',
     points: [
-      'Drawing circles engages multiple brain regions simultaneously',
-      'Tests motor control, spatial awareness, and cognitive planning',
-      'Reveals insights into neurological health and development',
-      'Used in psychological evaluations worldwide'
+      'Activates cerebellum, premotor cortex, and visual processing centers simultaneously',
+      'Tests the coordination between your mind\'s spatial planning and hand execution', 
+      'Used in stroke rehabilitation to assess motor coordination recovery',
+      'NASA uses similar precision tasks to test astronaut dexterity in zero gravity',
+      'Reveals insights into neurological health and cognitive development'
     ],
-    demo: 'Perfect circles require coordination between visual cortex, motor cortex, and cerebellum'
+    demo: 'Perfect circles require a complex neural symphony - your brain must plan, execute, and adjust in real-time'
   },
   medical: {
-    headline: 'Therapeutic Applications',
+    headline: 'Medical & Therapeutic Applications', 
     points: [
-      'Stroke recovery programs use circle drawing exercises',
-      'Helps rebuild fine motor skills and hand-eye coordination',
-      'Measures progress in neurological rehabilitation',
-      'Non-invasive assessment tool for cognitive function'
+      'Standard assessment in neurological rehabilitation programs',
+      'Helps rebuild fine motor skills after stroke or brain injury',
+      'Non-invasive tool for measuring cognitive and motor function',
+      'Tracks progress in conditions affecting hand-eye coordination',
+      'Used in occupational therapy to restore daily living skills'
     ],
-    demo: 'Therapists track circle accuracy to monitor patient improvement over time'
+    demo: 'Therapists measure circle accuracy over time to track patient recovery and adjust treatment plans'
   },
   giotto: {
-    headline: 'The Perfect Circle Master',
+    headline: 'The Legend That Inspired Perfection',
     points: [
-      'Pope Benedict XI asked for proof of artistic skill',
-      'Giotto drew a perfect circle freehand in red paint',
-      'This single gesture secured him the commission',
-      '"O" became synonymous with perfection and mastery'
+      'In 1334, Pope Benedict XII sought the greatest artist for a commission',
+      'When asked for a sample, Giotto drew a perfect circle with a single brushstroke',
+      'The Pope understood: only a true master could achieve such precision',
+      'This "O" secured Giotto the commission and immortalized the perfect circle',
+      'The phrase "rounder than Giotto\'s O" still means perfection in Italian'
     ],
-    demo: 'The phrase "rounder than Giotto\'s O" still means perfection in Italian'
+    demo: 'Whether true or legend, Giotto\'s circle represents the ultimate test of artistic mastery and human precision'
   }
 };
 

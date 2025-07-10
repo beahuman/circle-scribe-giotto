@@ -1,28 +1,48 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Info } from "lucide-react";
+import { Info, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import WhyCirclesContent from './modal/WhyCirclesContent';
 
 interface WhyCirclesModalProps {
   children: React.ReactNode;
+  onStartCalibration?: () => void;
 }
 
-const WhyCirclesModal: React.FC<WhyCirclesModalProps> = ({ children }) => {
+const WhyCirclesModal: React.FC<WhyCirclesModalProps> = ({ 
+  children, 
+  onStartCalibration 
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleStartChallenge = () => {
+    setIsOpen(false);
+    onStartCalibration?.();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <Info className="h-5 w-5 text-primary" />
-            Why Circles?
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-hidden p-0 border-none bg-gradient-to-br from-slate-50 via-white to-purple-50">
+        <div className="relative h-full">
+          {/* Close Button */}
+          <Button
+            onClick={() => setIsOpen(false)}
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 z-50 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-all duration-200"
+          >
+            <X className="h-4 w-4" />
+          </Button>
 
-        <WhyCirclesContent />
+          {/* Content */}
+          <div className="p-6 h-full overflow-y-auto">
+            <WhyCirclesContent onStartChallenge={handleStartChallenge} />
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

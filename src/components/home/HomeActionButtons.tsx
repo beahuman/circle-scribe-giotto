@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Calendar, Trophy, Target, Crown } from "lucide-react";
+import { Calendar, Trophy, Target, Crown, Info } from "lucide-react";
 import { useSubscription } from "@/hooks/useSubscription";
 import PremiumModal from "@/components/subscription/PremiumModal";
+import WhyCirclesModal from "@/components/WhyCirclesModal";
 
 interface HomeActionButtonsProps {
   onStart: () => void;
@@ -85,6 +86,19 @@ const HomeActionButtons: React.FC<HomeActionButtonsProps> = ({
           </Button>
         </motion.div>
       )}
+      
+      {/* Why Circles? Button */}
+      <motion.div variants={fadeVariants}>
+        <WhyCirclesModal onStartCalibration={onStartDailyCalibration}>
+          <Button 
+            variant="ghost"
+            className="px-6 py-3 rounded-full w-full text-slate-600 hover:text-slate-800 hover:bg-slate-100/50 transition-all duration-200 border border-slate-200/50 hover:border-slate-300/50"
+          >
+            <Info className="mr-2 h-4 w-4" />
+            Why Circles?
+          </Button>
+        </WhyCirclesModal>
+      </motion.div>
       
       <PremiumModal 
         open={showPremiumModal} 
