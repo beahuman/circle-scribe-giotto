@@ -78,6 +78,8 @@ export const CanvasAnimator = {
         
         // Draw ghost circle with minimal impact
         if ((showCompletedDrawing || showGhostCircle) && targetCircle) {
+          console.log('CanvasAnimator - Drawing ghost circle at:', targetCircle);
+          console.log('CanvasAnimator - Canvas dimensions:', { width: canvas.width, height: canvas.height });
           ctx.beginPath();
           ctx.arc(targetCircle.x, targetCircle.y, targetCircle.radius, 0, Math.PI * 2);
           ctx.strokeStyle = showCompletedDrawing ? 

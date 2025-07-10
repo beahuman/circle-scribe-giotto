@@ -55,14 +55,23 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     e.preventDefault(); // Prevent browser scroll/zoom
     const touch = e.touches[0];
-    handleStart(touch.clientX, touch.clientY);
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    console.log('Touch start - Raw:', { clientX: touch.clientX, clientY: touch.clientY });
+    console.log('Touch start - Rect:', rect);
+    console.log('Touch start - Adjusted:', { x, y });
+    handleStart(x, y);
   }, [handleStart]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     e.preventDefault(); // Critical for preventing browser interference
     if (e.touches.length === 1) { // Only handle single touch
       const touch = e.touches[0];
-      handleMove(touch.clientX, touch.clientY);
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      handleMove(x, y);
     }
   }, [handleMove]);
 
@@ -76,12 +85,21 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   // Optimized mouse handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    handleStart(e.clientX, e.clientY);
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    console.log('Mouse down - Raw:', { clientX: e.clientX, clientY: e.clientY });
+    console.log('Mouse down - Rect:', rect);
+    console.log('Mouse down - Adjusted:', { x, y });
+    handleStart(x, y);
   }, [handleStart]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDrawing) {
-      handleMove(e.clientX, e.clientY);
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      handleMove(x, y);
     }
   }, [isDrawing, handleMove]);
 

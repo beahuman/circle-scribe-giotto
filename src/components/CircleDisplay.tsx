@@ -38,6 +38,10 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
     return () => clearInterval(timer);
   }, [onComplete]);
   
+  // Debug logging
+  console.log('CircleDisplay - Target circle coordinates:', { x, y, radius });
+  console.log('CircleDisplay - Window dimensions:', { width: window.innerWidth, height: window.innerHeight });
+  
   return (
     <div className="absolute inset-0" style={{ paddingBottom: '64px' }}>
       <div 
@@ -50,6 +54,16 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
           borderRadius: '50%',
           border: '2px solid',
           borderColor: isPenaltyMode ? 'rgb(239, 68, 68)' : 'hsl(var(--primary))'
+        }}
+      />
+      
+      {/* Debug overlay to show exact center */}
+      <div 
+        className="absolute w-2 h-2 bg-red-500 rounded-full"
+        style={{
+          left: x - 4,
+          top: y - 4,
+          zIndex: 1000
         }}
       />
       
