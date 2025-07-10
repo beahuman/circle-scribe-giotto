@@ -25,11 +25,83 @@ const Progress: React.FC = () => {
     const tone = settings.feedbackTone || 'meditative';
     switch (tone) {
       case 'playful':
-        return "Rounder every day.";
+        return "You're getting dangerously round.";
       case 'formal':
-        return "Neural performance log";
+        return "Neuro-performance summary";
+      case 'sarcastic':
+        return "Wow. You again.";
       default:
-        return "Consistency is clarity.";
+        return "Precision is earned with patience.";
+    }
+  };
+
+  const getUnlockableFeatures = () => {
+    const currentStreak = streak.current;
+    const features = [
+      { 
+        name: "New Brush Style", 
+        requirement: 3, 
+        unlocked: currentStreak >= 3,
+        description: "Unlock elegant brush textures"
+      },
+      { 
+        name: "Blind Draw Mode", 
+        requirement: 7, 
+        unlocked: currentStreak >= 7,
+        description: "Challenge yourself without visual guides"
+      },
+      { 
+        name: "Alternate Themes", 
+        requirement: 14, 
+        unlocked: currentStreak >= 14,
+        description: "Beautiful new color palettes"
+      }
+    ];
+    return features;
+  };
+
+  const generateShareableCard = () => {
+    const tone = settings.feedbackTone || 'meditative';
+    let caption = "";
+    
+    switch (tone) {
+      case 'playful':
+        caption = `Day ${streak.current} – ${stats.lastAttempt}% – Circle power increasing! 🎯`;
+        break;
+      case 'sarcastic':
+        caption = `Day ${streak.current} – ${stats.lastAttempt}% – My hand's smarter than your app. 😏`;
+        break;
+      case 'formal':
+        caption = `Performance Log: Day ${streak.current}, Score ${stats.lastAttempt}%, Neural pathways optimizing.`;
+        break;
+      default:
+        caption = `Day ${streak.current} streak. ${stats.lastAttempt}% precision. Come draw with me. 🧘‍♂️`;
+    }
+    
+    return caption;
+  };
+
+  const handleShare = async () => {
+    const shareText = generateShareableCard();
+    const shareUrl = window.location.origin;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "My Giotto Progress",
+          text: shareText,
+          url: shareUrl
+        });
+      } catch (error) {
+        console.log('Share cancelled or failed');
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
+        // Add toast notification here if needed
+      } catch (error) {
+        console.error('Failed to copy to clipboard:', error);
+      }
     }
   };
 
@@ -235,18 +307,66 @@ const Progress: React.FC = () => {
           </Card>
         </motion.div>
 
-        {/* Upcoming Rewards */}
+        {/* Unlockable Features */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Lock className="h-5 w-5" />
+                Unlockable Features
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {getUnlockableFeatures().map((feature) => (
+                <motion.div
+                  key={feature.name}
+                  whileHover={feature.unlocked ? { scale: 1.02 } : {}}
+                  className={`p-4 rounded-lg border transition-all ${
+                    feature.unlocked 
+                      ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200' 
+                      : 'bg-slate-50 border-slate-200 opacity-60'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className={`font-medium ${feature.unlocked ? 'text-green-700' : 'text-slate-600'}`}>
+                        {feature.name}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-1">{feature.description}</div>
+                      {!feature.unlocked && (
+                        <div className="text-xs text-orange-600 mt-1">
+                          {feature.requirement - streak.current} more streak days to unlock
+                        </div>
+                      )}
+                    </div>
+                    {feature.unlocked ? (
+                      <div className="text-green-500 text-xl">✓</div>
+                    ) : (
+                      <Lock className="h-4 w-4 text-slate-400" />
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Upcoming Badge Rewards */}
         {nextBadges.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.55 }}
           >
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Lock className="h-5 w-5" />
-                  Upcoming Rewards
+                  <Star className="h-5 w-5" />
+                  Upcoming Badges
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -266,6 +386,31 @@ const Progress: React.FC = () => {
             </Card>
           </motion.div>
         )}
+
+        {/* Share Progress */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <Card className="bg-gradient-to-r from-primary/5 to-purple-400/5 border-primary/20">
+            <CardContent className="p-6 text-center">
+              <h3 className="font-semibold text-slate-800 mb-2">Share Your Progress</h3>
+              <p className="text-sm text-slate-600 mb-4">
+                Show others your circle mastery journey
+              </p>
+              <Button 
+                onClick={handleShare}
+                className="w-full bg-gradient-to-r from-primary to-purple-400 hover:from-primary/90 hover:to-purple-400/90"
+              >
+                Share Progress Card
+              </Button>
+              <div className="mt-3 p-3 bg-white/50 rounded-lg text-xs text-slate-500 italic">
+                Preview: "{generateShareableCard()}"
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* Analytics Toggle */}
         <motion.div
