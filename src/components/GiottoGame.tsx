@@ -19,6 +19,8 @@ import { useGameModes } from '@/hooks/useGameModes';
 import { useGameModals } from '@/hooks/useGameModals';
 import { useGameHandlers as useEnhancedGameHandlers } from '@/hooks/useGameHandlers';
 import GameCanvas from './game/GameCanvas';
+import { useFirstDrawTutorial } from '@/hooks/useFirstDrawTutorial';
+import FirstDrawTutorial from './tutorial/FirstDrawTutorial';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Game state management
@@ -118,6 +120,9 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
     handleDrawingComplete
   });
 
+  // First draw tutorial
+  const { isFirstDraw, completeFirstDraw } = useFirstDrawTutorial();
+
   // Check if should show unlock modal on game start
   useEffect(() => {
     if (shouldShowUnlockModal) {
@@ -173,6 +178,23 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   
   // Check if we're in penalty mode
   const inPenaltyMode = isPenaltyMode();
+
+  // First draw tutorial takes precedence
+  if (isFirstDraw) {
+    return (
+      <FirstDrawTutorial
+        onComplete={completeFirstDraw}
+        onStartPractice={() => {
+          completeFirstDraw();
+          onReturnToHome();
+        }}
+        onStartDaily={() => {
+          completeFirstDraw();
+          window.location.href = '/?mode=daily';
+        }}
+      />
+    );
+  }
   
   // Render the current game state
   return (

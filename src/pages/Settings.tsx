@@ -20,6 +20,7 @@ import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
 import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
+import { useToast } from '@/hooks/use-toast';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -40,6 +41,7 @@ const staggerContainer = {
 const Settings = () => {
   const navigate = useNavigate();
   const { showAllModes, toggleShowAllModes } = useModeUnlockSystem();
+  const { toast } = useToast();
   const {
     notifications,
     darkMode,
@@ -241,7 +243,7 @@ const Settings = () => {
                 Replay the first-time user experience
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               <Button 
                 variant="outline" 
                 onClick={() => {
@@ -251,6 +253,21 @@ const Settings = () => {
                 className="w-full"
               >
                 Replay Onboarding
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  localStorage.removeItem('hasCompletedFirstDraw');
+                  toast({
+                    title: "First Draw Tutorial Reset",
+                    description: "The tutorial will show on your next game",
+                    duration: 3000,
+                  });
+                }}
+                className="w-full"
+              >
+                Reset First Draw Tutorial
               </Button>
             </CardContent>
           </Card>

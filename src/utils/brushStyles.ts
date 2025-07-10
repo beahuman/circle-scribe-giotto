@@ -39,6 +39,53 @@ export const BRUSH_STYLES: BrushStyle[] = [
   },
   
   {
+    id: 'starter',
+    name: 'Starter Stroke',
+    description: 'Your first unlocked brush - a reward for beginning the journey',
+    unlockCondition: 'Complete first draw tutorial',
+    isUnlocked: () => {
+      const unlockedBrushes = JSON.parse(localStorage.getItem('unlockedBrushes') || '["default"]');
+      return unlockedBrushes.includes('starter');
+    },
+    renderStroke: (ctx, points, strokeQuality) => {
+      if (points.length < 2) return;
+      
+      const baseLineWidth = 5;
+      const lineWidth = baseLineWidth * (0.9 + strokeQuality * 0.2);
+      const alpha = 0.85 + strokeQuality * 0.15;
+      
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      
+      for (let i = 1; i < points.length - 1; i++) {
+        const current = points[i];
+        const next = points[i + 1];
+        const midX = (current.x + next.x) / 2;
+        const midY = (current.y + next.y) / 2;
+        ctx.quadraticCurveTo(current.x, current.y, midX, midY);
+      }
+      
+      if (points.length > 1) {
+        ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+      }
+      
+      // Starter brush has a gentle golden glow
+      ctx.shadowColor = 'rgba(255, 193, 7, 0.3)';
+      ctx.shadowBlur = 8;
+      ctx.strokeStyle = `rgba(255, 193, 7, ${alpha})`;
+      ctx.lineWidth = lineWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      
+      // Reset shadow
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+    },
+    effectColor: '#FFC107'
+  },
+  
+  {
     id: 'graphite',
     name: 'Graphite',
     description: 'Textured pencil strokes with subtle grain',
