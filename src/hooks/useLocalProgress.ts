@@ -14,6 +14,7 @@ export interface ProgressStats {
   threeDayAverage: number;
   lastAttempt: number | null;
   totalGames: number;
+  achievements?: string[];
 }
 
 export const useLocalProgress = () => {

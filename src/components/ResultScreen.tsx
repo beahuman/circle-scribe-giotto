@@ -20,6 +20,7 @@ import { calculateGeometricScore, type GeometricSubscores } from '@/utils/circle
 import { useLocalProgress } from '@/hooks/useLocalProgress';
 import DailyChallengeResult from './DailyChallengeResult';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
+import GamifiedResultScreen from './results/GamifiedResultScreen';
 
 interface ResultScreenProps {
   accuracy: number;
@@ -86,6 +87,29 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       setSubscores(geometricResult);
     }
   }, [drawnPoints, targetCircle, difficultyLevel, isPenaltyMode]);
+
+  // Use new gamified result screen if subscores are available
+  if (subscores) {
+    return (
+      <GamifiedResultScreen
+        accuracy={accuracy}
+        difficultyLevel={difficultyLevel}
+        onReplay={onReplay}
+        onViewStats={onViewStats}
+        showLeaderboard={showLeaderboard}
+        targetCircle={targetCircle}
+        drawnPoints={drawnPoints}
+        onBackToHome={onBackToHome}
+        onRemoveAds={onRemoveAds}
+        isPenaltyMode={isPenaltyMode}
+        sessionRoundsPlayed={sessionRoundsPlayed}
+        isDailyMode={isDailyMode}
+        dailyCompleted={dailyCompleted}
+        isDailyChallengeMode={isDailyChallengeMode}
+        subscores={subscores}
+      />
+    );
+  }
 
   // Add XP based on accuracy
   useEffect(() => {

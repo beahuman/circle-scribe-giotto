@@ -97,6 +97,24 @@ export const useSettings = () => {
     });
   };
 
+  const updateSettings = (newSettings: { [key: string]: any }) => {
+    Object.entries(newSettings).forEach(([key, value]) => {
+      localStorage.setItem(key, String(value));
+      if (key === 'feedbackTone') {
+        // Handle feedbackTone setting
+      }
+    });
+  };
+
+  const settings = {
+    feedbackTone: (localStorage.getItem('feedbackTone') as 'playful' | 'calm' | 'formal' | 'sarcastic') || 'playful',
+    showSubmetrics,
+    difficultyLevel,
+    displayDuration,
+    penaltyModeEnabled,
+    showGhostCircle
+  };
+
   return {
     notifications,
     darkMode,
@@ -106,6 +124,8 @@ export const useSettings = () => {
     showGhostCircle,
     penaltyModeEnabled,
     showSubmetrics,
+    settings,
+    updateSettings,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
