@@ -88,8 +88,8 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
     }
   }, [drawnPoints, targetCircle, difficultyLevel, isPenaltyMode]);
 
-  // Use new gamified result screen if subscores are available
-  if (subscores) {
+  // Always use the gamified result screen
+  if (drawnPoints && drawnPoints.length > 0) {
     return (
       <GamifiedResultScreen
         accuracy={accuracy}
@@ -110,6 +110,16 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       />
     );
   }
+
+  // Show loading if no drawn points yet
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div className="text-center p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+        <p className="text-muted-foreground">Loading results...</p>
+      </div>
+    </div>
+  );
 
   // Add XP based on accuracy
   useEffect(() => {

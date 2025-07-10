@@ -33,7 +33,7 @@ class GameCenterService implements GameService {
       const { error } = await supabase
         .from('game_scores')
         .insert({
-          score,
+          score: Math.round(score),
           user_id: (await supabase.auth.getUser()).data.user?.id || '',
           game_center_synced: true
         });
@@ -103,7 +103,7 @@ class WebMockGameService implements GameService {
       const { error } = await supabase
         .from('game_scores')
         .insert({
-          score,
+          score: Math.round(score),
           user_id: (await supabase.auth.getUser()).data.user?.id || '',
           game_center_synced: false
         });

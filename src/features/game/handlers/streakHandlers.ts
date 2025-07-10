@@ -56,17 +56,17 @@ export const createStreakHandlers = ({
     if (score < 50) {
       setConsecutiveLowScores(prev => prev + 1);
       
-      // Check consecutive low scores for warning
-      // Note: Remove the incorrect length check on the setter function
-      if (setConsecutiveLowScores instanceof Function && 
-          typeof setConsecutiveLowScores.length === 'number' && 
-          setConsecutiveLowScores.length === 2) {
-        toast({
-          title: "Warning",
-          description: "One more low score and you'll enter Penalty Mode!",
-          duration: 3000
-        });
-      }
+      // Check consecutive low scores for warning - using a simple counter instead
+      setConsecutiveLowScores(prevCount => {
+        if (prevCount === 2) {
+          toast({
+            title: "Warning",
+            description: "One more low score and you'll enter Penalty Mode!",
+            duration: 3000
+          });
+        }
+        return prevCount;
+      });
     } else {
       setConsecutiveLowScores(() => 0); // Using callback pattern
     }
