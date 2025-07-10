@@ -1,6 +1,7 @@
 
 import React, { useRef } from 'react';
 import { Point } from '@/types/shapes';
+import { BrushStyle } from '@/types/brushes';
 
 interface CanvasAnimatorProps {
   canvas: HTMLCanvasElement;
@@ -10,6 +11,7 @@ interface CanvasAnimatorProps {
   showGhostCircle: boolean;
   showCompletedDrawing: boolean;
   fadeOpacity: number;
+  brushStyle?: BrushStyle;
 }
 
 export const CanvasAnimator = {
@@ -20,7 +22,8 @@ export const CanvasAnimator = {
     strokeQuality,
     showGhostCircle,
     showCompletedDrawing,
-    fadeOpacity
+    fadeOpacity,
+    brushStyle
   }: CanvasAnimatorProps) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
@@ -36,33 +39,39 @@ export const CanvasAnimator = {
     const drawOptimizedStroke = (points: Point[]) => {
       if (points.length < 2) return;
 
-      const baseLineWidth = 4;
-      const lineWidth = baseLineWidth * (0.8 + strokeQuality * 0.4);
-      
-      ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      
-      // Use quadratic curves for smoother appearance without lag
-      for (let i = 1; i < points.length - 1; i++) {
-        const current = points[i];
-        const next = points[i + 1];
-        const midX = (current.x + next.x) / 2;
-        const midY = (current.y + next.y) / 2;
+      // Use brush style if provided, otherwise fall back to default
+      if (brushStyle) {
+        brushStyle.renderStroke(ctx, points, strokeQuality, showCompletedDrawing);
+      } else {
+        // Default stroke rendering
+        const baseLineWidth = 4;
+        const lineWidth = baseLineWidth * (0.8 + strokeQuality * 0.4);
         
-        ctx.quadraticCurveTo(current.x, current.y, midX, midY);
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        
+        // Use quadratic curves for smoother appearance without lag
+        for (let i = 1; i < points.length - 1; i++) {
+          const current = points[i];
+          const next = points[i + 1];
+          const midX = (current.x + next.x) / 2;
+          const midY = (current.y + next.y) / 2;
+          
+          ctx.quadraticCurveTo(current.x, current.y, midX, midY);
+        }
+        
+        // Draw to the last point
+        if (points.length > 1) {
+          const lastPoint = points[points.length - 1];
+          ctx.lineTo(lastPoint.x, lastPoint.y);
+        }
+        
+        // Dynamic color based on quality
+        const alpha = 0.8 + strokeQuality * 0.2;
+        ctx.strokeStyle = `rgba(118, 94, 216, ${alpha})`;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
       }
-      
-      // Draw to the last point
-      if (points.length > 1) {
-        const lastPoint = points[points.length - 1];
-        ctx.lineTo(lastPoint.x, lastPoint.y);
-      }
-      
-      // Dynamic color based on quality
-      const alpha = 0.8 + strokeQuality * 0.2;
-      ctx.strokeStyle = `rgba(118, 94, 216, ${alpha})`;
-      ctx.lineWidth = lineWidth;
-      ctx.stroke();
     };
 
     const animate = () => {

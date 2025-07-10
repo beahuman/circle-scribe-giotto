@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Point } from '@/types/shapes';
 import ScoringOverlay from './ScoringOverlay';
 import CanvasDrawing from './CanvasDrawing';
+import { useBrushSystem } from '@/hooks/useBrushSystem';
 
 interface CanvasRendererProps {
   drawingPoints: Point[];
@@ -23,10 +24,20 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
   strokeQuality,
   showCompletedDrawing = false
 }) => {
+  const { getSelectedBrush, checkForUnlocks } = useBrushSystem();
   const [fadeOpacity, setFadeOpacity] = useState(1);
   const [showSubmetrics, setShowSubmetrics] = useState(() => {
     return localStorage.getItem('showSubmetrics') === 'true';
   });
+  
+  const selectedBrush = getSelectedBrush();
+  
+  // Check for brush unlocks when component mounts or drawing completes
+  useEffect(() => {
+    if (showCompletedDrawing) {
+      checkForUnlocks();
+    }
+  }, [showCompletedDrawing, checkForUnlocks]);
   
   // Handle fade-out effect for completed drawings
   useEffect(() => {
@@ -61,6 +72,7 @@ const CanvasRenderer: React.FC<CanvasRendererProps> = ({
         showGhostCircle={showGhostCircle}
         showCompletedDrawing={showCompletedDrawing}
         fadeOpacity={fadeOpacity}
+        brushStyle={selectedBrush}
       />
       
       <ScoringOverlay

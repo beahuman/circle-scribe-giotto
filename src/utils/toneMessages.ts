@@ -197,6 +197,14 @@ export const TONE_MESSAGES = {
       formal: "Proprioception training module: Activated.",
       sarcastic: "Don't blame us when this goes badly."
     }
+  },
+
+  // Brush unlock messages
+  brushUnlock: {
+    playful: ["Your control unlocks new expression!", "Time to paint the town... circular!", "New brush, new possibilities!"],
+    meditative: ["Tools reflect the state of mind.", "Form follows focus.", "Expression through intention."],
+    formal: ["Drawing parameters expanded. New visual output available.", "Brush functionality unlocked. Precision maintained.", "Visual customization options increased."],
+    sarcastic: ["Because apparently you needed more ways to mess up.", "Ooh, fancy new brush. Still won't fix your technique.", "New brush, same shaky hands."]
   }
 };
 

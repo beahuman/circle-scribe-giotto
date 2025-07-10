@@ -2,6 +2,7 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { Point } from '@/types/shapes';
 import { CanvasAnimator } from './CanvasAnimator';
+import { BrushStyle } from '@/types/brushes';
 
 interface CanvasDrawingProps {
   drawingPoints: Point[];
@@ -10,6 +11,7 @@ interface CanvasDrawingProps {
   showGhostCircle: boolean;
   showCompletedDrawing: boolean;
   fadeOpacity: number;
+  brushStyle?: BrushStyle;
 }
 
 const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
@@ -18,7 +20,8 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
   strokeQuality,
   showGhostCircle,
   showCompletedDrawing,
-  fadeOpacity
+  fadeOpacity,
+  brushStyle
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
@@ -66,11 +69,12 @@ const CanvasDrawing: React.FC<CanvasDrawingProps> = ({
       strokeQuality,
       showGhostCircle,
       showCompletedDrawing,
-      fadeOpacity
+      fadeOpacity,
+      brushStyle
     });
     
     return cleanup || undefined;
-  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle, showCompletedDrawing, fadeOpacity, canvasDimensions]);
+  }, [drawingPoints, strokeQuality, showGhostCircle, targetCircle, showCompletedDrawing, fadeOpacity, canvasDimensions, brushStyle]);
 
   return (
     <canvas
