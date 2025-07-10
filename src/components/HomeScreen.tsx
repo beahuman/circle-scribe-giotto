@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import WelcomeScreen from './WelcomeScreen';
 import DailyChallengeScreen from './DailyChallengeScreen';
+import DailyCalibrationScreen from './calibration/DailyCalibrationScreen';
 import OnboardingSequence from './OnboardingSequence';
 import ProgressDashboard from './ProgressDashboard';
 import HomeHeader from './home/HomeHeader';
@@ -106,9 +107,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   }
 
   if (showDailyCalibration) {
-    // Navigate directly to game with calibration mode
-    onStart();
-    return null;
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="daily-calibration"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+        >
+          <DailyCalibrationScreen 
+            onStartCalibration={() => {
+              setShowDailyCalibration(false);
+              // Start game in calibration mode
+              sessionStorage.setItem('gameMode', 'daily-calibration');
+              onStart();
+            }}
+            onBack={() => setShowDailyCalibration(false)}
+          />
+        </motion.div>
+      </AnimatePresence>
+    );
   }
 
   if (showWelcome) {

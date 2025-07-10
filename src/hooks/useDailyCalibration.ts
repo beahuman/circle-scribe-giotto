@@ -141,8 +141,14 @@ export const useDailyCalibration = () => {
   return {
     dailyEntries,
     todayCompleted,
+    todaysCompletion: todayCompleted ? dailyEntries.find(e => e.date === new Date().toISOString().split('T')[0]) : null,
+    streak: { current: getCurrentStreak(dailyEntries), longest: getCurrentStreak(dailyEntries) },
+    weekHistory: getLast5Days(),
+    isLoading: false,
+    canCalibrate: !todayCompleted,
     recordDailyAccuracy,
     getLast5Days,
-    getCurrentStreak: () => getCurrentStreak(dailyEntries)
+    getCurrentStreak: () => getCurrentStreak(dailyEntries),
+    completeCalibration: (score: number) => recordDailyAccuracy(score)
   };
 };
