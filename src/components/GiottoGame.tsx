@@ -20,6 +20,7 @@ import BlindDrawCanvas from './BlindDrawCanvas';
 import BlindDrawUnlockModal from './BlindDrawUnlockModal';
 import OffsetCanvas from './canvas/OffsetCanvas';
 import PerceptionGauntletCanvas from './canvas/PerceptionGauntletCanvas';
+import InfinitePracticeCanvas from './canvas/InfinitePracticeCanvas';
 import { useSettings } from '@/hooks/useSettings';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
@@ -104,6 +105,7 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   const isBlindDrawMode = new URLSearchParams(window.location.search).get('mode') === 'blind-draw';
   const isOffsetMode = new URLSearchParams(window.location.search).get('mode') === 'offset';
   const isPerceptionGauntletMode = new URLSearchParams(window.location.search).get('mode') === 'perception-gauntlet';
+  const isInfinitePracticeMode = new URLSearchParams(window.location.search).get('mode') === 'infinite-practice';
   
   // Enhanced drawing complete handler for all modes
   const handleEnhancedDrawingComplete = async (score: number, points: Point[]) => {
@@ -257,6 +259,10 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
                 onComplete={handleEnhancedDrawingComplete}
                 targetCircle={targetCircle}
                 difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
+              />
+            ) : isInfinitePracticeMode ? (
+              <InfinitePracticeCanvas 
+                targetCircle={targetCircle}
               />
             ) : (
               <DrawingCanvas 

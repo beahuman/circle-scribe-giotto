@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronDown, Target, Eye, Brain, Zap } from 'lucide-react';
+import { ChevronDown, Target, Eye, Brain, Zap, Infinity } from 'lucide-react';
 import { useBlindDrawMode } from '@/hooks/useBlindDrawMode';
 import { useOffsetMode } from '@/hooks/useOffsetMode';
 import { usePerceptionGauntlet } from '@/hooks/usePerceptionGauntlet';
@@ -13,13 +13,15 @@ interface PracticeModesMenuProps {
   onStartBlindDraw: () => void;
   onStartOffset: () => void;
   onStartGauntlet: () => void;
+  onStartInfinitePractice: () => void;
 }
 
 const PracticeModesMenu: React.FC<PracticeModesMenuProps> = ({
   onStartNormal,
   onStartBlindDraw,
   onStartOffset,
-  onStartGauntlet
+  onStartGauntlet,
+  onStartInfinitePractice
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { isUnlocked: blindUnlocked } = useBlindDrawMode();
@@ -35,6 +37,16 @@ const PracticeModesMenu: React.FC<PracticeModesMenuProps> = ({
       onClick: onStartNormal,
       color: "text-blue-600",
       bgColor: "bg-blue-50"
+    },
+    {
+      name: "Infinite Practice",
+      description: "Draw freely without scores or time limits - pure flow state",
+      icon: Infinity,
+      unlocked: true,
+      onClick: onStartInfinitePractice,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+      isSpecial: true
     },
     {
       name: "Blind Draw Mode",
@@ -112,7 +124,7 @@ const PracticeModesMenu: React.FC<PracticeModesMenuProps> = ({
                   <Card 
                     className={`${mode.bgColor} border-l-4 ${
                       mode.unlocked ? 'cursor-pointer hover:shadow-md' : 'opacity-60'
-                    } transition-all duration-200`}
+                    } ${(mode as any).isSpecial ? 'ring-1 ring-green-200' : ''} transition-all duration-200`}
                     style={{ borderLeftColor: mode.unlocked ? undefined : '#cbd5e1' }}
                     onClick={mode.unlocked ? mode.onClick : undefined}
                   >
@@ -127,6 +139,9 @@ const PracticeModesMenu: React.FC<PracticeModesMenuProps> = ({
                             <h4 className="font-medium text-sm">{mode.name}</h4>
                             {!mode.unlocked && (
                               <Badge variant="secondary" className="text-xs">🔒</Badge>
+                            )}
+                            {(mode as any).isSpecial && (
+                              <Badge variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">✨ Zen</Badge>
                             )}
                           </div>
                           <p className="text-xs text-muted-foreground">{mode.description}</p>

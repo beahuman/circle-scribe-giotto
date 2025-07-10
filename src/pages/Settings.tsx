@@ -15,6 +15,7 @@ import SubmetricsSettings from '@/components/settings/SubmetricsSettings';
 import ToneSettings from '@/components/settings/ToneSettings';
 import BrushSettings from '@/components/settings/BrushSettings';
 import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
+import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -182,6 +183,14 @@ const Settings = () => {
             mirrorOffsetEnabled={mirrorOffsetEnabled}
             onMirrorOffsetChange={handleMirrorOffsetToggle}
           />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <InfinitePracticeSettings />
         </motion.div>
       </div>
       

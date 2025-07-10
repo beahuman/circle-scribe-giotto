@@ -224,6 +224,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
                 onStartBlindDraw={() => window.location.href = '/?mode=blind-draw'}
                 onStartOffset={() => window.location.href = '/?mode=offset'}
                 onStartGauntlet={() => window.location.href = '/?mode=perception-gauntlet'}
+                onStartInfinitePractice={() => window.location.href = '/?mode=infinite-practice'}
               />
             </motion.div>
 
