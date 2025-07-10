@@ -12,6 +12,7 @@ import HomeFooter from './home/HomeFooter';
 import AdRewardCenter from './ads/AdRewardCenter';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useSettings } from '@/hooks/useSettings';
+import { useToneSystem } from '@/hooks/useToneSystem';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 import { useLocalProgress } from '@/hooks/useLocalProgress';
 
@@ -40,6 +41,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const { isPremium } = useSubscription();
   const { settings } = useSettings();
   const { streak, todaysCompletion } = useDailyCalibration();
+  const { getMotivationalPhraseForTone, getActiveThemeStyles } = useToneSystem();
   const { stats } = useLocalProgress();
   const [showWelcome, setShowWelcome] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -47,21 +49,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
-  const getMotivationalPhrase = () => {
-    const tone = settings.feedbackTone || 'playful';
-    switch (tone) {
-      case 'playful':
-        return "Today's a good day to impress your thumb.";
-      case 'calm':
-        return "One stroke. One breath. One circle.";
-      case 'formal':
-        return "Precision through repetition and neural optimization.";
-      case 'sarcastic':
-        return "Back for more punishment, are we?";
-      default:
-        return "Draw your way to motor mastery.";
-    }
-  };
+  const themeStyles = getActiveThemeStyles();
 
   // Check if user is new (no scores or streaks)
   const isNewUser = stats.totalGames === 0 && streak.current === 0;
@@ -180,7 +168,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
     <AnimatePresence mode="wait">
       <motion.div
         key="home"
-        className="min-h-screen bg-gradient-to-br from-slate-50 to-white"
+        className={`min-h-screen ${themeStyles.background}`}
         variants={fadeVariants}
         initial="initial"
         animate="animate"
@@ -198,13 +186,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
               <HomeHeader />
             </div>
             <motion.p 
-              className="text-slate-600 font-light text-lg italic leading-relaxed"
-              key={settings.feedbackTone} // Re-animate when tone changes
+              className={`font-light text-lg italic leading-relaxed ${themeStyles.accent}`}
+              key={getMotivationalPhraseForTone()} // Re-animate when phrase changes
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              {getMotivationalPhrase()}
+              {getMotivationalPhraseForTone()}
             </motion.p>
           </motion.div>
 

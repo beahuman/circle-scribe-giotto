@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ShapeType } from '@/types/shapes';
+import { useToneSystem } from '@/hooks/useToneSystem';
 
 interface ShapeFeedbackProps {
   score: number;
@@ -8,6 +9,7 @@ interface ShapeFeedbackProps {
 }
 
 const ShapeFeedback: React.FC<ShapeFeedbackProps> = ({ score, shapeType }) => {
+  const { getScoreMessageForTone } = useToneSystem();
   const getFeedbackMessage = (score: number, shape: ShapeType): string => {
     if (score >= 90) {
       switch(shape) {
@@ -43,9 +45,12 @@ const ShapeFeedback: React.FC<ShapeFeedbackProps> = ({ score, shapeType }) => {
     }
   };
 
+  // Use tone system for consistent feedback, fallback to shape-specific for variety
+  const message = score >= 80 ? getScoreMessageForTone(score) : getFeedbackMessage(score, shapeType);
+
   return (
     <p className="text-muted-foreground max-w-xs mx-auto">
-      {getFeedbackMessage(score, shapeType)}
+      {message}
     </p>
   );
 };

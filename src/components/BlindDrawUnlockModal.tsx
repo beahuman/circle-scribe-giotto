@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Eye, Brain, Target } from 'lucide-react';
-import { useSettings } from '@/hooks/useSettings';
+import { useToneSystem } from '@/hooks/useToneSystem';
 
 interface BlindDrawUnlockModalProps {
   open: boolean;
@@ -16,23 +16,7 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
   onClose,
   onStartBlindDraw
 }) => {
-  const { settings } = useSettings();
-
-  const getUnlockMessage = () => {
-    const tone = settings.feedbackTone || 'playful';
-    switch (tone) {
-      case 'playful':
-        return "You're drawing with your brain now.";
-      case 'calm':
-        return "Sight fades. Focus sharpens.";
-      case 'formal':
-        return "Proprioceptive neural pathways activated.";
-      case 'sarcastic':
-        return "Don't blame us when this goes badly.";
-      default:
-        return "Your muscle memory is ready for the ultimate test.";
-    }
-  };
+  const { getModeUnlockMessageForTone } = useToneSystem();
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -70,7 +54,7 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
               transition={{ delay: 0.4 }}
               className="text-purple-200 text-lg italic"
             >
-              {getUnlockMessage()}
+              {getModeUnlockMessageForTone('blindDraw')}
             </motion.p>
           </motion.div>
 

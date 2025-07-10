@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useToneSystem } from '@/hooks/useToneSystem';
 
 interface FeedbackMessageProps {
   accuracy: number;
@@ -12,6 +13,7 @@ const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
   isPenaltyMode = false,
   hasImproved = false
 }) => {
+  const { getScoreMessageForTone } = useToneSystem();
   // Enhanced snarky feedback messages based on accuracy score
   const getFeedbackMessage = (score: number, isPenalty = false, improved = false) => {
     // Neural reinforcement: Add positive reinforcement for improvement
@@ -53,7 +55,8 @@ const FeedbackMessage: React.FC<FeedbackMessageProps> = ({
     return "That's more of a potato than a circle! Did you even try?";
   };
 
-  const message = getFeedbackMessage(accuracy, isPenaltyMode, hasImproved);
+  // Use tone system for primary messages, fallback to penalty mode for special cases
+  const message = isPenaltyMode ? getFeedbackMessage(accuracy, isPenaltyMode, hasImproved) : getScoreMessageForTone(accuracy);
 
   // Apply different styling based on score and improvement
   const getMessageStyle = () => {
