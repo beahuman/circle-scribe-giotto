@@ -18,6 +18,9 @@ import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 import { useBlindDrawMode } from '@/hooks/useBlindDrawMode';
 import BlindDrawCanvas from './BlindDrawCanvas';
 import BlindDrawUnlockModal from './BlindDrawUnlockModal';
+import OffsetCanvas from './canvas/OffsetCanvas';
+import PerceptionGauntletCanvas from './canvas/PerceptionGauntletCanvas';
+import { useSettings } from '@/hooks/useSettings';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Educational modal state
@@ -90,14 +93,17 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Add daily calibration hook
   const { todayCompleted, recordDailyAccuracy } = useDailyCalibration();
   
-  // Add blind draw mode hook
+  // Add mode hooks
   const { shouldShowUnlockModal, recordBlindDrawScore, markUnlockModalShown } = useBlindDrawMode();
   const [showBlindUnlockModal, setShowBlindUnlockModal] = useState(false);
+  const { settings } = useSettings();
   
-  // Check if we're in daily calibration mode or daily challenge mode
+  // Check game modes
   const isDailyMode = new URLSearchParams(window.location.search).get('daily') === 'true';
   const isDailyChallengeMode = new URLSearchParams(window.location.search).get('mode') === 'daily-challenge';
   const isBlindDrawMode = new URLSearchParams(window.location.search).get('mode') === 'blind-draw';
+  const isOffsetMode = new URLSearchParams(window.location.search).get('mode') === 'offset';
+  const isPerceptionGauntletMode = new URLSearchParams(window.location.search).get('mode') === 'perception-gauntlet';
   
   // Enhanced drawing complete handler for all modes
   const handleEnhancedDrawingComplete = async (score: number, points: Point[]) => {
@@ -238,6 +244,19 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
               <BlindDrawCanvas 
                 onComplete={handleEnhancedDrawingComplete}
                 targetCircle={targetCircle}
+              />
+            ) : isOffsetMode ? (
+              <OffsetCanvas 
+                onComplete={handleEnhancedDrawingComplete}
+                targetCircle={targetCircle}
+                difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
+                mirrorMode={settings.mirrorOffsetEnabled}
+              />
+            ) : isPerceptionGauntletMode ? (
+              <PerceptionGauntletCanvas 
+                onComplete={handleEnhancedDrawingComplete}
+                targetCircle={targetCircle}
+                difficultyLevel={inPenaltyMode ? Math.min(difficultyLevel + 20, 100) : difficultyLevel}
               />
             ) : (
               <DrawingCanvas 

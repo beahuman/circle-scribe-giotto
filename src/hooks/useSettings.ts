@@ -22,6 +22,10 @@ export const useSettings = () => {
   const [showSubmetrics, setShowSubmetrics] = useState(() => {
     return localStorage.getItem('showSubmetrics') === 'true';
   });
+  
+  const [mirrorOffsetEnabled, setMirrorOffsetEnabled] = useState(() => {
+    return localStorage.getItem('mirrorOffsetEnabled') === 'true';
+  });
   const { toast } = useToast();
 
   const handleNotificationToggle = (checked: boolean) => {
@@ -97,6 +101,15 @@ export const useSettings = () => {
     });
   };
 
+  const handleMirrorOffsetToggle = (checked: boolean) => {
+    setMirrorOffsetEnabled(checked);
+    localStorage.setItem('mirrorOffsetEnabled', String(checked));
+    toast({
+      title: "Mirror-Offset Mode",
+      description: checked ? "Mirror-offset mode enabled" : "Mirror-offset mode disabled"
+    });
+  };
+
   const updateSettings = (newSettings: { [key: string]: any }) => {
     Object.entries(newSettings).forEach(([key, value]) => {
       localStorage.setItem(key, String(value));
@@ -124,6 +137,7 @@ export const useSettings = () => {
     showGhostCircle,
     penaltyModeEnabled,
     showSubmetrics,
+    mirrorOffsetEnabled,
     settings,
     updateSettings,
     handleNotificationToggle,
@@ -134,5 +148,6 @@ export const useSettings = () => {
     handleGhostCircleToggle,
     handlePenaltyModeToggle,
     handleSubmetricsToggle,
+    handleMirrorOffsetToggle,
   };
 };

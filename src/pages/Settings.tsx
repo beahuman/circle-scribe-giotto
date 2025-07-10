@@ -14,6 +14,7 @@ import PenaltyModeSettings from '@/components/settings/PenaltyModeSettings';
 import SubmetricsSettings from '@/components/settings/SubmetricsSettings';
 import ToneSettings from '@/components/settings/ToneSettings';
 import BrushSettings from '@/components/settings/BrushSettings';
+import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -43,6 +44,7 @@ const Settings = () => {
     showGhostCircle,
     penaltyModeEnabled,
     showSubmetrics,
+    mirrorOffsetEnabled,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
@@ -51,6 +53,7 @@ const Settings = () => {
     handleGhostCircleToggle,
     handlePenaltyModeToggle,
     handleSubmetricsToggle,
+    handleMirrorOffsetToggle,
   } = useSettings();
 
   return (
@@ -168,6 +171,17 @@ const Settings = () => {
 
         <motion.div variants={fadeVariants}>
           <BrushSettings />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <OffsetModeSettings
+            mirrorOffsetEnabled={mirrorOffsetEnabled}
+            onMirrorOffsetChange={handleMirrorOffsetToggle}
+          />
         </motion.div>
       </div>
       

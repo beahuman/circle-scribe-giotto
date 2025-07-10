@@ -323,6 +323,99 @@ export const BRUSH_STYLES: BrushStyle[] = [
       ctx.restore();
     },
     effectColor: 'rgba(200, 200, 200, 0.7)'
+  },
+  
+  {
+    id: 'fractal',
+    name: 'Fractal Brush',
+    description: 'Complex patterns that emerge from precision',
+    unlockCondition: 'Complete Perception Gauntlet with 80%+',
+    isUnlocked: (progress) => {
+      const gauntletStats = JSON.parse(localStorage.getItem('perceptionGauntletStats') || '{"brushUnlocked": false}');
+      return gauntletStats.brushUnlocked === true;
+    },
+    renderStroke: (ctx, points, strokeQuality, isComplete = false) => {
+      if (points.length < 2) return;
+      
+      const baseLineWidth = 3;
+      const lineWidth = baseLineWidth * (0.8 + strokeQuality * 0.4);
+      const alpha = 0.8 + strokeQuality * 0.2;
+      
+      ctx.save();
+      
+      // Main fractal stroke with gradient
+      const gradient = ctx.createLinearGradient(
+        points[0]?.x || 0, 
+        points[0]?.y || 0, 
+        points[points.length - 1]?.x || 0, 
+        points[points.length - 1]?.y || 0
+      );
+      gradient.addColorStop(0, `rgba(118, 94, 216, ${alpha})`);
+      gradient.addColorStop(0.5, `rgba(147, 51, 234, ${alpha * 0.8})`);
+      gradient.addColorStop(1, `rgba(59, 130, 246, ${alpha})`);
+      
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      
+      for (let i = 1; i < points.length - 1; i++) {
+        const current = points[i];
+        const next = points[i + 1];
+        const midX = (current.x + next.x) / 2;
+        const midY = (current.y + next.y) / 2;
+        ctx.quadraticCurveTo(current.x, current.y, midX, midY);
+      }
+      
+      if (points.length > 1) {
+        ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+      }
+      
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = lineWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      
+      // Add fractal-like branching for high quality
+      if (strokeQuality > 0.7 && points.length > 4) {
+        ctx.save();
+        ctx.globalAlpha = 0.4;
+        ctx.lineWidth = lineWidth * 0.4;
+        ctx.strokeStyle = `rgba(147, 51, 234, ${alpha * 0.6})`;
+        
+        // Draw subtle branches at key points
+        for (let i = 2; i < points.length - 2; i += 4) {
+          const point = points[i];
+          const prev = points[i - 1];
+          const next = points[i + 1];
+          const angle = Math.atan2(next.y - prev.y, next.x - prev.x);
+          const branchLength = 6 + strokeQuality * 4;
+          
+          // Branch 1
+          ctx.beginPath();
+          ctx.moveTo(point.x, point.y);
+          ctx.lineTo(
+            point.x + Math.cos(angle + Math.PI / 3) * branchLength,
+            point.y + Math.sin(angle + Math.PI / 3) * branchLength
+          );
+          ctx.stroke();
+          
+          // Branch 2
+          ctx.beginPath();
+          ctx.moveTo(point.x, point.y);
+          ctx.lineTo(
+            point.x + Math.cos(angle - Math.PI / 3) * branchLength,
+            point.y + Math.sin(angle - Math.PI / 3) * branchLength
+          );
+          ctx.stroke();
+        }
+        
+        ctx.restore();
+      }
+      
+      ctx.restore();
+    },
+    effectColor: 'rgba(147, 51, 234, 0.8)',
+    animationDuration: 3000
   }
 ];
 

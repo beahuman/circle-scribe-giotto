@@ -7,6 +7,7 @@ import OnboardingSequence from './OnboardingSequence';
 import ProgressDashboard from './ProgressDashboard';
 import HomeHeader from './home/HomeHeader';
 import HomeActionButtons from './home/HomeActionButtons';
+import PracticeModesMenu from './home/PracticeModesMenu';
 import HomeNavigationMenu from './home/HomeNavigationMenu';
 import HomeFooter from './home/HomeFooter';
 import AdRewardCenter from './ads/AdRewardCenter';
@@ -216,23 +217,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
             initial="initial"
             animate="animate"
           >
-            {/* Practice Mode Card */}
+            {/* Practice Modes Menu */}
             <motion.div variants={fadeVariants}>
-              <button
-                onClick={onStart}
-                className="w-full bg-white border border-slate-200 rounded-xl p-6 text-left shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 transform hover:scale-[1.02]"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-semibold text-slate-800">Free Draw Practice</h3>
-                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
-                    <div className="w-3 h-3 bg-slate-400 rounded-full"></div>
-                  </div>
-                </div>
-                <p className="text-sm text-slate-600 mb-2">No pressure. Improve your form.</p>
-                {stats.lastAttempt !== null && (
-                  <p className="text-xs text-slate-500">Last score: {stats.lastAttempt}%</p>
-                )}
-              </button>
+              <PracticeModesMenu
+                onStartNormal={onStart}
+                onStartBlindDraw={() => window.location.href = '/?mode=blind-draw'}
+                onStartOffset={() => window.location.href = '/?mode=offset'}
+                onStartGauntlet={() => window.location.href = '/?mode=perception-gauntlet'}
+              />
             </motion.div>
 
             {/* Daily Calibration Card */}
