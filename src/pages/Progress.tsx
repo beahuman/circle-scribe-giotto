@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSettings } from '@/hooks/useSettings';
+import { useProgressNudge } from '@/hooks/useProgressNudge';
+import ProgressPageTour from '@/components/onboarding/ProgressPageTour';
 import ProgressHeader from '@/components/progress/ProgressHeader';
 import StreakOverview from '@/components/progress/StreakOverview';
 import DailyTimeline from '@/components/progress/DailyTimeline';
@@ -14,23 +16,39 @@ import BehaviorInsights from '@/components/progress/BehaviorInsights';
 
 const Progress: React.FC = () => {
   const { settings } = useSettings();
+  const { nudgeState, markProgressViewed, completeTour } = useProgressNudge();
+
+  // Mark progress as viewed when component mounts
+  useEffect(() => {
+    if (!nudgeState.hasViewedProgress) {
+      markProgressViewed();
+    }
+  }, [nudgeState.hasViewedProgress, markProgressViewed]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white pb-20">
-      <div className="max-w-md mx-auto p-6 space-y-6">
-        <ProgressHeader />
-        <BehaviorInsights />
-        <StreakOverview />
-        <DailyTimeline />
-        <BestPerformances />
-        <BadgesSection />
-        <UnlockableFeatures />
-        <UpcomingBadges />
-        <VisualIdentitySection tone={settings.feedbackTone || 'meditative'} />
-        <ShareProgress />
-        <AnalyticsSection />
+    <>
+      {/* Progress Page Tour */}
+      <ProgressPageTour
+        show={nudgeState.showProgressTour}
+        onComplete={completeTour}
+      />
+      
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white pb-20">
+        <div className="max-w-md mx-auto p-6 space-y-6">
+          <ProgressHeader />
+          <BehaviorInsights />
+          <StreakOverview data-tour="streak-tracker" />
+          <DailyTimeline />
+          <BestPerformances data-tour="best-scores" />
+          <BadgesSection />
+          <UnlockableFeatures />
+          <UpcomingBadges />
+          <VisualIdentitySection tone={settings.feedbackTone || 'meditative'} data-tour="visual-identity" />
+          <ShareProgress />
+          <AnalyticsSection />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

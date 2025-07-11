@@ -2,10 +2,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, LineChart, Settings, User, Palette } from 'lucide-react';
+import { useProgressNudge } from '@/hooks/useProgressNudge';
+import ProgressNudgeBadge from './onboarding/ProgressNudgeBadge';
 
 const BottomNav: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { nudgeState, shouldShowProgressNudges, dismissNavBadge } = useProgressNudge();
   
   const isActive = (path: string) => {
     return currentPath === path;
@@ -51,8 +54,18 @@ const BottomNav: React.FC = () => {
             touchAction: 'manipulation',
             WebkitTapHighlightColor: 'transparent'
           }}
+          onClick={() => {
+            if (nudgeState.showNavBadge) {
+              dismissNavBadge();
+            }
+          }}
         >
-          <LineChart className="h-5 w-5 mb-1" />
+          <div className="relative mb-1">
+            <LineChart className="h-5 w-5" />
+            <ProgressNudgeBadge 
+              show={nudgeState.showNavBadge && shouldShowProgressNudges()} 
+            />
+          </div>
           <span>Progress</span>
         </Link>
         

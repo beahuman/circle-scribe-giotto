@@ -16,6 +16,8 @@ import NeuroscienceModal from './NeuroscienceModal';
 import GamifiedResultControls from './GamifiedResultControls';
 import XpProgressBar from './XpProgressBar';
 import EvolvingScoreDisplay from './EvolvingScoreDisplay';
+import PostScoreProgressCTA from '../onboarding/PostScoreProgressCTA';
+import { useProgressNudge } from '@/hooks/useProgressNudge';
 import { useToast } from '@/hooks/use-toast';
 import DailyChallengeResult from '../DailyChallengeResult';
 
@@ -71,6 +73,9 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
     isPenaltyMode,
     sessionRoundsPlayed
   );
+  
+  // Progress nudge system
+  const { nudgeState, shouldShowProgressNudges, dismissPostScoreCTA } = useProgressNudge();
   
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
   const [showAdvancedOverlay, setShowAdvancedOverlay] = useState(false);
@@ -292,6 +297,13 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
         sessionRoundsPlayed={sessionRoundsPlayed}
         isDailyMode={isDailyMode}
         dailyCompleted={dailyCompleted}
+      />
+
+      {/* Progress Nudge CTA */}
+      <PostScoreProgressCTA
+        show={nudgeState.showPostScoreCTA && shouldShowProgressNudges()}
+        onDismiss={dismissPostScoreCTA}
+        gameCount={stats.totalGames}
       />
     </motion.div>
   );

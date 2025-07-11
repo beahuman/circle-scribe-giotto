@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Brain, Palette } from 'lucide-react';
+import { ArrowLeft, Brain, Palette, TrendingUp } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -292,6 +292,57 @@ const Settings = () => {
                   disabled={!adaptiveScoreScreen}
                 />
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Progress Nudges Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                Progress Discovery
+              </CardTitle>
+              <CardDescription>
+                Control how the app guides you to discover your progress tracking
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Show Progress Nudges</label>
+                  <p className="text-xs text-muted-foreground">
+                    Get gentle hints to check your progress after achieving milestones
+                  </p>
+                </div>
+                <Switch
+                  checked={localStorage.getItem('showProgressNudges') !== 'false'}
+                  onCheckedChange={(checked) => {
+                    localStorage.setItem('showProgressNudges', String(checked));
+                    toast({
+                      title: "Progress Nudges",
+                      description: checked ? "Progress nudges enabled" : "Progress nudges disabled",
+                      duration: 2000
+                    });
+                  }}
+                />
+              </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const { resetNudges } = require('@/hooks/useProgressNudge');
+                  resetNudges();
+                  toast({
+                    title: "Progress Nudges Reset",
+                    description: "Progress intro will show again for new users",
+                    duration: 2000
+                  });
+                }}
+                className="w-full"
+              >
+                Reset Progress Introduction
+              </Button>
             </CardContent>
           </Card>
         </motion.div>
