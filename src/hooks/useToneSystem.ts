@@ -11,7 +11,7 @@ export const useToneSystem = () => {
   const [toneUsage, setToneUsage] = useState<Record<ToneType, number>>(() => {
     const saved = localStorage.getItem('toneUsage');
     return saved ? JSON.parse(saved) : {
-      meditative: 0,
+      calm: 0,
       playful: 0,
       formal: 0,
       sarcastic: 0,

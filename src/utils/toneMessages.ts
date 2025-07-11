@@ -1,4 +1,4 @@
-export type ToneType = 'meditative' | 'playful' | 'formal' | 'sarcastic' | 'poetic' | 'existential' | 'romantic';
+export type ToneType = 'calm' | 'playful' | 'formal' | 'sarcastic' | 'poetic' | 'existential' | 'romantic';
 
 export interface ToneTheme {
   id: string;
@@ -13,7 +13,7 @@ export interface ToneTheme {
 }
 
 export const TONE_THEMES: Record<ToneType, ToneTheme> = {
-  meditative: {
+  calm: {
     id: 'zen-brush',
     name: 'Zen Brush',
     description: 'Subtle ink trails, faded canvas background',
@@ -95,7 +95,7 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
 export const TONE_MESSAGES = {
   // Score feedback messages
   scoreMessages: {
-    meditative: {
+    calm: {
       excellent: "You moved with awareness.",
       good: "Steady breath. Steady hand.",
       fair: "The path reveals itself through practice.",
@@ -141,7 +141,7 @@ export const TONE_MESSAGES = {
 
   // Motivational phrases for home screen
   motivationalPhrases: {
-    meditative: [
+    calm: [
       "One stroke. One breath. One circle.",
       "Center yourself. Find the curve.",
       "In stillness, precision emerges."
@@ -180,7 +180,7 @@ export const TONE_MESSAGES = {
 
   // Streak messages
   streakMessages: {
-    meditative: {
+    calm: {
       start: "Your journey begins with mindful repetition.",
       continue: "Each day strengthens your inner compass.",
       milestone: "Seven days of focused practice. Your awareness deepens."
@@ -219,7 +219,7 @@ export const TONE_MESSAGES = {
 
   // Badge unlock messages
   badgeMessages: {
-    meditative: {
+    calm: {
       unlock: "A new understanding has emerged.",
       description: "Recognition of your growing mastery."
     },
@@ -252,7 +252,7 @@ export const TONE_MESSAGES = {
   // Mode unlock messages
   modeUnlocks: {
     blindDraw: {
-      meditative: "Sight fades. Focus sharpens.",
+      calm: "Sight fades. Focus sharpens.",
       playful: "You're drawing with your brain now! 🧠✨",
       formal: "Proprioception training module: Activated.",
       sarcastic: "Don't blame us when this goes badly.",
@@ -265,7 +265,7 @@ export const TONE_MESSAGES = {
   // Brush unlock messages
   brushUnlock: {
     playful: ["Your control unlocks new expression!", "Time to paint the town... circular!", "New brush, new possibilities!"],
-    meditative: ["Tools reflect the state of mind.", "Form follows focus.", "Expression through intention."],
+    calm: ["Tools reflect the state of mind.", "Form follows focus.", "Expression through intention."],
     formal: ["Drawing parameters expanded. New visual output available.", "Brush functionality unlocked. Precision maintained.", "Visual customization options increased."],
     sarcastic: ["Because apparently you needed more ways to mess up.", "Ooh, fancy new brush. Still won't fix your technique.", "New brush, same shaky hands."],
     poetic: ["A new instrument for your artistic symphony.", "Your brush collection grows like verses in a poem.", "Tools of beauty for creating beauty."],

@@ -153,7 +153,7 @@ export const useModeUnlockSystem = () => {
     switch (tone) {
       case 'playful':
         return `Whoa! You've unlocked ${trigger.name}. Let's get wild! 🎨`;
-      case 'meditative':
+      case 'calm':
         return `Your focus has deepened. ${trigger.name} now available. 🧘`;
       case 'formal':
         return `Achievement unlocked: ${trigger.name} module is now accessible.`;
