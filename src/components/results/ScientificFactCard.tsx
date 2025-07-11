@@ -57,7 +57,7 @@ const ScientificFactCard: React.FC<ScientificFactCardProps> = ({
           }}
           className="fixed inset-x-4 top-1/2 transform -translate-y-1/2 z-50 mx-auto max-w-md"
         >
-          <div className="bg-white/95 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 shadow-xl">
+          <div className="bg-white/95 backdrop-blur-sm border border-primary/20 rounded-lg p-6 shadow-xl">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                 <Brain className="w-4 h-4 text-primary" />

@@ -66,7 +66,7 @@ const PracticeModesMenu: React.FC<PracticeModesMenuProps> = ({
     <div className="space-y-2">
       <Button
         onClick={isExpanded ? onStartNormal : () => setIsExpanded(true)}
-        className="w-full bg-white border border-slate-200 rounded-xl p-6 text-left shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 transform hover:scale-[1.02]"
+        className="w-full bg-white border border-slate-200 rounded-lg p-6 text-left shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 transform hover:scale-[1.02]"
         variant="outline"
       >
         <div className="flex items-center justify-between">

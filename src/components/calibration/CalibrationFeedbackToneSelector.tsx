@@ -85,7 +85,7 @@ const CalibrationFeedbackToneSelector: React.FC<CalibrationFeedbackToneSelectorP
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleToneChange(tone.id)}
-                className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                   isSelected 
                     ? `${tone.borderColor} ${tone.bgColor} shadow-md` 
                     : 'border-slate-200 bg-white hover:bg-slate-50'

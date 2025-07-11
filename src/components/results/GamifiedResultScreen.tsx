@@ -308,7 +308,7 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-primary/10 border border-primary/20 rounded-xl p-3 max-w-sm"
+          className="bg-primary/10 border border-primary/20 rounded-lg p-3 max-w-sm"
         >
           <div className="flex items-center gap-2 justify-center text-primary">
             <Calendar className="h-4 w-4" />
@@ -387,7 +387,7 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => setShowNeuroscienceModal(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-muted/50 hover:bg-muted/70 rounded-xl border transition-smooth"
+        className="flex items-center gap-2 px-4 py-2 bg-muted/50 hover:bg-muted/70 rounded-lg border transition-smooth"
       >
         <Info className="h-4 w-4" />
         <span className="text-sm">Learn Why This Matters</span>

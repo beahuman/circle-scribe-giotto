@@ -118,7 +118,7 @@ const InfinitePracticeCanvas: React.FC<InfinitePracticeCanvasProps> = ({
             exit={{ opacity: 0, scale: 0.9 }}
             className="absolute top-1/4 left-1/2 transform -translate-x-1/2 z-10"
           >
-            <div className="bg-background/90 backdrop-blur-md rounded-2xl px-8 py-4 shadow-xl border border-border/30">
+            <div className="bg-background/90 backdrop-blur-md rounded-lg px-8 py-4 shadow-xl border border-border/30">
               <p className="text-base text-foreground/90 font-medium text-center max-w-sm">
                 {zenMessage}
               </p>
@@ -219,7 +219,7 @@ const InfinitePracticeCanvas: React.FC<InfinitePracticeCanvasProps> = ({
               onClick={generateNewCircle}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-background/80 backdrop-blur-sm rounded-xl px-6 py-3 shadow-lg border border-border/50 hover:bg-background/90 transition-colors"
+              className="bg-background/80 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg border border-border/50 hover:bg-background/90 transition-colors"
             >
               <p className="text-foreground/80 font-medium">Tap to continue</p>
             </motion.button>

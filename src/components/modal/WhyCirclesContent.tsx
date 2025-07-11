@@ -63,17 +63,17 @@ const WhyCirclesContent: React.FC<WhyCirclesContentProps> = ({ onStartChallenge 
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl mx-auto">
-          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/50">
+          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-lg border border-slate-200/50">
             <Brain className="h-8 w-8 text-blue-500 mb-3 mx-auto" />
             <h3 className="font-medium text-slate-800 mb-2">Neurological</h3>
             <p className="text-sm text-slate-600">Tests motor coordination and cerebellar function</p>
           </div>
-          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/50">
+          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-lg border border-slate-200/50">
             <Palette className="h-8 w-8 text-purple-500 mb-3 mx-auto" />
             <h3 className="font-medium text-slate-800 mb-2">Artistic</h3>
             <p className="text-sm text-slate-600">A legendary test of artistic mastery</p>
           </div>
-          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/50">
+          <div className="bg-white/60 backdrop-blur-sm p-6 rounded-lg border border-slate-200/50">
             <Sparkles className="h-8 w-8 text-green-500 mb-3 mx-auto" />
             <h3 className="font-medium text-slate-800 mb-2">Personal</h3>
             <p className="text-sm text-slate-600">Builds focus, precision, and mindfulness</p>
@@ -99,7 +99,7 @@ const WhyCirclesContent: React.FC<WhyCirclesContentProps> = ({ onStartChallenge 
       </div>
 
       {/* Call to Action */}
-      <div className="text-center space-y-4 p-6 bg-gradient-to-r from-primary/5 to-purple-400/5 rounded-2xl border border-primary/10">
+      <div className="text-center space-y-4 p-6 bg-gradient-to-r from-primary/5 to-purple-400/5 rounded-lg border border-primary/10">
         <h3 className="text-xl font-medium text-slate-800">Ready to Experience the Challenge?</h3>
         <p className="text-slate-600 mb-4">
           Join the tradition. Draw your circle. Discover what Giotto knew.

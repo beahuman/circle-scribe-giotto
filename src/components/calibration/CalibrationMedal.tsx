@@ -59,7 +59,7 @@ const CalibrationMedal: React.FC<CalibrationMedalProps> = ({ score }) => {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.2, duration: 0.5 }}
-      className={`inline-flex items-center gap-3 px-4 py-3 rounded-xl ${medalData.bgColor} ${medalData.borderColor} border`}
+      className={`inline-flex items-center gap-3 px-4 py-3 rounded-lg ${medalData.bgColor} ${medalData.borderColor} border`}
     >
       <div className={`p-2 rounded-lg bg-gradient-to-r ${medalData.color} shadow-sm`}>
         <IconComponent className="h-5 w-5 text-white" />

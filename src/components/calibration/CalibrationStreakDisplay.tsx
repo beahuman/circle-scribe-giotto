@@ -32,7 +32,7 @@ const CalibrationStreakDisplay: React.FC<CalibrationStreakDisplayProps> = ({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-white border border-slate-200 rounded-xl p-4"
+      className="bg-white border border-slate-200 rounded-lg p-4"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">

@@ -22,7 +22,7 @@ const DailyCalibrationCard: React.FC<DailyCalibrationCardProps> = ({
     <motion.div variants={fadeVariants}>
       <button
         onClick={onStartCalibration}
-        className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 text-left shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200 transform hover:scale-[1.02]"
+        className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 text-left shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200 transform hover:scale-[1.02]"
       >
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-semibold text-blue-800">Daily Calibration</h3>

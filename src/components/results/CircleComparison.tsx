@@ -208,7 +208,7 @@ const CircleComparison: React.FC<CircleComparisonProps> = ({
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className="relative bg-gradient-to-br from-background to-muted/20 rounded-xl p-6 border shadow-sm"
+      className="relative bg-gradient-to-br from-background to-muted/20 rounded-lg p-6 border shadow-sm"
     >
       {/* Controls */}
       <div className="flex items-center justify-between mb-4">

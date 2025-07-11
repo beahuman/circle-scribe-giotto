@@ -146,7 +146,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
           {canCalibrate && !todaysCompletion && (
             <Button
               onClick={handleStart}
-              className="w-full py-4 text-lg font-light bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity rounded-xl shadow-lg shadow-primary/20"
+              className="w-full py-4 text-lg font-light bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity rounded-lg shadow-lg shadow-primary/20"
             >
               Begin Today's Calibration
             </Button>
@@ -156,7 +156,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
             <Button
               onClick={() => setShowToneSelector(true)}
               variant="outline"
-              className="flex-1 py-3 rounded-xl border-slate-200 hover:bg-slate-50"
+              className="flex-1 py-3 rounded-lg border-slate-200 hover:bg-slate-50"
             >
               <Settings2 className="h-4 w-4 mr-2" />
               Feedback Style
@@ -165,7 +165,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
             <Button
               onClick={onBack}
               variant="outline"
-              className="flex-1 py-3 rounded-xl border-slate-200 hover:bg-slate-50"
+              className="flex-1 py-3 rounded-lg border-slate-200 hover:bg-slate-50"
             >
               Back to Home
             </Button>
@@ -177,7 +177,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center p-4 bg-slate-100/50 rounded-xl"
+          className="text-center p-4 bg-slate-100/50 rounded-lg"
         >
           <p className="text-description">
             "The hand follows the mind's intent, and the mind grows stronger through practice."

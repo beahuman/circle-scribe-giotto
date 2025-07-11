@@ -56,7 +56,7 @@ const CalibrationTrendGraph: React.FC<CalibrationTrendGraphProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white border border-slate-200 rounded-xl p-4"
+      className="bg-white border border-slate-200 rounded-lg p-4"
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-medium text-slate-700">7-Day Progress</h3>

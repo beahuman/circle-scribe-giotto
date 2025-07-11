@@ -58,7 +58,7 @@ const DailyCompletionAnimation: React.FC<DailyCompletionAnimationProps> = ({
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className={`bg-gradient-to-br ${getBackgroundColor()} backdrop-blur-sm border border-white/20 rounded-2xl p-8 mx-6 text-center max-w-sm`}
+            className={`bg-gradient-to-br ${getBackgroundColor()} backdrop-blur-sm border border-white/20 rounded-lg p-8 mx-6 text-center max-w-sm`}
             initial={{ scale: 0.8, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.8, y: 20 }}

@@ -125,7 +125,7 @@ const CircleOverlay: React.FC<CircleOverlayProps> = ({
       transition={{ duration: 0.6 }}
       className={`relative ${className}`}
     >
-      <div className="bg-gradient-to-br from-background to-muted/20 rounded-xl p-6 border shadow-sm">
+      <div className="bg-gradient-to-br from-background to-muted/20 rounded-lg p-6 border shadow-sm">
         <canvas
           ref={canvasRef}
           width={containerSize}
