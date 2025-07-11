@@ -76,7 +76,7 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
   );
   
   // Progress nudge system
-  const { nudgeState, shouldShowProgressNudges, dismissPostScoreCTA } = useProgressNudge();
+  const { nudgeState, shouldShowProgressNudges, dismissPostScoreCTA, checkMilestoneForScore, triggerMilestoneCTA } = useProgressNudge();
   
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
   const [showAdvancedOverlay, setShowAdvancedOverlay] = useState(false);
@@ -138,6 +138,16 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
       navigator.vibrate([100, 50, 100, 50, 100]);
     }
   }, [roundedAccuracy, playerProgress]);
+
+  // Check for milestone-based progress CTA triggers
+  useEffect(() => {
+    if (!shouldShowProgressNudges() || nudgeState.hasViewedProgress) return;
+    
+    const milestoneType = checkMilestoneForScore(roundedAccuracy);
+    if (milestoneType) {
+      triggerMilestoneCTA(milestoneType);
+    }
+  }, [roundedAccuracy, checkMilestoneForScore, triggerMilestoneCTA, shouldShowProgressNudges, nudgeState.hasViewedProgress]);
 
   // Handle badge notifications
   const handleBadgeComplete = () => {
@@ -344,6 +354,7 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
         show={nudgeState.showPostScoreCTA && shouldShowProgressNudges()}
         onDismiss={dismissPostScoreCTA}
         gameCount={stats.totalGames}
+        milestoneType={nudgeState.milestoneType}
       />
     </motion.div>
   );

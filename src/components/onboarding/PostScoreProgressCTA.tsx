@@ -9,39 +9,103 @@ interface PostScoreProgressCTAProps {
   show: boolean;
   onDismiss: () => void;
   gameCount: number;
+  milestoneType?: 'new_best' | 'score_improvement' | 'streak_broken' | 'unlock_milestone' | null;
 }
 
 const PostScoreProgressCTA: React.FC<PostScoreProgressCTAProps> = ({
   show,
   onDismiss,
-  gameCount
+  gameCount,
+  milestoneType
 }) => {
   const navigate = useNavigate();
   const { selectedTone } = useToneSystem();
 
   if (!show) return null;
 
-  const getMessageForTone = () => {
-    const messages = {
-      playful: {
-        title: "Want to see how you're improving? 🎯",
-        description: "Your circles are getting tracked! Check out your progress."
+  const getMilestoneMessageForTone = () => {
+    if (!milestoneType) {
+      // Default messages for non-milestone scenarios
+      const messages = {
+        playful: {
+          title: "Want to see how you're improving? 🎯",
+          description: "Your circles are getting tracked! Check out your progress."
+        },
+        calm: {
+          title: "Your growth is being measured",
+          description: "View your developing motor control and consistency patterns."
+        },
+        formal: {
+          title: "Performance analytics available",
+          description: "Access your spatial-motor skill development metrics."
+        },
+        sarcastic: {
+          title: "Wow, you've drawn circles twice!",
+          description: "I guess that's worth celebrating. Want to see your 'progress'?"
+        }
+      };
+      return messages[selectedTone] || messages.playful;
+    }
+
+    // Milestone-specific Giotto messages
+    const milestoneMessages = {
+      new_best: {
+        playful: {
+          title: "New high score! Wanna see how far you've come? 🌟",
+          description: "Giotto whispers: \"That was beautiful. Your journey deserves recognition.\""
+        },
+        calm: {
+          title: "Progress isn't linear. But it is visible.",
+          description: "A new benchmark reached. Observe your steady ascent toward precision."
+        },
+        formal: {
+          title: "A new benchmark has been set.",
+          description: "View performance metrics to analyze your skill development trajectory."
+        },
+        sarcastic: {
+          title: "Well, well. Someone's showing off.",
+          description: "Fine, let's take a look at this 'achievement' of yours."
+        }
       },
-      calm: {
-        title: "Your growth is being measured",
-        description: "View your developing motor control and consistency patterns."
+      score_improvement: {
+        playful: {
+          title: "Getting better and better! ✨",
+          description: "Each circle brings you closer to mastery. Want to see the pattern?"
+        },
+        calm: {
+          title: "Your path bends toward precision.",
+          description: "Small improvements compound. Witness your gradual refinement."
+        },
+        formal: {
+          title: "Performance improvement detected.",
+          description: "Review your enhancement metrics and trend analysis."
+        },
+        sarcastic: {
+          title: "Oh, you're actually learning? Shocking.",
+          description: "I suppose we should document this rare moment of progress."
+        }
       },
-      formal: {
-        title: "Performance analytics available",
-        description: "Access your spatial-motor skill development metrics."
-      },
-      sarcastic: {
-        title: "Wow, you've drawn circles twice!",
-        description: "I guess that's worth celebrating. Want to see your 'progress'?"
+      streak_broken: {
+        playful: {
+          title: "Streak smashed — let's take a peek. 💫",
+          description: "Even Giotto had off days. See how you bounce back from setbacks."
+        },
+        calm: {
+          title: "Patterns shift. Growth continues.",
+          description: "Today's struggle becomes tomorrow's strength. Observe the bigger picture."
+        },
+        formal: {
+          title: "Streak broken. Review your trend curve.",
+          description: "Analyze performance variations to identify optimization opportunities."
+        },
+        sarcastic: {
+          title: "Well, that went sideways. Let's check the damage.",
+          description: "Hey, at least your history looks better than today's attempt."
+        }
       }
     };
-    
-    return messages[selectedTone] || messages.playful;
+
+    return milestoneMessages[milestoneType]?.[selectedTone] || milestoneMessages[milestoneType]?.playful;
   };
 
   const handleGoToProgress = () => {
@@ -49,7 +113,7 @@ const PostScoreProgressCTA: React.FC<PostScoreProgressCTAProps> = ({
     onDismiss();
   };
 
-  const message = getMessageForTone();
+  const message = getMilestoneMessageForTone();
 
   return (
     <motion.div
