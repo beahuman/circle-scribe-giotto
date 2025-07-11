@@ -36,12 +36,12 @@ const BadgeShowcase: React.FC<BadgeShowcaseProps> = ({ className = '' }) => {
   const totalBadges = badgeProgress.length;
 
   const rarityColors = {
-    common: 'bg-slate-100 text-slate-700',
-    uncommon: 'bg-green-100 text-green-700',
-    rare: 'bg-blue-100 text-blue-700',
-    epic: 'bg-purple-100 text-purple-700',
-    legendary: 'bg-yellow-100 text-yellow-700',
-    mythic: 'bg-gradient-to-r from-pink-100 to-purple-100 text-purple-800'
+    common: 'bg-muted text-muted-foreground',
+    uncommon: 'bg-success/10 text-success',
+    rare: 'bg-info/10 text-info',
+    epic: 'bg-primary/10 text-primary',
+    legendary: 'bg-warning/10 text-warning',
+    mythic: 'bg-gradient-to-r from-primary/10 to-primary-glow/10 text-primary'
   };
 
   return (

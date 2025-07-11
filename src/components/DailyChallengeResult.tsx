@@ -53,13 +53,13 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
 
   const getDifficultyColor = (level: number) => {
     const colors = {
-      1: 'bg-green-500 text-white',
-      2: 'bg-blue-500 text-white',
-      3: 'bg-yellow-500 text-black',
-      4: 'bg-orange-500 text-white', 
-      5: 'bg-red-500 text-white'
+      1: 'bg-success text-white',
+      2: 'bg-info text-white',
+      3: 'bg-warning text-black',
+      4: 'bg-warning text-white', 
+      5: 'bg-error text-white'
     };
-    return colors[level as keyof typeof colors] || 'bg-gray-500 text-white';
+    return colors[level as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   return (
@@ -78,7 +78,7 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
         </div>
 
         {/* Challenge Complete Banner */}
-        <Card className={`border-2 ${isPassing ? 'border-green-500/50 bg-green-500/10' : 'border-orange-500/50 bg-orange-500/10'}`}>
+        <Card className={`border-2 ${isPassing ? 'border-success/50 bg-success/10' : 'border-warning/50 bg-warning/10'}`}>
           <CardContent className="p-6">
             <div className="text-center space-y-3">
               <div className="text-4xl mb-2">
@@ -104,7 +104,7 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
               </div>
 
               {isPassing && (
-                <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
+                <div className="flex items-center justify-center gap-2 text-success">
                   <Trophy className="h-5 w-5" />
                   <span className="font-medium">Daily challenge conquered!</span>
                 </div>
@@ -135,7 +135,7 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
           <Card>
             <CardContent className="p-4">
               <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <Crown className="h-5 w-5 text-yellow-500" />
+                <Crown className="h-5 w-5 text-warning" />
                 Latest Badges
               </h3>
               <BadgeShowcase />

@@ -19,8 +19,8 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
     description: 'Subtle ink trails, faded canvas background',
     unlockRequirement: 5,
     visualStyle: {
-      background: 'bg-gradient-to-br from-slate-50 to-stone-100',
-      accent: 'text-stone-600',
+      background: 'from-tone-meditative-background to-tone-meditative-surface',
+      accent: 'text-tone-meditative-accent',
       effects: ['ink-trail', 'faded-canvas']
     }
   },
@@ -30,8 +30,8 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
     description: 'Bright accent colors, bubbly tap effects',
     unlockRequirement: 5,
     visualStyle: {
-      background: 'bg-gradient-to-br from-pink-50 to-purple-50',
-      accent: 'text-purple-600',
+      background: 'from-tone-playful-background to-tone-playful-surface',
+      accent: 'text-tone-playful-accent',
       effects: ['confetti', 'bubble-taps']
     }
   },
@@ -41,8 +41,8 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
     description: 'Grid overlays, clean technical lines',
     unlockRequirement: 5,
     visualStyle: {
-      background: 'bg-gradient-to-br from-blue-50 to-slate-100',
-      accent: 'text-blue-700',
+      background: 'from-tone-formal-background to-tone-formal-surface',
+      accent: 'text-tone-formal-accent',
       effects: ['grid-overlay', 'technical-lines']
     }
   },
@@ -52,9 +52,9 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
     description: 'Bold black bars, snarky labels, glitch pops',
     unlockRequirement: 5,
     visualStyle: {
-      background: 'bg-gradient-to-br from-red-50 to-orange-50',
-      accent: 'text-red-700',
-      effects: ['redacted-bars', 'glitch-pops']
+      background: 'from-tone-sarcastic-background to-tone-sarcastic-surface',
+      accent: 'text-tone-sarcastic-accent',
+      effects: ['redacted-lines', 'glitch-text']
     }
   },
   poetic: {

@@ -53,7 +53,7 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
           height: radius * 2,
           borderRadius: '50%',
           border: '2px solid',
-          borderColor: isPenaltyMode ? 'rgb(239, 68, 68)' : 'hsl(var(--primary))'
+          borderColor: isPenaltyMode ? 'hsl(var(--error))' : 'hsl(var(--primary))'
         }}
       />
       
@@ -67,7 +67,7 @@ const CircleDisplay: React.FC<CircleDisplayProps> = ({
         }}
       />
       
-      <div className={`fixed top-6 inset-x-0 mx-auto w-fit ${isPenaltyMode ? 'bg-red-500' : 'bg-[#765ED8]'} px-4 py-2 rounded-full backdrop-blur-sm`}>
+      <div className={`fixed top-6 inset-x-0 mx-auto w-fit ${isPenaltyMode ? 'bg-error' : 'bg-primary'} px-4 py-2 rounded-full backdrop-blur-sm`}>
         <span className="text-lg font-medium text-white">
           {isPenaltyMode ? 'PENALTY MODE: ' : 'Memorize: '}{countdown}
         </span>

@@ -170,12 +170,16 @@ export const useToneSystem = () => {
     const theme = TONE_THEMES[selectedTone];
     if (!theme || !isThemeUnlocked(selectedTone)) {
       return {
-        background: 'bg-gradient-to-br from-slate-50 to-white',
+        background: 'bg-gradient-to-br from-background to-muted',
         accent: 'text-primary',
         effects: []
       };
     }
-    return theme.visualStyle;
+    return {
+      background: `bg-gradient-to-br ${theme.visualStyle.background}`,
+      accent: theme.visualStyle.accent,
+      effects: theme.visualStyle.effects || []
+    };
   };
 
   return {

@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    /* Base System Colors (HSL format) */
     --background: 250 100% 99%;
     --foreground: 250 10% 10%;
 
@@ -68,6 +69,56 @@
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Tone-Specific Color System */
+    
+    /* Playful Tone - Warm oranges, coral, soft violets */
+    --tone-playful-primary: 330 65% 65%;
+    --tone-playful-secondary: 340 55% 85%;
+    --tone-playful-accent: 315 70% 70%;
+    --tone-playful-background: 330 30% 98%;
+    --tone-playful-surface: 335 25% 95%;
+    --tone-playful-text: 330 15% 20%;
+    --tone-playful-text-muted: 330 10% 45%;
+    
+    /* Meditative Tone - Soft neutrals, calming blues and greys */
+    --tone-meditative-primary: 210 25% 55%;
+    --tone-meditative-secondary: 210 20% 80%;
+    --tone-meditative-accent: 200 30% 60%;
+    --tone-meditative-background: 210 15% 98%;
+    --tone-meditative-surface: 210 12% 95%;
+    --tone-meditative-text: 210 20% 15%;
+    --tone-meditative-text-muted: 210 15% 45%;
+    
+    /* Formal Tone - Structured blues, monochrome greys */
+    --tone-formal-primary: 220 70% 50%;
+    --tone-formal-secondary: 220 15% 85%;
+    --tone-formal-accent: 215 80% 55%;
+    --tone-formal-background: 220 10% 98%;
+    --tone-formal-surface: 220 8% 96%;
+    --tone-formal-text: 220 25% 10%;
+    --tone-formal-text-muted: 220 15% 40%;
+    
+    /* Sarcastic Tone - Dry purples, acidic lime, muted reds */
+    --tone-sarcastic-primary: 285 60% 55%;
+    --tone-sarcastic-secondary: 285 25% 85%;
+    --tone-sarcastic-accent: 75 65% 60%;
+    --tone-sarcastic-background: 285 15% 98%;
+    --tone-sarcastic-surface: 285 12% 95%;
+    --tone-sarcastic-text: 285 20% 15%;
+    --tone-sarcastic-text-muted: 285 15% 45%;
+
+    /* Score Ring Colors by Performance */
+    --score-excellent: 142 76% 36%;  /* Green */
+    --score-good: 217 91% 60%;       /* Blue */
+    --score-fair: 45 93% 47%;        /* Yellow */
+    --score-poor: 0 84% 60%;         /* Red */
+    
+    /* Feedback State Colors */
+    --success: 142 76% 36%;
+    --warning: 45 93% 47%;
+    --error: 0 84% 60%;
+    --info: 217 91% 60%;
   }
 
   .dark {
@@ -99,6 +150,27 @@
     --border: 250 10% 20%;
     --input: 250 10% 20%;
     --ring: 250 60% 60%;
+
+    /* Dark mode tone adaptations */
+    --tone-playful-background: 330 20% 8%;
+    --tone-playful-surface: 330 15% 12%;
+    --tone-playful-text: 330 15% 85%;
+    --tone-playful-text-muted: 330 10% 60%;
+    
+    --tone-meditative-background: 210 20% 8%;
+    --tone-meditative-surface: 210 15% 12%;
+    --tone-meditative-text: 210 15% 85%;
+    --tone-meditative-text-muted: 210 10% 60%;
+    
+    --tone-formal-background: 220 15% 8%;
+    --tone-formal-surface: 220 12% 12%;
+    --tone-formal-text: 220 20% 85%;
+    --tone-formal-text-muted: 220 15% 60%;
+    
+    --tone-sarcastic-background: 285 20% 8%;
+    --tone-sarcastic-surface: 285 15% 12%;
+    --tone-sarcastic-text: 285 15% 85%;
+    --tone-sarcastic-text-muted: 285 10% 60%;
   }
 }
 

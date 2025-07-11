@@ -44,7 +44,7 @@ const App = () => {
                 onClose={toneMastery.clearPendingVariantUnlock}
               />
             )}
-            <div className="min-h-screen overflow-y-auto pb-16 bg-white">
+            <div className="min-h-screen overflow-y-auto pb-16 bg-background">
               <Routes>
                 <Route path="/launch" element={<Launch />} />
                 <Route path="/auth" element={<Auth />} />
