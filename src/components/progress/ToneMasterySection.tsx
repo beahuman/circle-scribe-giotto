@@ -6,6 +6,7 @@ import { Palette, Volume2, Heart, Feather, BookOpen, Skull } from 'lucide-react'
 import { ToneType } from '@/utils/toneMessages';
 import { useToneSystem } from '@/hooks/useToneSystem';
 import ToneLoyaltyCard from './ToneLoyaltyCard';
+import ToneMasteryProgressCard from './ToneMasteryProgressCard';
 
 const ToneMasterySection: React.FC = () => {
   const { 
@@ -13,7 +14,8 @@ const ToneMasterySection: React.FC = () => {
     toneUsage, 
     getToneMasteryLevelForTone,
     isToneV2UnlockedForTone,
-    toneLoyalty
+    toneLoyalty,
+    toneMastery
   } = useToneSystem();
 
   const AVAILABLE_TONES: ToneType[] = ['calm', 'playful', 'formal', 'sarcastic'];
@@ -69,6 +71,7 @@ const ToneMasterySection: React.FC = () => {
 
   return (
     <div className="space-y-4">
+      <ToneMasteryProgressCard />
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -85,8 +88,8 @@ const ToneMasterySection: React.FC = () => {
           <div className="grid grid-cols-1 gap-3">
             {AVAILABLE_TONES.map((tone) => {
               const usage = toneUsage[tone];
-              const masteryLevel = getToneMasteryLevelForTone(tone);
-              const hasV2 = isToneV2UnlockedForTone(tone);
+              const masteryLevel = Math.max(getToneMasteryLevelForTone(tone), toneMastery.getToneMasteryLevel(tone));
+              const hasV2 = isToneV2UnlockedForTone(tone) || toneMastery.isVolumeTwoUnlocked(tone);
               const isSelected = selectedTone === tone;
               const progress = getProgressToNextLevel(usage);
 

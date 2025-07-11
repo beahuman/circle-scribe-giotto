@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ToneType, TONE_THEMES, getMotivationalPhrase, getScoreMessage, getStreakMessage, getBadgeUnlockMessage, getModeUnlockMessage, isToneV2Unlocked, getToneMasteryLevel } from '@/utils/toneMessages';
 import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 import { useToneLoyalty } from '@/hooks/useToneLoyalty';
+import { useToneMastery } from '@/hooks/useToneMastery';
 
 export const useToneSystem = () => {
   const [selectedTone, setSelectedTone] = useState<ToneType>(() => {
@@ -32,6 +33,7 @@ export const useToneSystem = () => {
   const { toast } = useToast();
   const { recordDrawing } = useAdaptiveFeedback();
   const toneLoyalty = useToneLoyalty();
+  const toneMastery = useToneMastery();
 
   // Save to localStorage whenever state changes
   useEffect(() => {
@@ -48,13 +50,21 @@ export const useToneSystem = () => {
     });
   };
 
-  const incrementToneUsage = (tone: ToneType = selectedTone) => {
+  const incrementToneUsage = (tone: ToneType = selectedTone, penalizePreviousTone: boolean = false) => {
     setToneUsage(prev => {
       const newUsage = { ...prev, [tone]: prev[tone] + 1 };
       
       // Track for tone loyalty system
       const totalDraws = Object.values(newUsage).reduce((sum, count) => sum + count, 0);
       toneLoyalty.recordToneUsage(tone, totalDraws);
+      
+      // Track for tone mastery system
+      toneMastery.addLoyaltyPoint(tone);
+      
+      // Penalize previous tone if switched
+      if (penalizePreviousTone && selectedTone !== tone) {
+        toneMastery.penalizeToneSwitch(selectedTone);
+      }
       
       // Check if this usage unlocks a theme
       const theme = TONE_THEMES[tone];
@@ -64,15 +74,6 @@ export const useToneSystem = () => {
           title: "🎨 Visual Theme Unlocked!",
           description: `${theme.name}: ${theme.description}`,
           duration: 4000,
-        });
-      }
-      
-      // Check if Volume 2 tone pack is unlocked
-      if (newUsage[tone] === 15) {
-        toast({
-          title: "🎭 Tone Pack Volume 2 Unlocked!",
-          description: `You've unlocked more of Giotto's ${tone} voice. Experience evolving personality!`,
-          duration: 5000,
         });
       }
       
@@ -182,5 +183,7 @@ export const useToneSystem = () => {
     getPreviewMessage,
     // Tone loyalty features
     toneLoyalty,
+    // Tone mastery features
+    toneMastery,
   };
 };
