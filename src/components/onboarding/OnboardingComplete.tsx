@@ -2,34 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Award } from 'lucide-react';
 import LogoAnimation from '../LogoAnimation';
 
 interface OnboardingCompleteProps {
   onStartFirstDraw: () => void;
-  selectedMode: 'practice' | 'daily' | null;
-  tone: 'playful' | 'calm' | 'formal' | 'sarcastic';
 }
 
-const toneMessages = {
-  playful: "Let's loop the loop!",
-  calm: "Begin with a breath.",
-  formal: "Commence motor assessment protocol.",
-  sarcastic: "Time to see what all that thumb training was for."
-};
-
-const toneCTAs = {
-  playful: "Start My First Draw!",
-  calm: "Begin Practice",
-  formal: "Initialize Assessment",
-  sarcastic: "Prove My Worth"
-};
-
 const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({
-  onStartFirstDraw,
-  selectedMode,
-  tone
+  onStartFirstDraw
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
@@ -46,28 +26,21 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({
             </div>
             
             <CardTitle className="text-xl font-bold">
-              Let's Draw
+              Try to match the perfect circle.
             </CardTitle>
           </CardHeader>
           
           <CardContent className="space-y-6 text-center">
-            <p className="text-lg text-foreground">
-              {toneMessages[tone]}
-            </p>
-            
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                You'll see a circle. Try to draw it freehand. You'll get feedback after.
+            <div className="space-y-4">
+              <p className="text-lg text-foreground">
+                One smooth stroke. No pressure.
               </p>
-              
-              {selectedMode && (
-                <Badge variant="secondary" className="text-sm">
-                  Starting with {selectedMode === 'practice' ? 'Practice Mode' : 'Daily Calibration'}
-                </Badge>
-              )}
+              <p className="text-lg text-primary font-medium">
+                Your journey begins now.
+              </p>
             </div>
             
-            <div className="space-y-4 pt-4">
+            <div className="pt-6">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -77,14 +50,9 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({
                   className="w-full"
                   size="lg"
                 >
-                  {toneCTAs[tone]}
+                  Begin Drawing
                 </Button>
               </motion.div>
-              
-              <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
-                <Award className="w-4 h-4" />
-                <span>First draw unlocks "Giotto Initiate" badge</span>
-              </div>
             </div>
           </CardContent>
         </Card>

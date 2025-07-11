@@ -55,26 +55,10 @@ const OnboardingSequence: React.FC<OnboardingSequenceProps> = ({ onComplete }) =
       case 0:
         return (
           <OnboardingWelcome
-            tone={settings.feedbackTone}
             onContinue={nextStep}
-            onSkip={handleSkip}
           />
         );
       case 1:
-        return (
-          <WhyCirclesContent
-            onContinue={nextStep}
-            onSkip={handleSkip}
-          />
-        );
-      case 2:
-        return (
-          <OnboardingModes
-            onSelectMode={handleSelectMode}
-            onSkip={handleSkip}
-          />
-        );
-      case 3:
         return (
           <OnboardingToneSelector
             onSelectTone={handleSelectTone}
@@ -82,12 +66,10 @@ const OnboardingSequence: React.FC<OnboardingSequenceProps> = ({ onComplete }) =
             onSkip={handleSkip}
           />
         );
-      case 4:
+      case 2:
         return (
           <OnboardingComplete
             onStartFirstDraw={handleStartFirstDraw}
-            selectedMode={selectedMode}
-            tone={settings.feedbackTone}
           />
         );
       default:

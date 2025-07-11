@@ -15,7 +15,7 @@ const tones = [
     id: 'playful' as const,
     icon: Smile,
     title: 'Playful',
-    preview: "Nice job! Your thumb's getting smarter already.",
+    preview: "Let's make some wobbly magic.",
     color: 'from-yellow-500/20 to-orange-500/20',
     iconColor: 'text-yellow-600'
   },
@@ -23,15 +23,15 @@ const tones = [
     id: 'calm' as const,
     icon: Brain,
     title: 'Meditative',
-    preview: "Breathe. Focus. The circle emerges from stillness.",
+    preview: "Breathe in, draw out. Gently.",
     color: 'from-blue-500/20 to-teal-500/20',
     iconColor: 'text-blue-600'
   },
   {
     id: 'formal' as const,
     icon: GraduationCap,
-    title: 'Scientific',
-    preview: "Motor precision improved by 12%. Neuroplasticity engaged.",
+    title: 'Formal',
+    preview: "We begin with discipline.",
     color: 'from-gray-500/20 to-slate-500/20',
     iconColor: 'text-gray-600'
   },
@@ -39,7 +39,7 @@ const tones = [
     id: 'sarcastic' as const,
     icon: Zap,
     title: 'Sarcastic',
-    preview: "Wow. A circle. Revolutionary. Da Vinci could never.",
+    preview: "Circles? Easy. I was born perfect.",
     color: 'from-purple-500/20 to-pink-500/20',
     iconColor: 'text-purple-600'
   }
@@ -61,11 +61,8 @@ const OnboardingToneSelector: React.FC<OnboardingToneSelectorProps> = ({
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-xl font-bold">
-              Select Your Tone
+              How should I speak to you?
             </CardTitle>
-            <p className="text-muted-foreground">
-              Your chosen tone will shape how Giotto speaks to you
-            </p>
           </CardHeader>
           
           <CardContent className="space-y-4">

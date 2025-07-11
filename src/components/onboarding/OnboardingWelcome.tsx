@@ -2,33 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles } from 'lucide-react';
 import LogoAnimation from '../LogoAnimation';
 
 interface OnboardingWelcomeProps {
   onContinue: () => void;
-  onSkip: () => void;
-  tone: 'playful' | 'calm' | 'formal' | 'sarcastic';
 }
 
-const toneMessages = {
-  playful: "Draw circles. Get better. Repeat. You got this.",
-  calm: "Precision is presence. Let's begin.",
-  formal: "This app measures your spatial control. Begin when ready.",
-  sarcastic: "So you think you can circle?"
-};
-
-const toneCTAs = {
-  playful: "Start Onboarding",
-  calm: "Continue in Silence",
-  formal: "Begin Assessment",
-  sarcastic: "Prove It"
-};
-
 const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({
-  onContinue,
-  onSkip,
-  tone
+  onContinue
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
@@ -39,42 +20,57 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({
         className="w-full max-w-md"
       >
         <Card className="border-primary/20 shadow-lg">
-          <CardHeader className="text-center space-y-4">
-            <div className="w-[160px] mx-auto">
+          <CardHeader className="text-center space-y-6">
+            <div className="w-[120px] mx-auto relative">
               <LogoAnimation />
+              {/* Animated brushstroke circle background */}
+              <motion.div
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 0.3 }}
+                transition={{ duration: 2, delay: 0.5 }}
+                className="absolute inset-0 -z-10"
+              >
+                <svg viewBox="0 0 120 120" className="w-full h-full">
+                  <motion.circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeDasharray="1 4"
+                    style={{ pathLength: 1 }}
+                  />
+                </svg>
+              </motion.div>
             </div>
             
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Welcome to Giotto
+            <CardTitle className="text-2xl font-bold">
+              I'm Giotto. Welcome.
             </CardTitle>
           </CardHeader>
           
           <CardContent className="space-y-6 text-center">
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {toneMessages[tone]}
-            </p>
-            
-            <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-              <Sparkles className="w-4 h-4" />
-              <span>Named after the master who drew the perfect circle</span>
-              <Sparkles className="w-4 h-4" />
+            <div className="space-y-4">
+              <p className="text-lg text-foreground leading-relaxed">
+                They say I once drew the perfect circle.
+              </p>
+              <p className="text-lg text-foreground leading-relaxed">
+                You don't have to.
+              </p>
+              <p className="text-lg text-primary font-medium">
+                We're here to find <em>your</em> perfect rhythm.
+              </p>
             </div>
             
-            <div className="space-y-3 pt-4">
+            <div className="pt-6">
               <Button 
                 onClick={onContinue}
                 className="w-full"
                 size="lg"
               >
-                {toneCTAs[tone]}
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                onClick={onSkip}
-                className="w-full text-muted-foreground hover:text-foreground"
-              >
-                Skip Introduction
+                Continue
               </Button>
             </div>
           </CardContent>
