@@ -110,7 +110,7 @@ const RewardedAdModal: React.FC<RewardedAdModalProps> = ({
           </div>
 
           {/* Action Button */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             {canWatchAd ? (
               <Button 
                 onClick={handleWatchAd}

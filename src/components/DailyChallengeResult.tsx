@@ -80,7 +80,7 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
         {/* Challenge Complete Banner */}
         <Card className={`border-2 ${isPassing ? 'border-success/50 bg-success/10' : 'border-warning/50 bg-warning/10'}`}>
           <CardContent className="p-6">
-            <div className="text-center space-y-3">
+            <div className="text-center space-y-4">
               <div className="text-4xl mb-2">
                 {isExcellent ? '🏆' : isPassing ? '✅' : '🎯'}
               </div>

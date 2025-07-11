@@ -22,7 +22,7 @@ const TonePackUnlockBanner: React.FC = () => {
       >
         <div className="bg-gradient-to-r from-primary/90 to-primary-glow/90 backdrop-blur-sm border border-primary/20 rounded-lg p-4 shadow-lg">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 flex-1">
+            <div className="flex items-center gap-4 flex-1">
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}

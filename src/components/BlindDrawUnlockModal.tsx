@@ -31,7 +31,7 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="space-y-3"
+            className="space-y-4"
           >
             <div className="relative mx-auto w-16 h-16 mb-4">
               <motion.div
@@ -63,17 +63,17 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="bg-slate-800/50 rounded-lg p-4 space-y-3"
+            className="bg-slate-800/50 rounded-lg p-4 space-y-4"
           >
-            <div className="flex items-center gap-3 text-slate-300">
+            <div className="flex items-center gap-4 text-slate-300">
               <Brain className="h-5 w-5 text-purple-400" />
               <span className="text-caption text-slate-300">Draw without seeing your stroke</span>
             </div>
-            <div className="flex items-center gap-3 text-slate-300">
+            <div className="flex items-center gap-4 text-slate-300">
               <Target className="h-5 w-5 text-purple-400" />
               <span className="text-caption text-slate-300">Trust your spatial awareness</span>
             </div>
-            <div className="flex items-center gap-3 text-slate-300">
+            <div className="flex items-center gap-4 text-slate-300">
               <Eye className="h-5 w-5 text-purple-400" />
               <span className="text-caption text-slate-300">See your creation revealed</span>
             </div>
@@ -94,7 +94,7 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 1.0 }}
-            className="flex gap-3"
+            className="flex gap-4"
           >
             <Button
               variant="outline"

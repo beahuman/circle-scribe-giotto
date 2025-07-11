@@ -260,13 +260,13 @@ const DailyChallengeScreen: React.FC<DailyChallengeScreenProps> = ({ onStartChal
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {userBadges.slice(0, 4).map(badge => (
                   <motion.div
                     key={badge.id}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border"
+                    className="flex items-center gap-4 p-3 bg-muted/50 rounded-lg border"
                   >
                     <div className="text-2xl">{badge.icon}</div>
                     <div className="flex-1">

@@ -56,13 +56,13 @@ const AdRewardCenter: React.FC = () => {
               <AdRewardButton 
                 type="xp" 
                 size="sm"
-                className="h-auto py-3 flex flex-col gap-1"
+                className="h-auto py-4 flex flex-col gap-1"
               />
               
               <AdRewardButton 
                 type="calibration" 
                 size="sm"
-                className="h-auto py-3 flex flex-col gap-1"
+                className="h-auto py-4 flex flex-col gap-1"
               />
               
               <Button
@@ -70,7 +70,7 @@ const AdRewardCenter: React.FC = () => {
                 size="sm"
                 onClick={() => setShowTipsModal(true)}
                 disabled={!canWatchAd}
-                className="h-auto py-3 flex flex-col gap-1 border-purple-500/30 bg-gradient-to-r from-purple-500/5 to-purple-500/10 hover:scale-[1.02] transition-all"
+                className="h-auto py-4 flex flex-col gap-1 border-purple-500/30 bg-gradient-to-r from-purple-500/5 to-purple-500/10 hover:scale-[1.02] transition-all"
               >
                 <div className="flex items-center gap-2">
                   <Brain className="h-4 w-4" />

@@ -63,7 +63,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({ isOpen, onToggle 
           <div className="grid grid-cols-3 gap-2">
             <motion.div variants={fadeVariants}>
               <Card className="text-center">
-                <CardContent className="p-3">
+                <CardContent className="p-4">
                   <Trophy className="h-4 w-4 mx-auto mb-1 text-yellow-500" />
                   <div className="text-lg font-bold">{stats.bestScore}%</div>
                   <div className="text-xs text-muted-foreground">Best</div>
@@ -73,7 +73,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({ isOpen, onToggle 
             
             <motion.div variants={fadeVariants}>
               <Card className="text-center">
-                <CardContent className="p-3">
+                <CardContent className="p-4">
                   <TrendingUp className="h-4 w-4 mx-auto mb-1 text-blue-500" />
                   <div className="text-lg font-bold">{stats.threeDayAverage}%</div>
                   <div className="text-xs text-muted-foreground">3-Day Avg</div>
@@ -83,7 +83,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({ isOpen, onToggle 
             
             <motion.div variants={fadeVariants}>
               <Card className="text-center">
-                <CardContent className="p-3">
+                <CardContent className="p-4">
                   <Clock className="h-4 w-4 mx-auto mb-1 text-green-500" />
                   <div className="text-lg font-bold">
                     {stats.lastAttempt ? `${stats.lastAttempt}%` : '—'}
@@ -111,7 +111,7 @@ const ProgressDashboard: React.FC<ProgressDashboardProps> = ({ isOpen, onToggle 
                     </Button>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-3 pt-0">
+                <CardContent className="p-4 pt-0">
                   <div className="space-y-2 max-h-32 overflow-y-auto">
                     {gameResults.map((result, index) => (
                       <div 

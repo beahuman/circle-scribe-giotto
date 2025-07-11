@@ -155,7 +155,7 @@ const BadgeGallery: React.FC<BadgeGalleryProps> = ({ className = '' }) => {
 
                     <DialogContent className="max-w-md">
                       <DialogHeader>
-                        <DialogTitle className="flex items-center gap-3">
+                        <DialogTitle className="flex items-center gap-4">
                           <span className="text-4xl">{badgeProgress.badge.icon}</span>
                           <div>
                             <div>{badgeProgress.badge.name}</div>
@@ -184,7 +184,7 @@ const BadgeGallery: React.FC<BadgeGalleryProps> = ({ className = '' }) => {
                         </div>
                         
                         {badgeProgress.unlocked ? (
-                          <div className="space-y-3">
+                          <div className="space-y-4">
                             {badgeProgress.unlockedAt && (
                               <div className="text-sm text-center p-3 bg-green-50 rounded-lg">
                                 <Calendar className="h-4 w-4 inline mr-2" />

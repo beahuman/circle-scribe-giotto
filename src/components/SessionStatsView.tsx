@@ -69,7 +69,7 @@ const SessionStatsView: React.FC<SessionStatsViewProps> = ({
         </div>
       </div>
       
-      <div className="flex flex-col gap-3 w-full max-w-xs">
+      <div className="flex flex-col gap-4 w-full max-w-xs">
         <Button
           onClick={onDrawAgain}
           className="px-8 py-6 text-lg rounded-md bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"

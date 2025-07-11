@@ -152,7 +152,7 @@ const NeuroscienceTipsModal: React.FC<NeuroscienceTipsModalProps> = ({
 
         <div className="space-y-6">
           {/* Free Tips */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <h3 className="font-semibold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
               Essential Tips
@@ -172,7 +172,7 @@ const NeuroscienceTipsModal: React.FC<NeuroscienceTipsModalProps> = ({
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-0 space-y-3">
+                <CardContent className="pt-0 space-y-4">
                   <p className="text-sm text-muted-foreground">{tip.content}</p>
                   
                   <div className="space-y-2">
@@ -194,7 +194,7 @@ const NeuroscienceTipsModal: React.FC<NeuroscienceTipsModalProps> = ({
           <Separator />
 
           {/* Premium Tips */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <h3 className="font-semibold flex items-center gap-2">
               <Brain className="h-4 w-4 text-purple-500" />
               Advanced Insights
@@ -223,7 +223,7 @@ const NeuroscienceTipsModal: React.FC<NeuroscienceTipsModalProps> = ({
                   </CardHeader>
                   <CardContent className="pt-0">
                     {isUnlocked ? (
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         <p className="text-sm text-muted-foreground">{tip.content}</p>
                         
                         <div className="space-y-2">

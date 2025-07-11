@@ -59,7 +59,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
         className="max-w-md mx-auto space-y-6"
       >
         {/* Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-4">
           <motion.div
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
@@ -141,7 +141,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="space-y-3"
+          className="space-y-4"
         >
           {canCalibrate && !todaysCompletion && (
             <Button
@@ -152,7 +152,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
             </Button>
           )}
           
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             <Button
               onClick={() => setShowToneSelector(true)}
               variant="outline"

@@ -130,13 +130,13 @@ const BadgeNotification: React.FC<BadgeNotificationProps> = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="space-y-3"
+                  className="space-y-4"
                 >
                   <p className="text-sm text-muted-foreground">
                     {badge.description}
                   </p>
                   
-                  <div className="flex items-center justify-center gap-3">
+                  <div className="flex items-center justify-center gap-4">
                     <Badge 
                       variant="secondary" 
                       className={`bg-gradient-to-r ${rarityColors[badge.rarity as keyof typeof rarityColors]} text-white border-0`}

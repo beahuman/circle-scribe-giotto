@@ -71,7 +71,7 @@ const CalibrationFeedbackToneSelector: React.FC<CalibrationFeedbackToneSelectorP
           <DialogTitle className="text-center text-slate-800">Choose Your Feedback Style</DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-3 mt-4">
+        <div className="space-y-4 mt-4">
           {tones.map((tone, index) => {
             const IconComponent = tone.icon;
             const isSelected = currentTone === tone.id;
@@ -91,7 +91,7 @@ const CalibrationFeedbackToneSelector: React.FC<CalibrationFeedbackToneSelectorP
                     : 'border-slate-200 bg-white hover:bg-slate-50'
                 }`}
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-4">
                   <div className={`p-2 rounded-lg bg-gradient-to-r ${tone.color} text-white flex-shrink-0`}>
                     <IconComponent className="h-4 w-4" />
                   </div>
