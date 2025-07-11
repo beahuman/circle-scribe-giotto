@@ -60,11 +60,12 @@ export const useProgressNudge = () => {
         showFirstDailyToast();
       }
       
-      // Second Practice Mode draw - show nav badge
-      if (totalGames >= 2 && !prev.hasCompletedSecondDraw && !prev.hasViewedProgress) {
+      // First-time progress nudge: after 2nd or 3rd draw, if hasn't viewed progress yet
+      if ((totalGames === 2 || totalGames === 3) && !prev.hasCompletedSecondDraw && !prev.hasViewedProgress) {
         newState.hasCompletedSecondDraw = true;
         newState.showNavBadge = true;
         newState.showPostScoreCTA = true;
+        showFirstProgressNudgeToast();
       }
       
       // 3-day streak hit - show streak toast and modal option
@@ -107,6 +108,14 @@ export const useProgressNudge = () => {
     toast({
       title: "Nice start! 🎯",
       description: "Your journey is being tracked. See your progress →",
+      duration: 4000,
+    });
+  };
+
+  const showFirstProgressNudgeToast = () => {
+    toast({
+      title: "Growing already! 🌱",
+      description: "Your progress is being tracked. Ready to see the journey?",
       duration: 4000,
     });
   };

@@ -25,23 +25,23 @@ const PostScoreProgressCTA: React.FC<PostScoreProgressCTAProps> = ({
 
   const getMilestoneMessageForTone = () => {
     if (!milestoneType) {
-      // Default messages for non-milestone scenarios
+      // First-time progress nudge messages (after 2nd/3rd draw)
       const messages = {
         playful: {
-          title: "Want to see how you're improving? 🎯",
-          description: "Your circles are getting tracked! Check out your progress."
+          title: "Let's see what you've made so far!",
+          description: "You've been drawing... but have you been *growing*?"
         },
         calm: {
-          title: "Your growth is being measured",
-          description: "View your developing motor control and consistency patterns."
+          title: "Every motion leaves a mark. Let's reflect.",
+          description: "Observe the journey — not just the score."
         },
         formal: {
-          title: "Performance analytics available",
-          description: "Access your spatial-motor skill development metrics."
+          title: "A summary of your performance is available.",
+          description: "Review your drawing history to assess trends."
         },
         sarcastic: {
-          title: "Wow, you've drawn circles twice!",
-          description: "I guess that's worth celebrating. Want to see your 'progress'?"
+          title: "Sure, you've drawn a few. Want receipts?",
+          description: "Let's see if you're actually improving."
         }
       };
       return messages[selectedTone] || messages.playful;
