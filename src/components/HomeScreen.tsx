@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import WelcomeScreen from './WelcomeScreen';
 import DailyChallengeScreen from './DailyChallengeScreen';
 import DailyCalibrationScreen from './calibration/DailyCalibrationScreen';
@@ -11,6 +12,7 @@ import ProgressPreviewWidget from './home/ProgressPreviewWidget';
 import NeuroscienceFactsFooter from './home/NeuroscienceFactsFooter';
 import PracticeModesMenu from './home/PracticeModesMenu';
 import HomeNavigationMenu from './home/HomeNavigationMenu';
+import ModeSelectionCarousel from './home/ModeSelectionCarousel';
 import AdRewardCenter from './ads/AdRewardCenter';
 import DailyStreakReminder from './home/DailyStreakReminder';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -20,7 +22,7 @@ import { useOnboarding } from '@/hooks/useOnboarding';
 import { useToneSystem } from '@/hooks/useToneSystem';
 
 interface HomeScreenProps {
-  onStart: () => void;
+  onStart: (mode?: string) => void;
   showLeaderboard?: () => void;
   isGuestMode?: boolean;
   onRemoveAds?: () => void;
@@ -41,6 +43,7 @@ const staggerContainer = {
 };
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isPremium } = useSubscription();
   const { streak, todaysCompletion } = useDailyCalibration();
   const { getActiveThemeStyles } = useToneSystem();
@@ -50,10 +53,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
 
+  // Get current view and mode from URL params
+  const view = searchParams.get('view');
+  const mode = searchParams.get('mode');
+
   const themeStyles = getActiveThemeStyles();
 
   // Check if user is new (no scores or streaks)
   const isNewUser = stats.totalGames === 0 && streak.current === 0;
+
+  // Handle direct mode launch from URL params
+  useEffect(() => {
+    if (mode && mode !== 'modes') {
+      onStart(mode);
+      // Clear the mode param after launching
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('mode');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [mode, onStart, searchParams, setSearchParams]);
 
   useEffect(() => {
     // Check if user has completed onboarding
@@ -75,6 +93,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
     }
   }, []);
 
+  const handleModeSelect = (selectedMode: string) => {
+    onStart(selectedMode);
+    // Clear view params
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete('view');
+    setSearchParams(newParams, { replace: true });
+  };
+
+  const handleCloseModal = () => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete('view');
+    setSearchParams(newParams, { replace: true });
+  };
+
   const handleStartDailyCalibration = () => {
     setShowDailyCalibration(true);
   };
@@ -86,7 +118,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
   const handleStartChallengeGame = () => {
     setShowDailyChallenge(false);
     // Navigate to game with daily challenge mode
-    window.location.href = '/?mode=daily-challenge';
+    onStart('daily-challenge');
   };
 
   // Show onboarding sequence for new users
@@ -101,6 +133,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
           // Otherwise stay on home screen for practice mode
         }}
       />
+    );
+  }
+
+  // Show mode selection if view=modes
+  if (view === 'modes') {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="mode-selection"
+          variants={fadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+          className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-primary/5 to-background"
+        >
+          <ModeSelectionCarousel
+            onModeSelect={handleModeSelect}
+            onClose={handleCloseModal}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
@@ -139,8 +193,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
             onStartCalibration={() => {
               setShowDailyCalibration(false);
               // Start game in calibration mode
-              sessionStorage.setItem('gameMode', 'daily-calibration');
-              onStart();
+              onStart('daily');
             }}
             onBack={() => setShowDailyCalibration(false)}
           />

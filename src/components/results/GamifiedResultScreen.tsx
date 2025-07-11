@@ -13,7 +13,7 @@ import MedalDisplay from './MedalDisplay';
 import SimpleBadgeNotification from './SimpleBadgeNotification';
 import FeedbackToneSelector from './FeedbackToneSelector';
 import NeuroscienceModal from './NeuroscienceModal';
-import GamifiedResultControls from './GamifiedResultControls';
+import EnhancedResultControls from './EnhancedResultControls';
 import XpProgressBar from './XpProgressBar';
 import EvolvingScoreDisplay from './EvolvingScoreDisplay';
 import PostScoreProgressCTA from '../onboarding/PostScoreProgressCTA';
@@ -212,17 +212,27 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
         subscores={subscores}
       />
 
-      {/* Header */}
-      <div className="space-y-2 mt-4">
-        <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+      {/* Animated Score Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="space-y-2 mt-4"
+      >
+        <h2 className="text-header bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
           Your Giotto Result
         </h2>
-        <p className="text-muted-foreground">Precision. Practice. Perfection.</p>
-      </div>
+        <p className="text-caption">Precision. Practice. Perfection.</p>
+      </motion.div>
 
       {/* Daily mode indicator */}
       {isDailyMode && (
-        <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 max-w-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-primary/10 border border-primary/20 rounded-xl p-3 max-w-sm"
+        >
           <div className="flex items-center gap-2 justify-center text-primary">
             <Calendar className="h-4 w-4" />
             <span className="font-medium text-sm">Daily Calibration Complete</span>
@@ -230,74 +240,99 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
           <p className="text-xs text-muted-foreground mt-1">
             Neural pathways strengthened. Return tomorrow!
           </p>
-        </div>
+        </motion.div>
       )}
 
       {/* Evolving Score Display or Traditional Layout */}
-      {settings.adaptiveScoreScreen !== false ? (
-        <EvolvingScoreDisplay
-          accuracy={accuracy}
-          difficultyLevel={difficultyLevel}
-          isPenaltyMode={isPenaltyMode}
-          sessionRoundsPlayed={sessionRoundsPlayed}
-          subscores={subscores}
-          feedbackTone={feedbackTone}
-        />
-      ) : (
-        <>
-          {/* Traditional Medal Display */}
-          <MedalDisplay medal={medal} score={roundedAccuracy} />
-          
-          {/* Score Breakdown */}
-          <ScoreBreakdown
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+      >
+        {settings.adaptiveScoreScreen !== false ? (
+          <EvolvingScoreDisplay
+            accuracy={accuracy}
+            difficultyLevel={difficultyLevel}
+            isPenaltyMode={isPenaltyMode}
+            sessionRoundsPlayed={sessionRoundsPlayed}
             subscores={subscores}
-            overallScore={roundedAccuracy}
             feedbackTone={feedbackTone}
           />
-        </>
-      )}
+        ) : (
+          <>
+            {/* Traditional Medal Display */}
+            <MedalDisplay medal={medal} score={roundedAccuracy} />
+            
+            {/* Score Breakdown */}
+            <ScoreBreakdown
+              subscores={subscores}
+              overallScore={roundedAccuracy}
+              feedbackTone={feedbackTone}
+            />
+          </>
+        )}
+      </motion.div>
 
       {/* Circle Comparison with conditional advanced overlay */}
-      <CircleComparison
-        drawnPoints={drawnPoints}
-        targetCircle={targetCircle}
-        showAdvancedOverlay={evolution.effects.ghostTrailOverlay && showAdvancedOverlay}
-        onToggleOverlay={() => setShowAdvancedOverlay(!showAdvancedOverlay)}
-        subscores={subscores}
-      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.8, duration: 0.5 }}
+      >
+        <CircleComparison
+          drawnPoints={drawnPoints}
+          targetCircle={targetCircle}
+          showAdvancedOverlay={evolution.effects.ghostTrailOverlay && showAdvancedOverlay}
+          onToggleOverlay={() => setShowAdvancedOverlay(!showAdvancedOverlay)}
+          subscores={subscores}
+        />
+      </motion.div>
 
       {/* XP Progress Bar */}
-      <XpProgressBar 
-        playerProgress={playerProgress}
-        xpGained={progressResult.xpGained}
-        didLevelUp={progressResult.didLevelUp}
-        className="max-w-xs mx-auto"
-      />
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.0, duration: 0.5 }}
+      >
+        <XpProgressBar 
+          playerProgress={playerProgress}
+          xpGained={progressResult.xpGained}
+          didLevelUp={progressResult.didLevelUp}
+          className="max-w-xs mx-auto"
+        />
+      </motion.div>
 
       {/* Educational Button */}
       <motion.button
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.5 }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => setShowNeuroscienceModal(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-muted/50 hover:bg-muted/70 rounded-lg border transition-colors"
+        className="flex items-center gap-2 px-4 py-2 bg-muted/50 hover:bg-muted/70 rounded-xl border transition-smooth"
       >
         <Info className="h-4 w-4" />
         <span className="text-sm">Learn Why This Matters</span>
       </motion.button>
 
-      {/* Result Controls */}
-      <GamifiedResultControls
-        onReplay={onReplay}
-        onViewStats={onViewStats}
-        showLeaderboard={showLeaderboard}
-        onRemoveAds={onRemoveAds}
-        onChangeFeedbackTone={() => setShowToneSelector(true)}
-        isPenaltyMode={isPenaltyMode}
-        accuracy={roundedAccuracy}
-        sessionRoundsPlayed={sessionRoundsPlayed}
-        isDailyMode={isDailyMode}
-        dailyCompleted={dailyCompleted}
-      />
+      {/* Enhanced Result Controls */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.4, duration: 0.5 }}
+        className="w-full"
+      >
+        <EnhancedResultControls
+          onReplay={onReplay}
+          onViewStats={onViewStats}
+          accuracy={roundedAccuracy}
+          isDailyMode={isDailyMode}
+          dailyCompleted={dailyCompleted}
+          isPenaltyMode={isPenaltyMode}
+          sessionRoundsPlayed={sessionRoundsPlayed}
+        />
+      </motion.div>
 
       {/* Progress Nudge CTA */}
       <PostScoreProgressCTA

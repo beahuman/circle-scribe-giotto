@@ -49,7 +49,10 @@ const App = () => {
                 <Route path="/achievements" element={<Achievements />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <BottomNav />
+              {/* Enhanced Bottom Navigation */}
+              <BottomNav 
+                hideOnPaths={['/launch', '/auth', '/signin', '/signup']}
+              />
             </div>
           </AuthProvider>
         </BrowserRouter>
