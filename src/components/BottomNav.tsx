@@ -69,7 +69,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
           }}
         >
           <div className="mb-1">
-            <LogoAnimation size={20} />
+            <LogoAnimation size={24} />
           </div>
           <span>Draw</span>
         </button>

@@ -127,7 +127,7 @@ const Auth = () => {
           </h1>
           <div className="flex justify-center w-full">
             <div className="w-[240px]">
-              <LogoAnimation />
+              <LogoAnimation size={128} />
             </div>
           </div>
         </div>

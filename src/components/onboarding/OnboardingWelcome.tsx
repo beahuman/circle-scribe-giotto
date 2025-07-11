@@ -22,7 +22,7 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center space-y-6">
             <div className="w-[120px] mx-auto relative">
-              <LogoAnimation />
+              <LogoAnimation size={128} />
               {/* Animated brushstroke circle background */}
               <motion.div
                 initial={{ pathLength: 0, opacity: 0 }}

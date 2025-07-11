@@ -22,7 +22,7 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center space-y-4">
             <div className="w-[120px] mx-auto">
-              <LogoAnimation />
+              <LogoAnimation size={128} />
             </div>
             
             <CardTitle className="text-xl font-bold">

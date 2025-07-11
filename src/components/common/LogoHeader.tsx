@@ -22,9 +22,9 @@ const LogoHeader: React.FC<LogoHeaderProps> = ({
   const getSizePixels = () => {
     if (customSize) return customSize;
     switch (size) {
-      case 'small': return 64;
-      case 'medium': return 96;
-      case 'large': return 128;
+      case 'small': return 56;  // Standardized small size
+      case 'medium': return 96; // Standardized medium size
+      case 'large': return 128; // Standardized large size
       default: return 96;
     }
   };

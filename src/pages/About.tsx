@@ -21,7 +21,7 @@ const About = () => {
       <div className="flex-1 space-y-6 max-w-md mx-auto w-full">
         <div className="text-center mb-8">
           <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-            <LogoAnimation className="w-24 h-24" />
+            <LogoAnimation size={96} />
           </div>
         </div>
 

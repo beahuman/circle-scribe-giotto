@@ -17,7 +17,7 @@ const HomeHeader: React.FC = () => {
       transition={{ delay: 0.1 }}
     >
       <div className="w-full mx-auto">
-        <LogoAnimation />
+        <LogoAnimation size={200} />
       </div>
       <p className="text-muted-foreground text-sm">The art of the perfect circle</p>
     </motion.div>

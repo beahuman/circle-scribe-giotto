@@ -5,9 +5,14 @@ import Lottie from 'lottie-react';
 interface LogoAnimationProps {
   className?: string;
   size?: number; // Size in pixels
+  suppressAnimation?: boolean; // Suppress animation during high-motion states
 }
 
-const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) => {
+const LogoAnimation: React.FC<LogoAnimationProps> = ({ 
+  className = '', 
+  size = 96, // Default to medium size (96px)
+  suppressAnimation = false 
+}) => {
   const [animationData, setAnimationData] = useState<any>(null);
   
   useEffect(() => {
@@ -20,7 +25,7 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) =
         // If loading fails, use a simple rotating circle animation
         setAnimationData({
           v: "5.7.8",
-          fr: 30,
+          fr: 24, // Standardized frame rate for consistency
           ip: 0,
           op: 120,
           w: 240,
@@ -40,7 +45,7 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) =
                 r: {
                   a: 1,
                   k: [
-                    { i: { x: [0.833], y: [0.833] }, o: { x: [0.167], y: [0.167] }, t: 0, s: [0] },
+                    { i: { x: [0.4], y: [0] }, o: { x: [0.6], y: [1] }, t: 0, s: [0] },
                     { t: 120, s: [360] }
                   ],
                   ix: 10
@@ -64,9 +69,9 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) =
                     },
                     {
                       ty: "st",
-                      c: { a: 0, k: [0.6, 0.4, 0.95, 1], ix: 3 },
+                      c: { a: 0, k: [0.463, 0.369, 0.847, 1], ix: 3 }, // Brand primary color
                       o: { a: 0, k: 100, ix: 4 },
-                      w: { a: 0, k: 6, ix: 5 },
+                      w: { a: 0, k: 4, ix: 5 }, // Consistent stroke width
                       lc: 1,
                       lj: 1,
                       ml: 4,
@@ -88,7 +93,7 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) =
       });
   }, []);
 
-  const dimensions = size ? `${size}px` : '240px';
+  const dimensions = `${size}px`;
   
   if (!animationData) {
     return (
@@ -99,8 +104,8 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) =
         <div 
           className="border-4 border-primary rounded-full animate-spin border-t-transparent"
           style={{ 
-            width: size ? `${size * 0.4}px` : '96px',
-            height: size ? `${size * 0.4}px` : '96px'
+            width: `${size * 0.4}px`,
+            height: `${size * 0.4}px`
           }}
         />
       </div>
@@ -114,9 +119,15 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) =
     >
       <Lottie 
         animationData={animationData}
-        loop={true}
-        autoplay={true}
+        loop={!suppressAnimation}
+        autoplay={!suppressAnimation}
         style={{ width: dimensions, height: dimensions }}
+        // Standardized animation options for consistency
+        rendererSettings={{
+          preserveAspectRatio: 'xMidYMid meet',
+          progressiveLoad: false,
+          hideOnTransparent: true
+        }}
       />
     </div>
   );

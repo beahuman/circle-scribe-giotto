@@ -28,7 +28,7 @@ const WhyCirclesContent: React.FC<WhyCirclesContentProps> = ({
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center space-y-4">
             <div className="w-20 h-20 mx-auto">
-              <LogoAnimation size={80} />
+              <LogoAnimation size={96} />
             </div>
             
             <CardTitle className="text-xl font-bold">

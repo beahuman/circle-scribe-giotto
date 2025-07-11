@@ -13,7 +13,7 @@ const tutorialSteps = [
     illustration: (
       <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
         <div className="w-[120px] mx-auto">
-          <LogoAnimation />
+          <LogoAnimation size={96} />
         </div>
       </div>
     )
@@ -112,7 +112,7 @@ const Tutorial = () => {
       <div className="flex-1 space-y-6 w-full" ref={contentRef}>
         <div className="text-center mb-8">
           <div className="w-[120px] mx-auto mb-4">
-            <LogoAnimation />
+            <LogoAnimation size={96} />
           </div>
         </div>
 

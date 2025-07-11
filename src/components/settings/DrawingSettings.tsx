@@ -12,7 +12,7 @@ const DrawingSettings = ({ drawingPrecision, onPrecisionChange }: DrawingSetting
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg font-medium">
-        <LogoAnimation size={18} />
+        <LogoAnimation size={20} />
         Drawing Precision
       </div>
       <p className="text-sm text-muted-foreground -mt-2">Adjust the smoothness of circle drawing</p>

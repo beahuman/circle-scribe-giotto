@@ -48,7 +48,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
 
       <motion.div className="space-y-2" variants={fadeVariants}>
         <div className="w-[240px] mx-auto">
-          <LogoAnimation />
+          <LogoAnimation size={160} />
         </div>
         <p className="text-muted-foreground">The art of the perfect circle</p>
       </motion.div>
