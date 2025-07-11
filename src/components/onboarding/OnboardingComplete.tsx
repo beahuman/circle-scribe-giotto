@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Circle, Award, Sparkles } from 'lucide-react';
+import { Award } from 'lucide-react';
+import LogoAnimation from '../LogoAnimation';
 
 interface OnboardingCompleteProps {
   onStartFirstDraw: () => void;
@@ -40,31 +41,9 @@ const OnboardingComplete: React.FC<OnboardingCompleteProps> = ({
       >
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center space-y-4">
-            <motion.div
-              animate={{ 
-                rotate: [0, 360],
-                scale: [1, 1.2, 1]
-              }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-              className="w-20 h-20 mx-auto relative"
-            >
-              <Circle className="w-full h-full text-primary" strokeWidth={2} />
-              <motion.div
-                animate={{ scale: [0, 1, 0] }}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity,
-                  delay: 0.5 
-                }}
-                className="absolute inset-4"
-              >
-                <Sparkles className="w-full h-full text-primary/60" />
-              </motion.div>
-            </motion.div>
+            <div className="w-[120px] mx-auto">
+              <LogoAnimation />
+            </div>
             
             <CardTitle className="text-xl font-bold">
               Let's Draw

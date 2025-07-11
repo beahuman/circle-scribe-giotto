@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useGameModes } from '@/hooks/useGameModes';
 import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
+import LogoHeader from '../common/LogoHeader';
 
 interface ModeSelectionCarouselProps {
   onModeSelect: (mode: string) => void;
@@ -121,6 +122,11 @@ const ModeSelectionCarousel: React.FC<ModeSelectionCarouselProps> = ({
       exit={{ opacity: 0, scale: 0.95 }}
       className="w-full max-w-md mx-auto space-y-6 p-4"
     >
+      {/* Logo Header */}
+      <div className="flex justify-center mb-4">
+        <LogoHeader size="small" />
+      </div>
+      
       {/* Header */}
       <div className="text-center space-y-2">
         <h2 className="text-header bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">

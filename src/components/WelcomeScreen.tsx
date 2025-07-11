@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { CircleDot, Trophy, ArrowLeft } from "lucide-react";
+import { Trophy, ArrowLeft } from "lucide-react";
 import LogoAnimation from './LogoAnimation';
 
 interface WelcomeScreenProps {
@@ -51,11 +51,6 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
           <LogoAnimation />
         </div>
         <p className="text-muted-foreground">The art of the perfect circle</p>
-      </motion.div>
-      
-      <motion.div className="relative" variants={fadeVariants}>
-        <div className="w-40 h-40 rounded-full border-4 border-primary opacity-50"></div>
-        <CircleDot className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary" size={48} />
       </motion.div>
       
       <motion.div className="max-w-md space-y-4" variants={fadeVariants}>

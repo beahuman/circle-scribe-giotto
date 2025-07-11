@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Circle, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import LogoAnimation from '../LogoAnimation';
 
 interface OnboardingWelcomeProps {
   onContinue: () => void;
@@ -39,13 +40,9 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({
       >
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center space-y-4">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 mx-auto"
-            >
-              <Circle className="w-full h-full text-primary" strokeWidth={1.5} />
-            </motion.div>
+            <div className="w-[160px] mx-auto">
+              <LogoAnimation />
+            </div>
             
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               Welcome to Giotto

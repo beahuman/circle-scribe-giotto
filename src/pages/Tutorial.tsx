@@ -12,7 +12,9 @@ const tutorialSteps = [
     content: "Learn how to draw the perfect circle with this step-by-step tutorial. Inspired by the Renaissance master Giotto di Bondone's famous demonstration of skill.",
     illustration: (
       <div className="relative w-full h-64 bg-white rounded-lg flex items-center justify-center">
-        <Circle className="w-32 h-32 text-[#765ED8] animate-[spin_3s_linear_infinite]" strokeWidth={1.5} />
+        <div className="w-[120px] mx-auto">
+          <LogoAnimation />
+        </div>
       </div>
     )
   },
@@ -109,8 +111,8 @@ const Tutorial = () => {
 
       <div className="flex-1 space-y-6 w-full" ref={contentRef}>
         <div className="text-center mb-8">
-          <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-            <LogoAnimation className="w-24 h-24" />
+          <div className="w-[120px] mx-auto mb-4">
+            <LogoAnimation />
           </div>
         </div>
 

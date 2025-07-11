@@ -20,6 +20,7 @@ import PostScoreProgressCTA from '../onboarding/PostScoreProgressCTA';
 import { useProgressNudge } from '@/hooks/useProgressNudge';
 import { useToast } from '@/hooks/use-toast';
 import DailyChallengeResult from '../DailyChallengeResult';
+import LogoHeader from '../common/LogoHeader';
 
 interface GamifiedResultScreenProps {
   accuracy: number;
@@ -189,6 +190,10 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
       transition={{ duration: 0.4 }}
       className="flex flex-col items-center justify-start gap-6 p-6 pb-24 text-center overflow-y-auto max-h-[calc(100vh-4rem)]"
     >
+      {/* Logo Header */}
+      <div className="w-full flex justify-center mt-4 mb-2">
+        <LogoHeader size="small" />
+      </div>
       {/* Badge Notifications */}
       {earnedBadges.length > 0 && (
         <SimpleBadgeNotification
