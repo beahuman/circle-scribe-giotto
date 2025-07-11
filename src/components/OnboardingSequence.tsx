@@ -42,7 +42,8 @@ const OnboardingSequence: React.FC<OnboardingSequenceProps> = ({ onComplete }) =
 
   const handleStartFirstDraw = () => {
     completeOnboarding();
-    onComplete(selectedMode || undefined);
+    // Send user directly to Daily Calibration as specified in prompt
+    onComplete('daily');
   };
 
   const handleSkip = () => {

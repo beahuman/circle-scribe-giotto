@@ -128,7 +128,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
         onComplete={(selectedMode) => {
           // Navigate to the selected mode if one was chosen
           if (selectedMode === 'daily') {
-            window.location.href = '/?daily=true';
+            // Start Daily Calibration mode directly
+            onStart('daily');
           }
           // Otherwise stay on home screen for practice mode
         }}
