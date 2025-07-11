@@ -1,37 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useLocalProgress } from './useLocalProgress';
-import { useToast } from '@/hooks/use-toast';
+import { useBadgeManager } from './useBadgeManager';
 import { ProgressNudgeState, MilestoneType } from '@/types/progressNudge';
 import { createProgressNudgeMessages } from '@/utils/progressNudgeMessages';
 import { hasCompletedDailyCalibration, getCurrentStreak, shouldShowProgressNudges } from '@/utils/progressNudgeUtils';
 import { checkMilestoneForScore } from '@/utils/progressNudgeMilestones';
+import { loadNudgeState, saveNudgeState, clearNudgeState, createDefaultNudgeState } from '@/utils/progressNudgeStorage';
 
 export const useProgressNudge = () => {
   const { stats, gameResults } = useLocalProgress();
-  const { toast } = useToast();
+  const { awardReflectionBadge, unlockProgressPulse } = useBadgeManager();
   
-  const [nudgeState, setNudgeState] = useState<ProgressNudgeState>(() => {
-    // Load state from localStorage
-    const saved = localStorage.getItem('progressNudgeState');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    
-    return {
-      showNavBadge: false,
-      showPostScoreCTA: false,
-      showStreakToast: false,
-      showProgressTour: false,
-      hasViewedProgress: false,
-      hasCompletedFirstDaily: false,
-      hasCompletedSecondDraw: false,
-      hasHitThreeDayStreak: false,
-    };
-  });
+  const [nudgeState, setNudgeState] = useState<ProgressNudgeState>(loadNudgeState);
 
   // Save state to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('progressNudgeState', JSON.stringify(nudgeState));
+    saveNudgeState(nudgeState);
   }, [nudgeState]);
 
   // Check for nudge triggers based on progress
@@ -90,21 +74,8 @@ export const useProgressNudge = () => {
       showProgressTour: false,
     }));
 
-    // Award reflection badge
-    const existingBadges = JSON.parse(localStorage.getItem('unlockedBadges') || '[]');
-    if (!existingBadges.includes('reflection')) {
-      const newBadges = [...existingBadges, 'reflection'];
-      localStorage.setItem('unlockedBadges', JSON.stringify(newBadges));
-      
-      toast({
-        title: "Badge Unlocked! 🏆",
-        description: "Reflection - You've discovered your growth tracking",
-        duration: 4000,
-      });
-    }
-
-    // Unlock progress pulse effect
-    localStorage.setItem('progressPulseUnlocked', 'true');
+    awardReflectionBadge();
+    unlockProgressPulse();
   };
 
   const dismissNavBadge = () => {
@@ -122,17 +93,8 @@ export const useProgressNudge = () => {
   };
 
   const resetNudges = () => {
-    setNudgeState({
-      showNavBadge: false,
-      showPostScoreCTA: false,
-      showStreakToast: false,
-      showProgressTour: false,
-      hasViewedProgress: false,
-      hasCompletedFirstDaily: false,
-      hasCompletedSecondDraw: false,
-      hasHitThreeDayStreak: false,
-    });
-    localStorage.removeItem('progressNudgeState');
+    setNudgeState(createDefaultNudgeState());
+    clearNudgeState();
   };
 
   const triggerMilestoneCTA = (milestoneType: MilestoneType) => {
