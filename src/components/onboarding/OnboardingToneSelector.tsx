@@ -88,7 +88,7 @@ const OnboardingToneSelector: React.FC<OnboardingToneSelectorProps> = ({
                       </h3>
                     </div>
                     
-                    <p className="text-sm text-muted-foreground italic pl-2 border-l-2 border-primary/30">
+                    <p className="text-description pl-2 border-l-2 border-primary/30">
                       "{tone.preview}"
                     </p>
                   </div>

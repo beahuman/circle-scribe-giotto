@@ -64,11 +64,11 @@ const OnboardingOverlay: React.FC<OnboardingOverlayProps> = ({ onComplete }) => 
               {slides[currentSlide].icon}
             </div>
             
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-header text-foreground">
               {slides[currentSlide].title}
             </h2>
             
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-description leading-relaxed">
               {slides[currentSlide].content}
             </p>
           </motion.div>
@@ -81,7 +81,7 @@ const OnboardingOverlay: React.FC<OnboardingOverlayProps> = ({ onComplete }) => 
           transition={{ delay: 0.3, duration: 0.5 }}
           className="py-4"
         >
-          <p className="text-lg font-medium text-primary italic">
+          <p className="text-body-lg text-button text-primary">
             "Train your hand. Focus your mind."
           </p>
         </motion.div>

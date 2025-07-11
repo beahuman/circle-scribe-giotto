@@ -179,7 +179,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
           transition={{ delay: 0.8 }}
           className="text-center p-4 bg-slate-100/50 rounded-xl"
         >
-          <p className="text-sm text-slate-600 font-light italic">
+          <p className="text-description">
             "The hand follows the mind's intent, and the mind grows stronger through practice."
           </p>
         </motion.div>

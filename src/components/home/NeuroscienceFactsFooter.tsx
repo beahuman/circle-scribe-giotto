@@ -14,7 +14,7 @@ const NeuroscienceFactsFooter: React.FC = () => {
       variants={fadeVariants}
       transition={{ delay: 0.6 }}
     >
-      <p className="text-xs text-slate-400 italic">
+      <p className="text-caption">
         Fact: Your cerebellum gets smarter with every circle
       </p>
     </motion.div>

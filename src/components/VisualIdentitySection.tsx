@@ -132,7 +132,7 @@ const VisualIdentitySection: React.FC<VisualIdentitySectionProps> = ({ tone }) =
                 </div>
                 <div className="md:col-span-2">
                   <div className="font-medium text-muted-foreground">Visual Streak</div>
-                  <div className="text-sm text-slate-600 mt-1 italic">
+                  <div className="text-caption mt-1">
                     {getInsightMessage(insights.longestStreak)}
                   </div>
                 </div>

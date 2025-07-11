@@ -67,15 +67,15 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
           >
             <div className="flex items-center gap-3 text-slate-300">
               <Brain className="h-5 w-5 text-purple-400" />
-              <span className="text-sm">Draw without seeing your stroke</span>
+              <span className="text-caption text-slate-300">Draw without seeing your stroke</span>
             </div>
             <div className="flex items-center gap-3 text-slate-300">
               <Target className="h-5 w-5 text-purple-400" />
-              <span className="text-sm">Trust your spatial awareness</span>
+              <span className="text-caption text-slate-300">Trust your spatial awareness</span>
             </div>
             <div className="flex items-center gap-3 text-slate-300">
               <Eye className="h-5 w-5 text-purple-400" />
-              <span className="text-sm">See your creation revealed</span>
+              <span className="text-caption text-slate-300">See your creation revealed</span>
             </div>
           </motion.div>
 
@@ -84,7 +84,7 @@ const BlindDrawUnlockModal: React.FC<BlindDrawUnlockModalProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="text-xs text-slate-400 italic bg-slate-700/30 rounded p-3"
+            className="text-caption text-slate-400 bg-slate-700/30 rounded p-3"
           >
             Blind Draw tests your proprioception and spatial recall—key components of fine motor mastery.
           </motion.div>

@@ -73,7 +73,7 @@ const TonePreview: React.FC<TonePreviewProps> = ({
         </div>
 
         <div className="mb-3">
-          <p className="text-xs text-muted-foreground italic line-clamp-2">
+          <p className="text-caption line-clamp-2">
             "{previewMessage}"
           </p>
         </div>

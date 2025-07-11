@@ -112,7 +112,7 @@ const CalibrationFeedbackToneSelector: React.FC<CalibrationFeedbackToneSelectorP
                       {tone.description}
                     </p>
                     
-                    <div className="mt-2 p-2 bg-slate-100/50 rounded text-xs italic text-slate-700">
+                    <div className="mt-2 p-2 bg-slate-100/50 rounded text-caption text-slate-700">
                       "{tone.example}"
                     </div>
                   </div>

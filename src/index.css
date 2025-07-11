@@ -197,13 +197,13 @@
   font-size: var(--text-score);
   line-height: 1;
   letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .text-header {
   font-size: var(--text-header);
   line-height: 1.2;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .text-subheader {
@@ -215,11 +215,31 @@
 .text-body-lg {
   font-size: var(--text-body-lg);
   line-height: 1.6;
+  font-weight: 400;
 }
 
 .text-caption {
   font-size: var(--text-caption);
   line-height: 1.4;
+  font-weight: 400;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Additional typography utilities */
+.text-button {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.text-label {
+  font-weight: 500;
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+
+.text-description {
+  font-weight: 400;
+  line-height: 1.5;
   color: hsl(var(--muted-foreground));
 }
 

@@ -39,15 +39,15 @@ const ProgressHeader: React.FC = () => {
         <TrendingUp className="h-8 w-8 text-white" />
       </div>
       
-      <h1 className="text-3xl font-light text-slate-800">Your Progress</h1>
-      <p className="text-slate-600 font-light italic">{getWelcomeMessage()}</p>
+      <h1 className="text-header text-foreground">Your Progress</h1>
+      <p className="text-description">{getWelcomeMessage()}</p>
       
       {/* Level & XP Display */}
       <Card className="bg-gradient-to-r from-primary/10 to-purple-400/10 border-primary/20">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-slate-700">Level {level}</span>
-            <span className="text-xs text-slate-500">{xpInCurrentLevel}/{xpForNextLevel} XP</span>
+            <span className="text-label text-foreground">Level {level}</span>
+            <span className="text-caption">{xpInCurrentLevel}/{xpForNextLevel} XP</span>
           </div>
           <div className="w-full bg-slate-200 rounded-full h-2">
             <div 

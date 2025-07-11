@@ -23,7 +23,7 @@ const HomeHeaderSection: React.FC = () => {
         <HomeHeader />
       </div>
       <motion.p 
-        className={`font-light text-lg italic leading-relaxed ${themeStyles.accent}`}
+        className={`text-body-lg leading-relaxed ${themeStyles.accent}`}
         key={getMotivationalPhraseForTone()} // Re-animate when phrase changes
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

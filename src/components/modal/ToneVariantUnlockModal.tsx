@@ -109,8 +109,8 @@ const ToneVariantUnlockModal: React.FC<ToneVariantUnlockModalProps> = ({
             </div>
 
             <div className="border-t pt-3">
-              <p className="text-xs text-muted-foreground mb-2">Preview:</p>
-              <p className="text-sm italic">"{previewMessage}"</p>
+              <p className="text-caption mb-2">Preview:</p>
+              <p className="text-description">"{previewMessage}"</p>
             </div>
           </motion.div>
 

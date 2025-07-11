@@ -107,7 +107,7 @@ const FeedbackToneSelector: React.FC<FeedbackToneSelectorProps> = ({
                       {tone.description}
                     </p>
                     
-                    <div className="mt-2 p-2 bg-muted/30 rounded text-xs italic">
+                    <div className="mt-2 p-2 bg-muted/30 rounded text-caption">
                       "{tone.example}"
                     </div>
                   </div>

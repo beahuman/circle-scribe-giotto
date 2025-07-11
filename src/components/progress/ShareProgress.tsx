@@ -74,7 +74,7 @@ const ShareProgress: React.FC = () => {
           >
             Share Progress Card
           </Button>
-          <div className="mt-3 p-3 bg-white/50 rounded-lg text-xs text-slate-500 italic">
+          <div className="mt-3 p-3 bg-white/50 rounded-lg text-caption">
             Preview: "{generateShareableCard()}"
           </div>
         </CardContent>
