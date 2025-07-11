@@ -50,7 +50,7 @@ export const useToneSystem = () => {
       
       // Check if this usage unlocks a theme
       const theme = TONE_THEMES[tone];
-      if (newUsage[tone] === theme.unlockRequirement && !unlockedThemes.has(theme.id)) {
+      if (theme && newUsage[tone] === theme.unlockRequirement && !unlockedThemes.has(theme.id)) {
         setUnlockedThemes(prev => new Set([...prev, theme.id]));
         toast({
           title: "🎨 Visual Theme Unlocked!",
@@ -64,12 +64,19 @@ export const useToneSystem = () => {
   };
 
   const isThemeUnlocked = (toneType: ToneType): boolean => {
-    return unlockedThemes.has(TONE_THEMES[toneType].id);
+    const theme = TONE_THEMES[toneType];
+    if (!theme) return false;
+    return unlockedThemes.has(theme.id);
   };
 
   const getThemeProgress = (toneType: ToneType): { current: number; required: number; percentage: number } => {
+    const theme = TONE_THEMES[toneType];
+    if (!theme) {
+      return { current: 0, required: 1, percentage: 0 };
+    }
+    
     const current = toneUsage[toneType];
-    const required = TONE_THEMES[toneType].unlockRequirement;
+    const required = theme.unlockRequirement;
     return {
       current: Math.min(current, required),
       required,
@@ -113,14 +120,15 @@ export const useToneSystem = () => {
   };
 
   const getActiveThemeStyles = () => {
-    if (!isThemeUnlocked(selectedTone)) {
+    const theme = TONE_THEMES[selectedTone];
+    if (!theme || !isThemeUnlocked(selectedTone)) {
       return {
         background: 'bg-gradient-to-br from-slate-50 to-white',
         accent: 'text-primary',
         effects: []
       };
     }
-    return TONE_THEMES[selectedTone].visualStyle;
+    return theme.visualStyle;
   };
 
   return {

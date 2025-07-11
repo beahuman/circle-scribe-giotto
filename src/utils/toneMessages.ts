@@ -118,6 +118,24 @@ export const TONE_MESSAGES = {
       good: "Not terrible. Your geometry teacher would be proud.",
       fair: "That's... a shape. Technically circular-ish.",
       poor: "You've insulted geometry itself. Impressive."
+    },
+    poetic: {
+      excellent: "A perfect sphere born from intention.",
+      good: "Beauty emerges from your flowing gesture.",
+      fair: "Your circle whispers of potential.",
+      poor: "Even rough stones can become smooth."
+    },
+    existential: {
+      excellent: "Perfect circles in an imperfect universe.",
+      good: "Meaning through precision in meaningless space.",
+      fair: "Attempting order amidst chaos.",
+      poor: "Another futile gesture toward perfection."
+    },
+    romantic: {
+      excellent: "A circle worthy of love letters!",
+      good: "Your touch dances gracefully across the screen.",
+      fair: "Like a first kiss - sweet, if imperfect.",
+      poor: "Even broken hearts can learn to love again."
     }
   },
 
@@ -142,6 +160,21 @@ export const TONE_MESSAGES = {
       "Back for more punishment, are we?",
       "Ready to disappoint your high school math teacher?",
       "Let's see what creative disasters await today."
+    ],
+    poetic: [
+      "Today, your finger writes poetry in circles.",
+      "Inscribe perfect arcs upon the digital canvas.",
+      "Let your soul speak through circular motion."
+    ],
+    existential: [
+      "Drawing circles to fill the void.",
+      "Why do we circle? Why do we exist?",
+      "Perfect curves in an imperfect reality."
+    ],
+    romantic: [
+      "Draw circles like love letters to yourself.",
+      "Your touch creates beauty worth admiring.",
+      "Each circle is a small act of self-care."
     ]
   },
 
@@ -166,6 +199,21 @@ export const TONE_MESSAGES = {
       start: "Congratulations, you did the bare minimum.",
       continue: "Look who's being all consistent. Show off.",
       milestone: "A whole week? Someone deserves a cookie."
+    },
+    poetic: {
+      start: "The first verse in your daily ritual begins.",
+      continue: "Your consistency writes beautiful verses.",
+      milestone: "A week of poetry in motion completed."
+    },
+    existential: {
+      start: "Day one of your meaningless but necessary routine.",
+      continue: "Persisting despite the absurdity of it all.",
+      milestone: "Seven days of defying the void through circles."
+    },
+    romantic: {
+      start: "Your love affair with circles begins.",
+      continue: "This daily romance grows stronger.",
+      milestone: "A week of devoted practice - true commitment!"
     }
   },
 
@@ -186,6 +234,18 @@ export const TONE_MESSAGES = {
     sarcastic: {
       unlock: "Well, well. Look who earned a participation trophy.",
       description: "A badge for doing what you're supposed to do. Revolutionary."
+    },
+    poetic: {
+      unlock: "A badge blooms like a flower in recognition.",
+      description: "Beauty acknowledges beauty."
+    },
+    existential: {
+      unlock: "Achievement unlocked in this meaningless game.",
+      description: "A digital trophy in an analog world."
+    },
+    romantic: {
+      unlock: "Your dedication has won you a token of affection!",
+      description: "A badge that proves your commitment to excellence."
     }
   },
 
@@ -195,7 +255,10 @@ export const TONE_MESSAGES = {
       meditative: "Sight fades. Focus sharpens.",
       playful: "You're drawing with your brain now! 🧠✨",
       formal: "Proprioception training module: Activated.",
-      sarcastic: "Don't blame us when this goes badly."
+      sarcastic: "Don't blame us when this goes badly.",
+      poetic: "Close your eyes and let intuition guide you.",
+      existential: "Drawing blind in a world already blind to meaning.",
+      romantic: "Trust your heart to guide your hand."
     }
   },
 
@@ -204,7 +267,10 @@ export const TONE_MESSAGES = {
     playful: ["Your control unlocks new expression!", "Time to paint the town... circular!", "New brush, new possibilities!"],
     meditative: ["Tools reflect the state of mind.", "Form follows focus.", "Expression through intention."],
     formal: ["Drawing parameters expanded. New visual output available.", "Brush functionality unlocked. Precision maintained.", "Visual customization options increased."],
-    sarcastic: ["Because apparently you needed more ways to mess up.", "Ooh, fancy new brush. Still won't fix your technique.", "New brush, same shaky hands."]
+    sarcastic: ["Because apparently you needed more ways to mess up.", "Ooh, fancy new brush. Still won't fix your technique.", "New brush, same shaky hands."],
+    poetic: ["A new instrument for your artistic symphony.", "Your brush collection grows like verses in a poem.", "Tools of beauty for creating beauty."],
+    existential: ["Another meaningless tool in the void.", "New brushes cannot paint meaning into existence.", "More options in this absurd digital sandbox."],
+    romantic: ["A new brush to express your creative passion!", "Every stroke will be infused with more love.", "Your artistic romance deepens with new tools."]
   }
 };
 
