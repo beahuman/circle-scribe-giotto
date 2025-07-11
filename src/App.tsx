@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import TonePackUnlockBanner from "@/components/TonePackUnlockBanner";
 import Launch from "./pages/Launch";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <TonePackUnlockBanner />
             <div className="min-h-screen overflow-y-auto pb-16 bg-white">
               <Routes>
                 <Route path="/launch" element={<Launch />} />

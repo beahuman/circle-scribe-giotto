@@ -15,7 +15,8 @@ const ToneMasterySection: React.FC = () => {
     getToneMasteryLevelForTone,
     isToneV2UnlockedForTone,
     toneLoyalty,
-    toneMastery
+    toneMastery,
+    tonePackExpansion
   } = useToneSystem();
 
   const AVAILABLE_TONES: ToneType[] = ['calm', 'playful', 'formal', 'sarcastic'];
@@ -119,7 +120,7 @@ const ToneMasterySection: React.FC = () => {
                       </Badge>
                       {hasV2 && (
                         <Badge variant="outline" className="text-xs">
-                          Vol 2 ✨
+                          Vol {tonePackExpansion.getTonePackLevel(tone)} ✨
                         </Badge>
                       )}
                     </div>
@@ -167,10 +168,10 @@ const ToneMasterySection: React.FC = () => {
           )}
 
           <div className="pt-2 border-t border-muted">
-            <div className="text-xs text-muted-foreground text-center">
-              Use different tones to unlock their full personality and Volume 2 content.
-              <br />
-              Stay loyal to one tone for 20+ draws to unlock advanced variants!
+            <div className="text-xs text-muted-foreground text-center space-y-1">
+              <div>Use different tones to unlock their full personality and Volume 2 content.</div>
+              <div>Volume 2 unlocks after 10 draws with max 2 tone switches!</div>
+              <div>Stay loyal to one tone for 20+ draws to unlock advanced variants!</div>
             </div>
           </div>
         </CardContent>

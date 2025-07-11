@@ -447,9 +447,16 @@ export const TONE_MESSAGES = {
   }
 };
 
-export function getScoreMessage(tone: ToneType, score: number, toneUsage: number = 0): string {
-  // Use Volume 2 if unlocked (15+ uses) and randomly interleave with Volume 1
-  const useV2 = toneUsage >= 15 && Math.random() < 0.7; // 70% chance for V2 when unlocked
+export function getScoreMessage(tone: ToneType, score: number, toneUsage: number = 0, forceVolume?: 'v1' | 'v2'): string {
+  // Determine which volume to use
+  let useV2 = false;
+  
+  if (forceVolume) {
+    useV2 = forceVolume === 'v2';
+  } else {
+    // Use Volume 2 if unlocked (15+ uses) and randomly interleave with Volume 1
+    useV2 = toneUsage >= 15 && Math.random() < 0.7; // 70% chance for V2 when unlocked
+  }
   const messageSet = useV2 ? TONE_MESSAGES.scoreMessagesV2 : TONE_MESSAGES.scoreMessages;
   
   const messages = messageSet[tone];
@@ -463,9 +470,16 @@ export function getScoreMessage(tone: ToneType, score: number, toneUsage: number
   return messages.poor;
 }
 
-export function getMotivationalPhrase(tone: ToneType, toneUsage: number = 0): string {
-  // Use Volume 2 if unlocked (15+ uses) and randomly interleave with Volume 1
-  const useV2 = toneUsage >= 15 && Math.random() < 0.6; // 60% chance for V2 when unlocked
+export function getMotivationalPhrase(tone: ToneType, toneUsage: number = 0, forceVolume?: 'v1' | 'v2'): string {
+  // Determine which volume to use
+  let useV2 = false;
+  
+  if (forceVolume) {
+    useV2 = forceVolume === 'v2';
+  } else {
+    // Use Volume 2 if unlocked (15+ uses) and randomly interleave with Volume 1
+    useV2 = toneUsage >= 15 && Math.random() < 0.6; // 60% chance for V2 when unlocked
+  }
   const phraseSet = useV2 ? TONE_MESSAGES.motivationalPhrasesV2 : TONE_MESSAGES.motivationalPhrases;
   
   const phrases = phraseSet[tone];

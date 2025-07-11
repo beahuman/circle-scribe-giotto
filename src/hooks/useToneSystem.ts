@@ -4,6 +4,7 @@ import { ToneType, TONE_THEMES, getMotivationalPhrase, getScoreMessage, getStrea
 import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 import { useToneLoyalty } from '@/hooks/useToneLoyalty';
 import { useToneMastery } from '@/hooks/useToneMastery';
+import { useTonePackExpansion } from '@/hooks/useTonePackExpansion';
 
 export const useToneSystem = () => {
   const [selectedTone, setSelectedTone] = useState<ToneType>(() => {
@@ -34,6 +35,7 @@ export const useToneSystem = () => {
   const { recordDrawing } = useAdaptiveFeedback();
   const toneLoyalty = useToneLoyalty();
   const toneMastery = useToneMastery();
+  const tonePackExpansion = useTonePackExpansion();
 
   // Save to localStorage whenever state changes
   useEffect(() => {
@@ -57,6 +59,9 @@ export const useToneSystem = () => {
       // Track for tone loyalty system
       const totalDraws = Object.values(newUsage).reduce((sum, count) => sum + count, 0);
       toneLoyalty.recordToneUsage(tone, totalDraws);
+      
+      // Track for tone pack expansion system
+      tonePackExpansion.trackToneUsage(tone, totalDraws);
       
       // Track for tone mastery system
       toneMastery.addLoyaltyPoint(tone);
@@ -118,11 +123,21 @@ export const useToneSystem = () => {
     if (mode) {
       recordDrawing(score, mode, selectedTone);
     }
-    return getScoreMessage(selectedTone, score, toneUsage[selectedTone]);
+    
+    // Use weighted rotation for Volume 2 content
+    const sessionCount = parseInt(localStorage.getItem('sessionCount') || '0');
+    const volumePreference = tonePackExpansion.getWeightedRotationPreference(selectedTone, sessionCount);
+    const forceVolume = volumePreference === 'mixed' ? undefined : volumePreference;
+    
+    return getScoreMessage(selectedTone, score, toneUsage[selectedTone], forceVolume);
   };
 
   const getMotivationalPhraseForTone = () => {
-    return getMotivationalPhrase(selectedTone, toneUsage[selectedTone]);
+    const sessionCount = parseInt(localStorage.getItem('sessionCount') || '0');
+    const volumePreference = tonePackExpansion.getWeightedRotationPreference(selectedTone, sessionCount);
+    const forceVolume = volumePreference === 'mixed' ? undefined : volumePreference;
+    
+    return getMotivationalPhrase(selectedTone, toneUsage[selectedTone], forceVolume);
   };
 
   const getToneMasteryLevelForTone = (tone: ToneType = selectedTone) => {
@@ -130,7 +145,8 @@ export const useToneSystem = () => {
   };
 
   const isToneV2UnlockedForTone = (tone: ToneType = selectedTone) => {
-    return isToneV2Unlocked(toneUsage[tone]);
+    // Check both old system (usage-based) and new system (pack expansion)
+    return isToneV2Unlocked(toneUsage[tone]) || tonePackExpansion.isVolume2Unlocked(tone);
   };
 
   const getPreviewMessage = (tone: ToneType) => {
@@ -185,5 +201,7 @@ export const useToneSystem = () => {
     toneLoyalty,
     // Tone mastery features
     toneMastery,
+    // Tone pack expansion features
+    tonePackExpansion,
   };
 };
