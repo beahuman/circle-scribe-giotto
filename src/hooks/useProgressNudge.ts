@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocalProgress } from './useLocalProgress';
 import { useBadgeManager } from './useBadgeManager';
+import { useToast } from '@/hooks/use-toast';
 import { ProgressNudgeState, MilestoneType } from '@/types/progressNudge';
 import { createProgressNudgeMessages } from '@/utils/progressNudgeMessages';
 import { hasCompletedDailyCalibration, getCurrentStreak, shouldShowProgressNudges } from '@/utils/progressNudgeUtils';
@@ -10,6 +11,7 @@ import { loadNudgeState, saveNudgeState, clearNudgeState, createDefaultNudgeStat
 export const useProgressNudge = () => {
   const { stats, gameResults } = useLocalProgress();
   const { awardReflectionBadge, unlockProgressPulse } = useBadgeManager();
+  const { toast } = useToast();
   
   const [nudgeState, setNudgeState] = useState<ProgressNudgeState>(loadNudgeState);
 
@@ -26,7 +28,7 @@ export const useProgressNudge = () => {
   const checkNudgeTriggers = () => {
     const totalGames = stats.totalGames;
     const currentStreak = getCurrentStreak(gameResults);
-    const { showFirstDailyToast, showFirstProgressNudgeToast, showStreakToast } = createProgressNudgeMessages();
+    const { showFirstDailyToast, showFirstProgressNudgeToast, showStreakToast } = createProgressNudgeMessages(toast);
     
     setNudgeState(prev => {
       let newState = { ...prev };

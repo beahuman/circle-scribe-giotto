@@ -1,8 +1,8 @@
-import { useToast } from '@/hooks/use-toast';
+interface ToastFunction {
+  (props: { title: string; description: string; duration: number }): void;
+}
 
-export const createProgressNudgeMessages = () => {
-  const { toast } = useToast();
-
+export const createProgressNudgeMessages = (toast: ToastFunction) => {
   const showFirstDailyToast = () => {
     toast({
       title: "Nice start! 🎯",
