@@ -98,7 +98,7 @@ const AccountDetails = ({ userId }: AccountDetailsProps) => {
           <Button 
             variant="outline" 
             onClick={() => navigate('/account/edit')}
-            className="w-full px-8 py-6 text-lg rounded-full border-primary/30 hover:bg-primary/5 flex items-center justify-center gap-2"
+            className="w-full px-8 py-6 text-lg rounded-md border-primary/30 hover:bg-primary/5 flex items-center justify-center gap-2"
           >
             <i className="ri-user-settings-line text-2xl text-primary animate-pulse" />
             Edit Profile

@@ -42,7 +42,7 @@ const SessionStatsView: React.FC<SessionStatsViewProps> = ({
         <p className="text-muted-foreground">Your performance this session</p>
       </div>
       
-      <div className="w-full max-w-md space-y-4 bg-background/50 p-6 rounded-xl shadow-sm border border-border/50">
+      <div className="w-full max-w-md space-y-4 bg-background/50 p-6 rounded-lg shadow-sm border border-border/50">
         <div className="flex justify-between">
           <span className="text-muted-foreground">Rounds Played</span>
           <span className="font-medium">{stats.roundsPlayed}</span>
@@ -72,7 +72,7 @@ const SessionStatsView: React.FC<SessionStatsViewProps> = ({
       <div className="flex flex-col gap-3 w-full max-w-xs">
         <Button
           onClick={onDrawAgain}
-          className="px-8 py-6 text-lg rounded-full bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+          className="px-8 py-6 text-lg rounded-md bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
         >
           Draw Another Circle
         </Button>
@@ -80,7 +80,7 @@ const SessionStatsView: React.FC<SessionStatsViewProps> = ({
         <Button
           onClick={onBack}
           variant="outline"
-          className="px-8 py-2 rounded-full flex items-center gap-2"
+          className="px-8 py-2 rounded-md flex items-center gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Results

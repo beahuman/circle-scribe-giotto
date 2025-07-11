@@ -116,11 +116,12 @@ export default {
 				info: 'hsl(var(--info))'
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)',
-				xl: 'calc(var(--radius) + 4px)',
-				'2xl': 'calc(var(--radius) + 8px)'
+				sm: 'var(--radius-sm)',      /* 4px - micro/utility */
+				md: 'var(--radius-md)',      /* 8px - default UI components */
+				lg: 'var(--radius-lg)',      /* 16px - modals, large cards */
+				xl: 'var(--radius-xl)',      /* 24px - hero elements */
+				'2xl': 'calc(var(--radius-xl) + 0.5rem)', /* 32px - special cases */
+				full: '9999px'               /* circular icons, avatars, toggles */
 			},
 			fontSize: {
 				'score': 'var(--text-score)',

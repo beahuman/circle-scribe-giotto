@@ -67,7 +67,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
       <motion.div className="flex flex-col gap-4 w-full max-w-xs" variants={fadeVariants}>
         <Button 
           onClick={onStart}
-          className="px-8 py-6 text-lg rounded-full animate-pulse-slow min-h-[56px]"
+          className="px-8 py-6 text-lg rounded-md animate-pulse-slow min-h-[56px]"
         >
           Begin
         </Button>
@@ -76,7 +76,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, showLeaderboard,
           <Button 
             onClick={showLeaderboard}
             variant="outline"
-            className="px-8 py-4 rounded-full min-h-[52px]"
+            className="px-8 py-4 rounded-md min-h-[52px]"
           >
             <Trophy className="mr-2 h-5 w-5" />
             Leaderboard

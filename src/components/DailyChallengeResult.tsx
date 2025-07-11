@@ -154,7 +154,7 @@ const DailyChallengeResult: React.FC<DailyChallengeResultProps> = ({
         <Button 
           onClick={onContinue}
           size="lg"
-          className="px-8 py-4 text-lg rounded-full"
+          className="px-8 py-4 text-lg rounded-md"
         >
           Return to Challenges
         </Button>
