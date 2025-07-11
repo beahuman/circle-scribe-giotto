@@ -1,0 +1,70 @@
+/* Component-Specific Styles */
+
+.game-card {
+  @apply bg-white rounded-lg shadow-md border border-primary/10 overflow-hidden;
+  background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9), rgba(240, 240, 255, 0.8));
+  backdrop-filter: blur(10px);
+}
+
+/* Component patterns */
+.logo-clickable {
+  @apply cursor-pointer transition-transform hover:scale-105 active:scale-95;
+}
+
+.card-elevated {
+  @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg rounded-lg;
+}
+
+/* Standardized radius utilities for consistent shape language */
+.radius-button {
+  @apply rounded-md;  /* Standard button radius */
+}
+
+.radius-card {
+  @apply rounded-lg;  /* Card and panel radius */
+}
+
+.radius-modal {
+  @apply rounded-lg;  /* Modal and overlay radius */
+}
+
+.radius-notification {
+  @apply rounded-lg;  /* Notification and toast radius */
+}
+
+.radius-input {
+  @apply rounded-md;  /* Form input radius */
+}
+
+.radius-badge {
+  @apply rounded-full;  /* Badge and pill radius */
+}
+
+.radius-avatar {
+  @apply rounded-full;  /* Avatar radius */
+}
+
+.radius-icon {
+  @apply rounded-full;  /* Icon container radius */
+}
+
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.shadow-elegant {
+  box-shadow: var(--shadow-elegant);
+}
+
+.transition-smooth {
+  transition: var(--transition-smooth);
+}
+
+/* Game-like button styles */
+.btn-game-primary {
+  @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground font-semibold py-3 px-6 rounded-md shadow-elegant transform transition-smooth hover:scale-105 active:scale-95;
+}
+
+.btn-game-secondary {
+  @apply bg-secondary text-secondary-foreground font-medium py-3 px-6 rounded-md shadow-md transform transition-smooth hover:scale-105 active:scale-95 border border-border;
+}

@@ -1,0 +1,10 @@
+/* Utility Classes */
+
+/* Spacing utilities */
+.space-y-grid > * + * {
+  margin-top: var(--space-6);
+}
+
+.space-y-tight > * + * {
+  margin-top: var(--space-4);
+}
