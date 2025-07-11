@@ -13,6 +13,7 @@ import ShareProgress from '@/components/progress/ShareProgress';
 import AnalyticsSection from '@/components/progress/AnalyticsSection';
 import VisualIdentitySection from '@/components/VisualIdentitySection';
 import BehaviorInsights from '@/components/progress/BehaviorInsights';
+import ToneMasterySection from '@/components/progress/ToneMasterySection';
 import LogoHeader from '@/components/common/LogoHeader';
 
 const Progress: React.FC = () => {
@@ -43,6 +44,7 @@ const Progress: React.FC = () => {
           
           <ProgressHeader />
           <BehaviorInsights />
+          <ToneMasterySection />
           <StreakOverview data-tour="streak-tracker" />
           <DailyTimeline />
           <BestPerformances data-tour="best-scores" />

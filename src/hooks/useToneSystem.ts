@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { ToneType, TONE_THEMES, getMotivationalPhrase, getScoreMessage, getStreakMessage, getBadgeUnlockMessage, getModeUnlockMessage } from '@/utils/toneMessages';
+import { ToneType, TONE_THEMES, getMotivationalPhrase, getScoreMessage, getStreakMessage, getBadgeUnlockMessage, getModeUnlockMessage, isToneV2Unlocked, getToneMasteryLevel } from '@/utils/toneMessages';
 import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 
 export const useToneSystem = () => {
@@ -59,6 +59,15 @@ export const useToneSystem = () => {
         });
       }
       
+      // Check if Volume 2 tone pack is unlocked
+      if (newUsage[tone] === 15) {
+        toast({
+          title: "🎭 Tone Pack Volume 2 Unlocked!",
+          description: `You've unlocked more of Giotto's ${tone} voice. Experience evolving personality!`,
+          duration: 5000,
+        });
+      }
+      
       return newUsage;
     });
   };
@@ -100,11 +109,24 @@ export const useToneSystem = () => {
     if (mode) {
       recordDrawing(score, mode, selectedTone);
     }
-    return getScoreMessage(selectedTone, score);
+    return getScoreMessage(selectedTone, score, toneUsage[selectedTone]);
   };
 
   const getMotivationalPhraseForTone = () => {
-    return getMotivationalPhrase(selectedTone);
+    return getMotivationalPhrase(selectedTone, toneUsage[selectedTone]);
+  };
+
+  const getToneMasteryLevelForTone = (tone: ToneType = selectedTone) => {
+    return getToneMasteryLevel(toneUsage[tone]);
+  };
+
+  const isToneV2UnlockedForTone = (tone: ToneType = selectedTone) => {
+    return isToneV2Unlocked(toneUsage[tone]);
+  };
+
+  const getPreviewMessage = (tone: ToneType) => {
+    const usage = toneUsage[tone];
+    return getScoreMessage(tone, 85, usage); // Sample score for preview
   };
 
   const getStreakMessageForTone = (streakLength: number) => {
@@ -147,5 +169,8 @@ export const useToneSystem = () => {
     getBadgeUnlockMessageForTone,
     getModeUnlockMessageForTone,
     getActiveThemeStyles,
+    getToneMasteryLevelForTone,
+    isToneV2UnlockedForTone,
+    getPreviewMessage,
   };
 };

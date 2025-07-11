@@ -93,7 +93,7 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
 };
 
 export const TONE_MESSAGES = {
-  // Score feedback messages
+  // Score feedback messages - Volume 1
   scoreMessages: {
     calm: {
       excellent: "You moved with awareness.",
@@ -139,7 +139,53 @@ export const TONE_MESSAGES = {
     }
   },
 
-  // Motivational phrases for home screen
+  // Score feedback messages - Volume 2 (unlocked after 15 uses)
+  scoreMessagesV2: {
+    calm: {
+      excellent: "Perfect stillness in motion achieved.",
+      good: "Your center is finding its voice.",
+      fair: "Patience teaches what haste cannot.",
+      poor: "The circle teaches through imperfection."
+    },
+    playful: {
+      excellent: "You're basically a circle wizard now! 🧙‍♂️",
+      good: "That was less wobbly! Color me impressed.",
+      fair: "Your finger's getting the hang of this dance!",
+      poor: "Hey, at least it's round-ish! Progress!"
+    },
+    formal: {
+      excellent: "This performance approaches acceptable symmetry.",
+      good: "Improvement has been noted and documented.",
+      fair: "Marginal advancement detected in motor precision.",
+      poor: "Current trajectory requires course correction."
+    },
+    sarcastic: {
+      excellent: "Wow, 97%. You must be... thrilled.",
+      good: "Another almost-circle. A masterpiece of mediocrity.",
+      fair: "That's definitely... something resembling round.",
+      poor: "I've seen better circles drawn by earthquakes."
+    },
+    poetic: {
+      excellent: "Your soul speaks fluent geometry today.",
+      good: "Grace flows through your fingertips like ink.",
+      fair: "Art emerges even from uncertain strokes.",
+      poor: "Beauty hides within the seemingly imperfect."
+    },
+    existential: {
+      excellent: "Perfection in a void of imperfection.",
+      good: "Finding meaning in circular repetition.",
+      fair: "We circle, therefore we are... something.",
+      poor: "Even failure circles back to meaning."
+    },
+    romantic: {
+      excellent: "A circle that would make poets weep with joy!",
+      good: "Your devotion to form is absolutely enchanting.",
+      fair: "Like vintage wine - imperfect but charming.",
+      poor: "Every love story has its rough chapters."
+    }
+  },
+
+  // Motivational phrases for home screen - Volume 1
   motivationalPhrases: {
     calm: [
       "One stroke. One breath. One circle.",
@@ -175,6 +221,45 @@ export const TONE_MESSAGES = {
       "Draw circles like love letters to yourself.",
       "Your touch creates beauty worth admiring.",
       "Each circle is a small act of self-care."
+    ]
+  },
+
+  // Motivational phrases for home screen - Volume 2
+  motivationalPhrasesV2: {
+    calm: [
+      "Breathe deeply. Your circle awaits your mindful touch.",
+      "Today, let tranquility guide your geometry.",
+      "Find your rhythm in the eternal curve."
+    ],
+    playful: [
+      "Time to show circles who's boss! 💪",
+      "Your finger is ready for some circular mischief!",
+      "Let's turn today into a shape celebration!"
+    ],
+    formal: [
+      "Commencing advanced motor pattern reinforcement.",
+      "Today's objective: Optimize circular trajectory output.",
+      "Prepare for enhanced geometric precision training."
+    ],
+    sarcastic: [
+      "Another day, another chance to mess up basic shapes.",
+      "Hope you're ready to be humbled by geometry again.",
+      "Time to see if yesterday taught you anything."
+    ],
+    poetic: [
+      "Your canvas awaits the dance of perfect arcs.",
+      "Let circles be the verses of your digital poetry.",
+      "Today, geometry becomes your muse."
+    ],
+    existential: [
+      "Circle to escape the endless linear nature of time.",
+      "Round and round we go, but why?",
+      "Creating meaning through repetitive perfection."
+    ],
+    romantic: [
+      "Your circles deserve all the love in the world today.",
+      "Touch the screen with the tenderness of a lover.",
+      "Make every stroke a promise of beautiful imperfection."
     ]
   },
 
@@ -274,8 +359,12 @@ export const TONE_MESSAGES = {
   }
 };
 
-export function getScoreMessage(tone: ToneType, score: number): string {
-  const messages = TONE_MESSAGES.scoreMessages[tone];
+export function getScoreMessage(tone: ToneType, score: number, toneUsage: number = 0): string {
+  // Use Volume 2 if unlocked (15+ uses) and randomly interleave with Volume 1
+  const useV2 = toneUsage >= 15 && Math.random() < 0.7; // 70% chance for V2 when unlocked
+  const messageSet = useV2 ? TONE_MESSAGES.scoreMessagesV2 : TONE_MESSAGES.scoreMessages;
+  
+  const messages = messageSet[tone];
   if (!messages) {
     // Fallback to playful if tone not found
     return TONE_MESSAGES.scoreMessages.playful.fair;
@@ -286,8 +375,12 @@ export function getScoreMessage(tone: ToneType, score: number): string {
   return messages.poor;
 }
 
-export function getMotivationalPhrase(tone: ToneType): string {
-  const phrases = TONE_MESSAGES.motivationalPhrases[tone];
+export function getMotivationalPhrase(tone: ToneType, toneUsage: number = 0): string {
+  // Use Volume 2 if unlocked (15+ uses) and randomly interleave with Volume 1
+  const useV2 = toneUsage >= 15 && Math.random() < 0.6; // 60% chance for V2 when unlocked
+  const phraseSet = useV2 ? TONE_MESSAGES.motivationalPhrasesV2 : TONE_MESSAGES.motivationalPhrases;
+  
+  const phrases = phraseSet[tone];
   if (!phrases || phrases.length === 0) {
     // Fallback to playful if tone not found
     return TONE_MESSAGES.motivationalPhrases.playful[0];
@@ -313,6 +406,18 @@ export function getBadgeUnlockMessage(tone: ToneType): string {
     return TONE_MESSAGES.badgeMessages.playful.unlock;
   }
   return messages.unlock;
+}
+
+// Helper function to check if Volume 2 is unlocked for a tone
+export function isToneV2Unlocked(toneUsage: number): boolean {
+  return toneUsage >= 15;
+}
+
+// Helper function to get tone mastery level
+export function getToneMasteryLevel(toneUsage: number): number {
+  if (toneUsage >= 15) return 2;
+  if (toneUsage >= 5) return 1;
+  return 0;
 }
 
 export function getModeUnlockMessage(tone: ToneType, mode: keyof typeof TONE_MESSAGES.modeUnlocks): string {
