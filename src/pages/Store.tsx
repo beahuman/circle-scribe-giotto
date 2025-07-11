@@ -9,6 +9,7 @@ import { useStoreItems } from "@/hooks/useStoreItems";
 import { MonetizedStoreItem } from "@/components/store/MonetizedStoreItem";
 import { SupporterTierCard } from "@/components/store/SupporterTierCard";
 import { StoreHeader } from "@/components/store/StoreHeader";
+import LogoHeader from "@/components/common/LogoHeader";
 
 const Store: React.FC = () => {
   const [activeTab, setActiveTab] = useState("background");
@@ -81,7 +82,12 @@ const Store: React.FC = () => {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto p-4 pb-20">
+    <div className="container max-w-4xl mx-auto p-4 pb-20 space-y-grid">
+      {/* Logo Header */}
+      <div className="flex justify-center mb-8">
+        <LogoHeader size="medium" />
+      </div>
+      
       <StoreHeader
         level={level}
         xp={xp}

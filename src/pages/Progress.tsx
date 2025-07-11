@@ -13,6 +13,7 @@ import ShareProgress from '@/components/progress/ShareProgress';
 import AnalyticsSection from '@/components/progress/AnalyticsSection';
 import VisualIdentitySection from '@/components/VisualIdentitySection';
 import BehaviorInsights from '@/components/progress/BehaviorInsights';
+import LogoHeader from '@/components/common/LogoHeader';
 
 const Progress: React.FC = () => {
   const { settings } = useSettings();
@@ -34,7 +35,12 @@ const Progress: React.FC = () => {
       />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white pb-20">
-        <div className="max-w-md mx-auto p-6 space-y-6">
+        <div className="max-w-md mx-auto p-6 space-y-grid">
+          {/* Logo Header */}
+          <div className="flex justify-center mb-8">
+            <LogoHeader size="medium" />
+          </div>
+          
           <ProgressHeader />
           <BehaviorInsights />
           <StreakOverview data-tour="streak-tracker" />

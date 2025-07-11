@@ -24,6 +24,7 @@ import { useSettings } from '@/hooks/useSettings';
 import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
 import { useToast } from '@/hooks/use-toast';
 import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
+import LogoHeader from '@/components/common/LogoHeader';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -78,13 +79,19 @@ const Settings = () => {
       animate="animate"
       variants={staggerContainer}
     >
-      <motion.div className="flex items-center mb-6" variants={fadeVariants}>
-        <Button variant="ghost" onClick={() => navigate('/')} size="icon" className="mr-2">
+      <motion.div className="flex items-center justify-between mb-8" variants={fadeVariants}>
+        <Button variant="ghost" onClick={() => navigate('/')} size="icon">
           <ArrowLeft className="h-6 w-6 text-primary" />
         </Button>
-        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+        <LogoHeader size="small" clickable={false} />
+        <div className="w-10" />
+      </motion.div>
+      
+      <motion.div className="text-center mb-8" variants={fadeVariants}>
+        <h1 className="text-header bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
           Game Settings
         </h1>
+        <p className="text-caption mt-2">Customize your experience</p>
       </motion.div>
 
       <div className="max-w-md mx-auto space-y-6">

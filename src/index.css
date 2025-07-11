@@ -15,6 +15,7 @@
 
     --primary: 250 60% 60%;
     --primary-foreground: 250 10% 98%;
+    --primary-glow: 250 70% 70%;
 
     --secondary: 250 20% 94%;
     --secondary-foreground: 250 10% 25%;
@@ -32,7 +33,41 @@
     --input: 250 20% 90%;
     --ring: 250 60% 60%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
+    
+    /* Typography scale */
+    --text-score: 4rem;
+    --text-header: 2rem;
+    --text-subheader: 1.5rem;
+    --text-body: 1rem;
+    --text-body-lg: 1.125rem;
+    --text-small: 0.875rem;
+    --text-caption: 0.75rem;
+    
+    /* Spacing scale (4pt/8pt grid) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    
+    /* Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
@@ -47,6 +82,7 @@
 
     --primary: 250 60% 60%;
     --primary-foreground: 250 10% 98%;
+    --primary-glow: 250 70% 70%;
 
     --secondary: 250 10% 15%;
     --secondary-foreground: 250 10% 90%;
@@ -156,13 +192,75 @@
   backdrop-filter: blur(10px);
 }
 
+/* Typography utilities */
+.text-score {
+  font-size: var(--text-score);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.text-header {
+  font-size: var(--text-header);
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.text-subheader {
+  font-size: var(--text-subheader);
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+}
+
+.text-caption {
+  font-size: var(--text-caption);
+  line-height: 1.4;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Spacing utilities */
+.space-y-grid > * + * {
+  margin-top: var(--space-6);
+}
+
+.space-y-tight > * + * {
+  margin-top: var(--space-4);
+}
+
+/* Component patterns */
+.logo-clickable {
+  @apply cursor-pointer transition-transform hover:scale-105 active:scale-95;
+}
+
+.card-elevated {
+  @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg;
+  border-radius: var(--radius);
+}
+
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.shadow-elegant {
+  box-shadow: var(--shadow-elegant);
+}
+
+.transition-smooth {
+  transition: var(--transition-smooth);
+}
+
 /* Game-like button styles */
 .btn-game-primary {
-  @apply bg-gradient-to-r from-primary to-purple-400 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95;
+  @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground font-semibold py-3 px-6 rounded-xl shadow-elegant transform transition-smooth hover:scale-105 active:scale-95;
 }
 
 .btn-game-secondary {
-  @apply bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 font-bold py-3 px-6 rounded-full shadow-md transform transition-all hover:scale-105 active:scale-95 border border-gray-300;
+  @apply bg-secondary text-secondary-foreground font-medium py-3 px-6 rounded-xl shadow-md transform transition-smooth hover:scale-105 active:scale-95 border border-border;
 }
 
 /* Import SF Pro Rounded font */

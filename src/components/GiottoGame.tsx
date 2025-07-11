@@ -21,6 +21,7 @@ import { useGameHandlers as useEnhancedGameHandlers } from '@/hooks/useGameHandl
 import GameCanvas from './game/GameCanvas';
 import { useFirstDrawTutorial } from '@/hooks/useFirstDrawTutorial';
 import FirstDrawTutorial from './tutorial/FirstDrawTutorial';
+import LogoHeader from './common/LogoHeader';
 
 const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Game state management
@@ -199,6 +200,11 @@ const GiottoGame: React.FC<GameProps> = ({ onReturnToHome, onRemoveAds }) => {
   // Render the current game state
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
+      {/* Logo Header - Top Left */}
+      <div className="absolute top-4 left-4 z-10">
+        <LogoHeader position="left" size="small" />
+      </div>
+      
       <AnimatePresence mode="wait">
         {gameState === 'showing' && (
           <motion.div

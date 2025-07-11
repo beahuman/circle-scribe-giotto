@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BadgeGallery from '@/components/achievements/BadgeGallery';
 import { useNavigate } from 'react-router-dom';
+import LogoHeader from '@/components/common/LogoHeader';
 
 const Achievements = () => {
   const navigate = useNavigate();
@@ -12,21 +13,24 @@ const Achievements = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Button 
             variant="ghost" 
             size="icon"
             onClick={() => navigate(-1)}
-            className="shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold">Achievements</h1>
-            <p className="text-sm text-muted-foreground">
-              Track your progress and unlock badges
-            </p>
-          </div>
+          <LogoHeader size="small" clickable={false} />
+          <div className="w-10" />
+        </div>
+        <div className="text-center pb-4">
+          <h1 className="text-header bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+            Achievements
+          </h1>
+          <p className="text-caption mt-2">
+            Track your progress and unlock badges
+          </p>
         </div>
       </div>
 

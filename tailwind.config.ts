@@ -69,7 +69,30 @@ export default {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				xl: 'calc(var(--radius) + 4px)',
+				'2xl': 'calc(var(--radius) + 8px)'
+			},
+			fontSize: {
+				'score': 'var(--text-score)',
+				'header': 'var(--text-header)',
+				'subheader': 'var(--text-subheader)',
+				'body-lg': 'var(--text-body-lg)',
+				'caption': 'var(--text-caption)'
+			},
+			spacing: {
+				'1': 'var(--space-1)',
+				'2': 'var(--space-2)',
+				'3': 'var(--space-3)',
+				'4': 'var(--space-4)',
+				'5': 'var(--space-5)',
+				'6': 'var(--space-6)',
+				'8': 'var(--space-8)',
+				'10': 'var(--space-10)',
+				'12': 'var(--space-12)',
+				'16': 'var(--space-16)',
+				'20': 'var(--space-20)',
+				'24': 'var(--space-24)'
 			},
 			keyframes: {
 				'accordion-down': {

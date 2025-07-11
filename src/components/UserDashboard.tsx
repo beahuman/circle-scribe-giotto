@@ -10,6 +10,7 @@ import ProgressGraph from './ProgressGraph';
 import SubMetricCharts from './dashboard/SubMetricCharts';
 import StreakCalendar from './dashboard/StreakCalendar';
 import ProgressComparison from './dashboard/ProgressComparison';
+import LogoHeader from './common/LogoHeader';
 
 interface UserDashboardProps {
   onBack: () => void;
@@ -34,7 +35,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 p-4 pb-20">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-grid">
         {/* Header */}
         <div className="flex items-center justify-between">
           <Button 
@@ -45,11 +46,13 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onBack }) => {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-            Your Progress Dashboard
-          </h1>
+          <LogoHeader size="small" clickable={false} />
           <div className="w-20" />
         </div>
+        
+        <h1 className="text-header text-center bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+          Your Progress Dashboard
+        </h1>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

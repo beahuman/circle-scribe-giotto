@@ -21,6 +21,7 @@ import { useLocalProgress } from '@/hooks/useLocalProgress';
 import DailyChallengeResult from './DailyChallengeResult';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import GamifiedResultScreen from './results/GamifiedResultScreen';
+import LogoHeader from './common/LogoHeader';
 
 interface ResultScreenProps {
   accuracy: number;
