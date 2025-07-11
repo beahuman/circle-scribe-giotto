@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Brain } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import BottomNav from '@/components/BottomNav';
 import DifficultySettings from '@/components/settings/DifficultySettings';
 import DrawingSettings from '@/components/settings/DrawingSettings';
@@ -21,6 +22,7 @@ import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSett
 import { useSettings } from '@/hooks/useSettings';
 import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
 import { useToast } from '@/hooks/use-toast';
+import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -42,6 +44,7 @@ const Settings = () => {
   const navigate = useNavigate();
   const { showAllModes, toggleShowAllModes } = useModeUnlockSystem();
   const { toast } = useToast();
+  const { adaptiveSettings, setAdaptiveSettings, resetAdaptiveFeedback } = useAdaptiveFeedback();
   const {
     notifications,
     darkMode,
@@ -170,6 +173,82 @@ const Settings = () => {
 
         <motion.div variants={fadeVariants}>
           <ToneSettings />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        {/* Adaptive Feedback Settings */}
+        <motion.div variants={fadeVariants}>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5" />
+                Adaptive Feedback
+              </CardTitle>
+              <CardDescription>
+                Personalize feedback based on your playing patterns
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Enable Adaptive Feedback</label>
+                  <p className="text-xs text-muted-foreground">
+                    Adjust messages based on your progress and behavior
+                  </p>
+                </div>
+                <Switch
+                  checked={adaptiveSettings.enabled}
+                  onCheckedChange={(checked) => 
+                    setAdaptiveSettings(prev => ({ ...prev, enabled: checked }))
+                  }
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Deep Tone Variants</label>
+                  <p className="text-xs text-muted-foreground">
+                    Unlock richer phrases after using a tone consistently
+                  </p>
+                </div>
+                <Switch
+                  checked={adaptiveSettings.deepVariantsEnabled}
+                  onCheckedChange={(checked) => 
+                    setAdaptiveSettings(prev => ({ ...prev, deepVariantsEnabled: checked }))
+                  }
+                  disabled={!adaptiveSettings.enabled}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Behavior Insights</label>
+                  <p className="text-xs text-muted-foreground">
+                    Show personalized insights on your progress page
+                  </p>
+                </div>
+                <Switch
+                  checked={adaptiveSettings.behaviorInsightsEnabled}
+                  onCheckedChange={(checked) => 
+                    setAdaptiveSettings(prev => ({ ...prev, behaviorInsightsEnabled: checked }))
+                  }
+                  disabled={!adaptiveSettings.enabled}
+                />
+              </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={resetAdaptiveFeedback}
+                className="w-full"
+              >
+                Reset Adaptive Feedback Memory
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
 
         <motion.div variants={fadeVariants}>

@@ -4,23 +4,29 @@ import { TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useSettings } from '@/hooks/useSettings';
 import { usePlayerProgress } from '@/hooks/usePlayerProgress';
+import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 
 const ProgressHeader: React.FC = () => {
   const { settings } = useSettings();
   const { level, xpInCurrentLevel, xpForNextLevel } = usePlayerProgress();
+  const { getAdaptiveMessage, adaptiveSettings } = useAdaptiveFeedback();
 
   const getWelcomeMessage = () => {
     const tone = settings.feedbackTone || 'meditative';
-    switch (tone) {
-      case 'playful':
-        return "You're getting dangerously round.";
-      case 'formal':
-        return "Neuro-performance summary";
-      case 'sarcastic':
-        return "Wow. You again.";
-      default:
-        return "Precision is earned with patience.";
-    }
+    const baseMessage = (() => {
+      switch (tone) {
+        case 'playful':
+          return "You're getting dangerously round.";
+        case 'formal':
+          return "Neuro-performance summary";
+        case 'sarcastic':
+          return "Wow. You again.";
+        default:
+          return "Precision is earned with patience.";
+      }
+    })();
+    
+    return adaptiveSettings.enabled ? getAdaptiveMessage(baseMessage, 'motivation') : baseMessage;
   };
 
   return (

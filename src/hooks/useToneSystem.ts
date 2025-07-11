@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { ToneType, TONE_THEMES, getMotivationalPhrase, getScoreMessage, getStreakMessage, getBadgeUnlockMessage, getModeUnlockMessage } from '@/utils/toneMessages';
+import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 
 export const useToneSystem = () => {
   const [selectedTone, setSelectedTone] = useState<ToneType>(() => {
@@ -26,6 +27,7 @@ export const useToneSystem = () => {
   });
 
   const { toast } = useToast();
+  const { recordDrawing } = useAdaptiveFeedback();
 
   // Save to localStorage whenever state changes
   useEffect(() => {
@@ -86,8 +88,11 @@ export const useToneSystem = () => {
   };
 
   // Message getters that automatically use current tone
-  const getScoreMessageForTone = (score: number) => {
+  const getScoreMessageForTone = (score: number, mode?: string) => {
     incrementToneUsage(); // Track usage when getting feedback
+    if (mode) {
+      recordDrawing(score, mode, selectedTone);
+    }
     return getScoreMessage(selectedTone, score);
   };
 
