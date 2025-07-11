@@ -11,6 +11,7 @@ import DifficultySettings from '@/components/settings/DifficultySettings';
 import DrawingSettings from '@/components/settings/DrawingSettings';
 import DisplaySettings from '@/components/settings/DisplaySettings';
 import NotificationSettings from '@/components/settings/NotificationSettings';
+import DailyReturnSettings from '@/components/settings/DailyReturnSettings';
 import AppearanceSettings from '@/components/settings/AppearanceSettings';
 import GhostCircleSettings from '@/components/settings/GhostCircleSettings';
 import PenaltyModeSettings from '@/components/settings/PenaltyModeSettings';
@@ -154,10 +155,18 @@ const Settings = () => {
         </motion.div>
 
         <motion.div variants={fadeVariants}>
-          <NotificationSettings 
-            notifications={notifications}
-            onNotificationsChange={handleNotificationToggle}
-          />
+               <NotificationSettings
+                 notifications={notifications}
+                 onNotificationsChange={handleNotificationToggle}
+               />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <DailyReturnSettings />
         </motion.div>
 
         <motion.div variants={fadeVariants}>

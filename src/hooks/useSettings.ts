@@ -37,6 +37,30 @@ export const useSettings = () => {
     return saved !== null ? saved === 'true' : true; // Default to true
   });
   
+  const [dailyNotifications, setDailyNotifications] = useState(() => {
+    const saved = localStorage.getItem('dailyNotifications');
+    return saved !== null ? saved === 'true' : false; // Default to false
+  });
+  
+  const [streakMilestoneNotifications, setStreakMilestoneNotifications] = useState(() => {
+    const saved = localStorage.getItem('streakMilestoneNotifications');
+    return saved !== null ? saved === 'true' : false; // Default to false
+  });
+  
+  const [dailyRewards, setDailyRewards] = useState(() => {
+    const saved = localStorage.getItem('dailyRewards');
+    return saved !== null ? saved === 'true' : true; // Default to true
+  });
+  
+  const [habitCues, setHabitCues] = useState(() => {
+    const saved = localStorage.getItem('habitCues');
+    return saved !== null ? saved === 'true' : true; // Default to true
+  });
+  
+  const [reminderTime, setReminderTime] = useState(() => {
+    return localStorage.getItem('reminderTime') || 'evening';
+  });
+  
   const { toast } = useToast();
 
   const handleNotificationToggle = (checked: boolean) => {
@@ -148,6 +172,51 @@ export const useSettings = () => {
     });
   };
 
+  const handleDailyNotificationsToggle = (checked: boolean) => {
+    setDailyNotifications(checked);
+    localStorage.setItem('dailyNotifications', String(checked));
+    toast({
+      title: "Daily Notifications",
+      description: checked ? "Daily draw reminders enabled" : "Daily draw reminders disabled"
+    });
+  };
+
+  const handleStreakMilestoneNotificationsToggle = (checked: boolean) => {
+    setStreakMilestoneNotifications(checked);
+    localStorage.setItem('streakMilestoneNotifications', String(checked));
+    toast({
+      title: "Streak Milestone Notifications",
+      description: checked ? "Streak milestone notifications enabled" : "Streak milestone notifications disabled"
+    });
+  };
+
+  const handleDailyRewardsToggle = (checked: boolean) => {
+    setDailyRewards(checked);
+    localStorage.setItem('dailyRewards', String(checked));
+    toast({
+      title: "Daily Rewards",
+      description: checked ? "Daily completion rewards enabled" : "Daily completion rewards disabled"
+    });
+  };
+
+  const handleHabitCuesToggle = (checked: boolean) => {
+    setHabitCues(checked);
+    localStorage.setItem('habitCues', String(checked));
+    toast({
+      title: "Habit Cues",
+      description: checked ? "Gentle daily reminders enabled" : "Gentle daily reminders disabled"
+    });
+  };
+
+  const handleReminderTimeChange = (time: string) => {
+    setReminderTime(time);
+    localStorage.setItem('reminderTime', time);
+    toast({
+      title: "Reminder Time",
+      description: `Daily reminder time set to ${time}`
+    });
+  };
+
   const settings = {
     feedbackTone: (localStorage.getItem('feedbackTone') as 'playful' | 'calm' | 'formal' | 'sarcastic') || 'playful',
     showSubmetrics,
@@ -157,7 +226,12 @@ export const useSettings = () => {
     showGhostCircle,
     mirrorOffsetEnabled,
     adaptiveScoreScreen,
-    ghostTrailOverlay
+    ghostTrailOverlay,
+    dailyNotifications,
+    streakMilestoneNotifications,
+    dailyRewards,
+    habitCues,
+    reminderTime
   };
 
   return {
@@ -172,6 +246,11 @@ export const useSettings = () => {
     mirrorOffsetEnabled,
     adaptiveScoreScreen,
     ghostTrailOverlay,
+    dailyNotifications,
+    streakMilestoneNotifications,
+    dailyRewards,
+    habitCues,
+    reminderTime,
     settings,
     updateSettings,
     handleNotificationToggle,
@@ -185,5 +264,10 @@ export const useSettings = () => {
     handleMirrorOffsetToggle,
     handleAdaptiveScoreScreenToggle,
     handleGhostTrailOverlayToggle,
+    handleDailyNotificationsToggle,
+    handleStreakMilestoneNotificationsToggle,
+    handleDailyRewardsToggle,
+    handleHabitCuesToggle,
+    handleReminderTimeChange,
   };
 };

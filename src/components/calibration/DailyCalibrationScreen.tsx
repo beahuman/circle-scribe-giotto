@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 import CalibrationStreakDisplay from './CalibrationStreakDisplay';
+import DailyCompletionAnimation from './DailyCompletionAnimation';
 import CalibrationTrendGraph from './CalibrationTrendGraph';
 import CalibrationMedal from './CalibrationMedal';
 import CalibrationFeedbackToneSelector from './CalibrationFeedbackToneSelector';
@@ -27,6 +28,19 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
   } = useDailyCalibration();
   
   const [showToneSelector, setShowToneSelector] = useState(false);
+  const [lastScore, setLastScore] = React.useState<number | null>(null);
+
+  const handleStart = () => {
+    setLastScore(null); // Reset animation trigger
+    onStartCalibration();
+  };
+  
+  // Check if calibration was just completed
+  React.useEffect(() => {
+    if (todaysCompletion && lastScore === null) {
+      setLastScore(todaysCompletion.accuracy);
+    }
+  }, [todaysCompletion, lastScore]);
 
   if (isLoading) {
     return (
@@ -131,7 +145,7 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
         >
           {canCalibrate && !todaysCompletion && (
             <Button
-              onClick={onStartCalibration}
+              onClick={handleStart}
               className="w-full py-4 text-lg font-light bg-gradient-to-r from-primary to-purple-400 hover:opacity-90 transition-opacity rounded-xl shadow-lg shadow-primary/20"
             >
               Begin Today's Calibration
@@ -176,6 +190,14 @@ const DailyCalibrationScreen: React.FC<DailyCalibrationScreenProps> = ({
         isOpen={showToneSelector}
         onClose={() => setShowToneSelector(false)}
       />
+      
+      {/* Daily Completion Animation */}
+      {lastScore !== null && (
+        <DailyCompletionAnimation 
+          score={lastScore}
+          onComplete={() => setLastScore(null)}
+        />
+      )}
     </div>
   );
 };

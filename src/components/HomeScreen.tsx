@@ -11,6 +11,7 @@ import PracticeModesMenu from './home/PracticeModesMenu';
 import HomeNavigationMenu from './home/HomeNavigationMenu';
 import HomeFooter from './home/HomeFooter';
 import AdRewardCenter from './ads/AdRewardCenter';
+import DailyStreakReminder from './home/DailyStreakReminder';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useSettings } from '@/hooks/useSettings';
 import { useToneSystem } from '@/hooks/useToneSystem';
@@ -202,6 +203,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
             >
               {getMotivationalPhraseForTone()}
             </motion.p>
+          </motion.div>
+
+          {/* Daily Streak Reminder */}
+          <motion.div 
+            variants={fadeVariants}
+            transition={{ delay: 0.2 }}
+          >
+            <DailyStreakReminder />
           </motion.div>
 
           {/* New User Guidance Banner */}
