@@ -4,21 +4,20 @@ import WelcomeScreen from './WelcomeScreen';
 import DailyChallengeScreen from './DailyChallengeScreen';
 import DailyCalibrationScreen from './calibration/DailyCalibrationScreen';
 import OnboardingSequence from './OnboardingSequence';
-import ProgressDashboard from './ProgressDashboard';
-import HomeHeader from './home/HomeHeader';
-import HomeActionButtons from './home/HomeActionButtons';
+import HomeHeaderSection from './home/HomeHeaderSection';
+import NewUserGuidance from './home/NewUserGuidance';
+import DailyCalibrationCard from './home/DailyCalibrationCard';
+import ProgressPreviewWidget from './home/ProgressPreviewWidget';
+import NeuroscienceFactsFooter from './home/NeuroscienceFactsFooter';
 import PracticeModesMenu from './home/PracticeModesMenu';
 import HomeNavigationMenu from './home/HomeNavigationMenu';
-import HomeFooter from './home/HomeFooter';
 import AdRewardCenter from './ads/AdRewardCenter';
 import DailyStreakReminder from './home/DailyStreakReminder';
 import { useSubscription } from '@/hooks/useSubscription';
-import { useSettings } from '@/hooks/useSettings';
-import { useToneSystem } from '@/hooks/useToneSystem';
 import { useDailyCalibration } from '@/hooks/useDailyCalibration';
 import { useLocalProgress } from '@/hooks/useLocalProgress';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
+import { useToneSystem } from '@/hooks/useToneSystem';
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -43,16 +42,13 @@ const staggerContainer = {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGuestMode, onRemoveAds }) => {
   const { isPremium } = useSubscription();
-  const { settings } = useSettings();
   const { streak, todaysCompletion } = useDailyCalibration();
-  const { getMotivationalPhraseForTone, getActiveThemeStyles } = useToneSystem();
+  const { getActiveThemeStyles } = useToneSystem();
   const { stats } = useLocalProgress();
   const { hasCompletedOnboarding } = useOnboarding();
-  const { getProgressNudge } = useModeUnlockSystem();
   const [showWelcome, setShowWelcome] = useState(true);
   const [showDailyCalibration, setShowDailyCalibration] = useState(false);
   const [showDailyChallenge, setShowDailyChallenge] = useState(false);
-  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
   const themeStyles = getActiveThemeStyles();
 
@@ -186,24 +182,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
       >
         <div className="max-w-md mx-auto px-6 py-8 space-y-8">
           {/* Header Area with Logo and Dynamic Phrase */}
-          <motion.div 
-            className="text-center space-y-4"
-            variants={fadeVariants}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="w-[200px] mx-auto">
-              <HomeHeader />
-            </div>
-            <motion.p 
-              className={`font-light text-lg italic leading-relaxed ${themeStyles.accent}`}
-              key={getMotivationalPhraseForTone()} // Re-animate when phrase changes
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {getMotivationalPhraseForTone()}
-            </motion.p>
-          </motion.div>
+          <HomeHeaderSection />
 
           {/* Daily Streak Reminder */}
           <motion.div 
@@ -214,17 +193,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
           </motion.div>
 
           {/* New User Guidance Banner */}
-          {isNewUser && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-center"
-            >
-              <p className="text-sm text-primary font-medium">
-                Start with Daily Calibration to begin your motor mastery journey.
-              </p>
-            </motion.div>
-          )}
+          <NewUserGuidance isNewUser={isNewUser} />
 
           {/* Primary Mode CTAs */}
           <motion.div 
@@ -245,64 +214,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
             </motion.div>
 
             {/* Daily Calibration Card */}
-            <motion.div variants={fadeVariants}>
-              <button
-                onClick={handleStartDailyCalibration}
-                className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 text-left shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200 transform hover:scale-[1.02]"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-semibold text-blue-800">Daily Calibration</h3>
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  </div>
-                </div>
-                <p className="text-sm text-blue-700 mb-2">One shot. Once a day.</p>
-                {streak.current > 0 && (
-                  <div className="flex items-center gap-2">
-                    <div className="px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
-                      Day {streak.current} streak 🔥
-                    </div>
-                  </div>
-                )}
-                {todaysCompletion && (
-                  <p className="text-xs text-blue-600 mt-1">
-                    Today: {Math.round(todaysCompletion.accuracy)}% ✓
-                  </p>
-                )}
-              </button>
-            </motion.div>
+            <DailyCalibrationCard
+              onStartCalibration={handleStartDailyCalibration}
+              streak={streak}
+              todaysCompletion={todaysCompletion}
+            />
           </motion.div>
 
           {/* Progress Preview Widget */}
-          <motion.div 
-            variants={fadeVariants}
-            transition={{ delay: 0.3 }}
-          >
-            <button
-              onClick={() => window.location.href = '/progress'}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-left hover:bg-slate-100 transition-colors duration-200"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-medium text-slate-700">Your Progress</h4>
-                <div className="text-slate-400">→</div>
-              </div>
-              <div className="flex items-center gap-4 text-xs text-slate-600">
-                {todaysCompletion && (
-                  <div className="flex items-center gap-1">
-                    <span>Yesterday:</span>
-                    <span className="text-lg">
-                      {todaysCompletion.accuracy >= 90 ? '🥇' : 
-                       todaysCompletion.accuracy >= 80 ? '🥈' : 
-                       todaysCompletion.accuracy >= 70 ? '🥉' : '⚪'}
-                    </span>
-                  </div>
-                )}
-                {getProgressNudge() && (
-                  <div className="text-green-600">{getProgressNudge()}</div>
-                )}
-              </div>
-            </button>
-          </motion.div>
+          <ProgressPreviewWidget todaysCompletion={todaysCompletion} />
 
           {/* Ad Reward Center for non-premium users */}
           {!isPremium && (
@@ -321,15 +241,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, showLeaderboard, isGue
           </motion.div>
 
           {/* Rotating Neuroscience Facts */}
-          <motion.div 
-            className="text-center pt-2"
-            variants={fadeVariants}
-            transition={{ delay: 0.6 }}
-          >
-            <p className="text-xs text-slate-400 italic">
-              Fact: Your cerebellum gets smarter with every circle
-            </p>
-          </motion.div>
+          <NeuroscienceFactsFooter />
 
         </div>
       </motion.div>
