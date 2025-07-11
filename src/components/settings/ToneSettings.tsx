@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { ToneType, TONE_THEMES } from '@/utils/toneMessages';
 import { useToneSystem } from '@/hooks/useToneSystem';
 import TonePreview from './TonePreview';
-import ToneColorPreview from './ToneColorPreview';
 
 const AVAILABLE_TONES: ToneType[] = ['calm', 'playful', 'formal', 'sarcastic'];
 const COMING_SOON_TONES: ToneType[] = ['existential'];
@@ -55,14 +54,12 @@ const ToneSettings: React.FC = () => {
           {/* Available Tones */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {AVAILABLE_TONES.map((tone) => (
-              <div key={tone}>
-                <TonePreview
-                  tone={tone}
-                  isSelected={selectedTone === tone}
-                  onSelect={() => handleToneSelect(tone)}
-                />
-                <ToneColorPreview tone={tone} className="mt-2" />
-              </div>
+              <TonePreview
+                key={tone}
+                tone={tone}
+                isSelected={selectedTone === tone}
+                onSelect={() => handleToneSelect(tone)}
+              />
             ))}
           </div>
 
@@ -80,15 +77,13 @@ const ToneSettings: React.FC = () => {
                     const variant = toneMastery.getUnlockedToneVariant(baseTone);
                     if (!variant) return null;
                     return (
-                      <div key={variant}>
-                        <TonePreview
-                          tone={variant}
-                          isSelected={selectedTone === variant}
-                          onSelect={() => handleToneSelect(variant)}
-                          isVariant={true}
-                        />
-                        <ToneColorPreview tone={variant} className="mt-2" />
-                      </div>
+                      <TonePreview
+                        key={variant}
+                        tone={variant}
+                        isSelected={selectedTone === variant}
+                        onSelect={() => handleToneSelect(variant)}
+                        isVariant={true}
+                      />
                     );
                   })}
               </div>
