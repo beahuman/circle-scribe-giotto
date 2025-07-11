@@ -5,12 +5,7 @@ import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
 
 export const useToneSystem = () => {
   const [selectedTone, setSelectedTone] = useState<ToneType>(() => {
-    const storedTone = localStorage.getItem('feedbackTone') as ToneType;
-    console.log('Stored tone from localStorage:', storedTone);
-    console.log('Available TONE_THEMES keys:', Object.keys(TONE_THEMES));
-    const defaultTone = storedTone || 'playful';
-    console.log('Selected tone for initialization:', defaultTone);
-    return defaultTone;
+    return (localStorage.getItem('feedbackTone') as ToneType) || 'playful';
   });
   
   const [toneUsage, setToneUsage] = useState<Record<ToneType, number>>(() => {
@@ -69,16 +64,9 @@ export const useToneSystem = () => {
   };
 
   const isThemeUnlocked = (toneType: ToneType): boolean => {
-    console.log('isThemeUnlocked called with:', toneType);
     const theme = TONE_THEMES[toneType];
-    console.log('Theme found:', theme);
-    if (!theme || !theme.id) {
-      console.log('Theme not found or missing id, returning false');
-      return false;
-    }
-    const isUnlocked = unlockedThemes.has(theme.id);
-    console.log('Theme unlocked status:', isUnlocked);
-    return isUnlocked;
+    if (!theme || !theme.id) return false;
+    return unlockedThemes.has(theme.id);
   };
 
   const getThemeProgress = (toneType: ToneType): { current: number; required: number; percentage: number } => {

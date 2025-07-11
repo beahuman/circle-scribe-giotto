@@ -276,6 +276,10 @@ export const TONE_MESSAGES = {
 
 export function getScoreMessage(tone: ToneType, score: number): string {
   const messages = TONE_MESSAGES.scoreMessages[tone];
+  if (!messages) {
+    // Fallback to playful if tone not found
+    return TONE_MESSAGES.scoreMessages.playful.fair;
+  }
   if (score >= 90) return messages.excellent;
   if (score >= 75) return messages.good;
   if (score >= 50) return messages.fair;
@@ -284,20 +288,38 @@ export function getScoreMessage(tone: ToneType, score: number): string {
 
 export function getMotivationalPhrase(tone: ToneType): string {
   const phrases = TONE_MESSAGES.motivationalPhrases[tone];
+  if (!phrases || phrases.length === 0) {
+    // Fallback to playful if tone not found
+    return TONE_MESSAGES.motivationalPhrases.playful[0];
+  }
   return phrases[Math.floor(Math.random() * phrases.length)];
 }
 
 export function getStreakMessage(tone: ToneType, streakLength: number): string {
   const messages = TONE_MESSAGES.streakMessages[tone];
+  if (!messages) {
+    // Fallback to playful if tone not found
+    return TONE_MESSAGES.streakMessages.playful.start;
+  }
   if (streakLength === 1) return messages.start;
   if (streakLength >= 7) return messages.milestone;
   return messages.continue;
 }
 
 export function getBadgeUnlockMessage(tone: ToneType): string {
-  return TONE_MESSAGES.badgeMessages[tone].unlock;
+  const messages = TONE_MESSAGES.badgeMessages[tone];
+  if (!messages) {
+    // Fallback to playful if tone not found
+    return TONE_MESSAGES.badgeMessages.playful.unlock;
+  }
+  return messages.unlock;
 }
 
 export function getModeUnlockMessage(tone: ToneType, mode: keyof typeof TONE_MESSAGES.modeUnlocks): string {
-  return TONE_MESSAGES.modeUnlocks[mode][tone];
+  const modeMessages = TONE_MESSAGES.modeUnlocks[mode];
+  if (!modeMessages || !modeMessages[tone]) {
+    // Fallback to playful if tone not found
+    return TONE_MESSAGES.modeUnlocks[mode]?.playful || "Mode unlocked!";
+  }
+  return modeMessages[tone];
 }
