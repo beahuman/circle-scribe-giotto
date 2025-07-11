@@ -6,6 +6,7 @@ import { usePlayerProgress } from '@/hooks/usePlayerProgress';
 import { useLocalProgress } from '@/hooks/useLocalProgress';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useSettings } from '@/hooks/useSettings';
+import { useEvolvingScoreScreen } from '@/hooks/useEvolvingScoreScreen';
 import CircleComparison from './CircleComparison';
 import ScoreBreakdown from './ScoreBreakdown';
 import MedalDisplay from './MedalDisplay';
@@ -14,6 +15,7 @@ import FeedbackToneSelector from './FeedbackToneSelector';
 import NeuroscienceModal from './NeuroscienceModal';
 import GamifiedResultControls from './GamifiedResultControls';
 import XpProgressBar from './XpProgressBar';
+import EvolvingScoreDisplay from './EvolvingScoreDisplay';
 import { useToast } from '@/hooks/use-toast';
 import DailyChallengeResult from '../DailyChallengeResult';
 
@@ -61,6 +63,14 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
   const { todaysChallenge } = useDailyChallenges();
   const { settings, updateSettings } = useSettings();
   const { toast } = useToast();
+  
+  // Get evolving score screen data
+  const evolution = useEvolvingScoreScreen(
+    roundedAccuracy,
+    difficultyLevel,
+    isPenaltyMode,
+    sessionRoundsPlayed
+  );
   
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
   const [showAdvancedOverlay, setShowAdvancedOverlay] = useState(false);
@@ -218,23 +228,37 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
         </div>
       )}
 
-      {/* Medal Display */}
-      <MedalDisplay medal={medal} score={roundedAccuracy} />
+      {/* Evolving Score Display or Traditional Layout */}
+      {settings.adaptiveScoreScreen !== false ? (
+        <EvolvingScoreDisplay
+          accuracy={accuracy}
+          difficultyLevel={difficultyLevel}
+          isPenaltyMode={isPenaltyMode}
+          sessionRoundsPlayed={sessionRoundsPlayed}
+          subscores={subscores}
+          feedbackTone={feedbackTone}
+        />
+      ) : (
+        <>
+          {/* Traditional Medal Display */}
+          <MedalDisplay medal={medal} score={roundedAccuracy} />
+          
+          {/* Score Breakdown */}
+          <ScoreBreakdown
+            subscores={subscores}
+            overallScore={roundedAccuracy}
+            feedbackTone={feedbackTone}
+          />
+        </>
+      )}
 
-      {/* Circle Comparison */}
+      {/* Circle Comparison with conditional advanced overlay */}
       <CircleComparison
         drawnPoints={drawnPoints}
         targetCircle={targetCircle}
-        showAdvancedOverlay={showAdvancedOverlay}
+        showAdvancedOverlay={evolution.effects.ghostTrailOverlay && showAdvancedOverlay}
         onToggleOverlay={() => setShowAdvancedOverlay(!showAdvancedOverlay)}
         subscores={subscores}
-      />
-
-      {/* Score Breakdown */}
-      <ScoreBreakdown
-        subscores={subscores}
-        overallScore={roundedAccuracy}
-        feedbackTone={feedbackTone}
       />
 
       {/* XP Progress Bar */}

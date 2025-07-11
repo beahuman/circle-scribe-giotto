@@ -26,6 +26,17 @@ export const useSettings = () => {
   const [mirrorOffsetEnabled, setMirrorOffsetEnabled] = useState(() => {
     return localStorage.getItem('mirrorOffsetEnabled') === 'true';
   });
+  
+  const [adaptiveScoreScreen, setAdaptiveScoreScreen] = useState(() => {
+    const saved = localStorage.getItem('adaptiveScoreScreen');
+    return saved !== null ? saved === 'true' : true; // Default to true
+  });
+  
+  const [ghostTrailOverlay, setGhostTrailOverlay] = useState(() => {
+    const saved = localStorage.getItem('ghostTrailOverlay');
+    return saved !== null ? saved === 'true' : true; // Default to true
+  });
+  
   const { toast } = useToast();
 
   const handleNotificationToggle = (checked: boolean) => {
@@ -110,6 +121,24 @@ export const useSettings = () => {
     });
   };
 
+  const handleAdaptiveScoreScreenToggle = (checked: boolean) => {
+    setAdaptiveScoreScreen(checked);
+    localStorage.setItem('adaptiveScoreScreen', String(checked));
+    toast({
+      title: "Adaptive Score Screen",
+      description: checked ? "Dynamic score screen enabled" : "Traditional score screen enabled"
+    });
+  };
+
+  const handleGhostTrailOverlayToggle = (checked: boolean) => {
+    setGhostTrailOverlay(checked);
+    localStorage.setItem('ghostTrailOverlay', String(checked));
+    toast({
+      title: "Ghost Trail Overlay",
+      description: checked ? "Ghost trail comparison enabled" : "Ghost trail comparison disabled"
+    });
+  };
+
   const updateSettings = (newSettings: { [key: string]: any }) => {
     Object.entries(newSettings).forEach(([key, value]) => {
       localStorage.setItem(key, String(value));
@@ -126,7 +155,9 @@ export const useSettings = () => {
     displayDuration,
     penaltyModeEnabled,
     showGhostCircle,
-    mirrorOffsetEnabled
+    mirrorOffsetEnabled,
+    adaptiveScoreScreen,
+    ghostTrailOverlay
   };
 
   return {
@@ -139,6 +170,8 @@ export const useSettings = () => {
     penaltyModeEnabled,
     showSubmetrics,
     mirrorOffsetEnabled,
+    adaptiveScoreScreen,
+    ghostTrailOverlay,
     settings,
     updateSettings,
     handleNotificationToggle,
@@ -150,5 +183,7 @@ export const useSettings = () => {
     handlePenaltyModeToggle,
     handleSubmetricsToggle,
     handleMirrorOffsetToggle,
+    handleAdaptiveScoreScreenToggle,
+    handleGhostTrailOverlayToggle,
   };
 };

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Brain } from 'lucide-react';
+import { ArrowLeft, Brain, Palette } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,6 +55,8 @@ const Settings = () => {
     penaltyModeEnabled,
     showSubmetrics,
     mirrorOffsetEnabled,
+    adaptiveScoreScreen,
+    ghostTrailOverlay,
     handleNotificationToggle,
     handleDarkModeToggle,
     handleDifficultyChange,
@@ -64,6 +66,8 @@ const Settings = () => {
     handlePenaltyModeToggle,
     handleSubmetricsToggle,
     handleMirrorOffsetToggle,
+    handleAdaptiveScoreScreenToggle,
+    handleGhostTrailOverlayToggle,
   } = useSettings();
 
   return (
@@ -247,6 +251,47 @@ const Settings = () => {
               >
                 Reset Adaptive Feedback Memory
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* Evolving Score Screen Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Palette className="h-5 w-5" />
+                Evolving Score Screen
+              </CardTitle>
+              <CardDescription>
+                Customize how your score screen adapts and evolves with your progress
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Adaptive Score Screen</label>
+                  <p className="text-xs text-muted-foreground">
+                    Score screen evolves visually based on your improvement and achievements
+                  </p>
+                </div>
+                <Switch
+                  checked={adaptiveScoreScreen}
+                  onCheckedChange={handleAdaptiveScoreScreenToggle}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <label className="text-sm font-medium">Ghost Trail Comparison</label>
+                  <p className="text-xs text-muted-foreground">
+                    Show overlay comparing your drawing to target (advanced users)
+                  </p>
+                </div>
+                <Switch
+                  checked={ghostTrailOverlay}
+                  onCheckedChange={handleGhostTrailOverlayToggle}
+                  disabled={!adaptiveScoreScreen}
+                />
+              </div>
             </CardContent>
           </Card>
         </motion.div>
