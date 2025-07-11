@@ -17,6 +17,7 @@ import GhostCircleSettings from '@/components/settings/GhostCircleSettings';
 import PenaltyModeSettings from '@/components/settings/PenaltyModeSettings';
 import SubmetricsSettings from '@/components/settings/SubmetricsSettings';
 import ToneSettings from '@/components/settings/ToneSettings';
+import ToneBasedNotifications from '@/components/settings/ToneBasedNotifications';
 import BrushSettings from '@/components/settings/BrushSettings';
 import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
 import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSettings';
@@ -194,6 +195,14 @@ const Settings = () => {
 
         <motion.div variants={fadeVariants}>
           <ToneSettings />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <ToneBasedNotifications />
         </motion.div>
 
         <motion.div variants={fadeVariants}>
