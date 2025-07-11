@@ -1,4 +1,4 @@
-export type ToneType = 'calm' | 'playful' | 'formal' | 'sarcastic' | 'poetic' | 'existential' | 'romantic';
+export type ToneType = 'calm' | 'playful' | 'formal' | 'sarcastic' | 'poetic' | 'existential' | 'romantic' | 'philosophical' | 'darkHumor';
 
 export interface ToneTheme {
   id: string;
@@ -89,6 +89,28 @@ export const TONE_THEMES: Record<ToneType, ToneTheme> = {
       accent: 'text-rose-600',
       effects: ['floral-overlay', 'sparkle-fx']
     }
+  },
+  philosophical: {
+    id: 'scholar-mode',
+    name: 'Scholar Mode',
+    description: 'Parchment texture, serif text, ancient wisdom vibes',
+    unlockRequirement: 12,
+    visualStyle: {
+      background: 'bg-gradient-to-br from-amber-50 to-orange-50',
+      accent: 'text-amber-700',
+      effects: ['parchment-texture', 'ancient-wisdom']
+    }
+  },
+  darkHumor: {
+    id: 'noir-mode',
+    name: 'Noir Mode',
+    description: 'High contrast blacks, sharp edges, dramatic shadows',
+    unlockRequirement: 12,
+    visualStyle: {
+      background: 'bg-gradient-to-br from-gray-900 to-slate-800',
+      accent: 'text-gray-300',
+      effects: ['noir-shadows', 'high-contrast']
+    }
   }
 };
 
@@ -136,6 +158,18 @@ export const TONE_MESSAGES = {
       good: "Your touch dances gracefully across the screen.",
       fair: "Like a first kiss - sweet, if imperfect.",
       poor: "Even broken hearts can learn to love again."
+    },
+    philosophical: {
+      excellent: "In this circle, we contemplate perfection itself.",
+      good: "Your hand embodies the wisdom of geometric truth.",
+      fair: "Imperfection teaches us what perfection truly means.",
+      poor: "Even Socrates would have struggled with touchscreens."
+    },
+    darkHumor: {
+      excellent: "Well, that's one circle that won't disappoint you.",
+      good: "Decent work. Unlike most things in life.",
+      fair: "At least you're consistently average at something.",
+      poor: "Join the club of disappointment. We meet in circles."
     }
   },
 
@@ -182,6 +216,18 @@ export const TONE_MESSAGES = {
       good: "Your devotion to form is absolutely enchanting.",
       fair: "Like vintage wine - imperfect but charming.",
       poor: "Every love story has its rough chapters."
+    },
+    philosophical: {
+      excellent: "Behold: The circle as pure form, perfectly realized.",
+      good: "Your understanding of geometric essence deepens.",
+      fair: "Consider how this relates to the nature of being.",
+      poor: "Even failure teaches us about the human condition."
+    },
+    darkHumor: {
+      excellent: "Shocking. Something actually went right for once.",
+      good: "Don't get used to success. It's temporary.",
+      fair: "Mediocrity: At least it's consistent.",
+      poor: "Welcome to the abyss of circular disappointment."
     }
   },
 
@@ -221,6 +267,16 @@ export const TONE_MESSAGES = {
       "Draw circles like love letters to yourself.",
       "Your touch creates beauty worth admiring.",
       "Each circle is a small act of self-care."
+    ],
+    philosophical: [
+      "What is a circle but the universe contemplating itself?",
+      "Today, explore the metaphysics of perfect curves.",
+      "In drawing circles, we examine the nature of completion."
+    ],
+    darkHumor: [
+      "Time to disappoint yourself in a perfectly circular way.",
+      "Another day, another futile attempt at geometric perfection.",
+      "Drawing circles to distract from life's meaninglessness."
     ]
   },
 
@@ -260,6 +316,16 @@ export const TONE_MESSAGES = {
       "Your circles deserve all the love in the world today.",
       "Touch the screen with the tenderness of a lover.",
       "Make every stroke a promise of beautiful imperfection."
+    ],
+    philosophical: [
+      "Ponder: Is the perfect circle an ideal we can never reach?",
+      "Today, let geometry become your meditation on form.",
+      "Draw circles to understand the essence of completion."
+    ],
+    darkHumor: [
+      "Back to make more imperfect circles in an imperfect world.",
+      "At least your circles match your life: mostly disappointing.",
+      "Time to fail at basic geometry again. How refreshing."
     ]
   },
 
@@ -299,6 +365,16 @@ export const TONE_MESSAGES = {
       start: "Your love affair with circles begins.",
       continue: "This daily romance grows stronger.",
       milestone: "A week of devoted practice - true commitment!"
+    },
+    philosophical: {
+      start: "Thus begins your contemplation of circular truth.",
+      continue: "Each day deepens your understanding of form.",
+      milestone: "Seven days of geometric meditation completed."
+    },
+    darkHumor: {
+      start: "Day one of your slow descent into circular madness.",
+      continue: "Still here? Impressive commitment to futility.",
+      milestone: "A week of disappointment. Consistency at its finest."
     }
   },
 
@@ -331,6 +407,14 @@ export const TONE_MESSAGES = {
     romantic: {
       unlock: "Your dedication has won you a token of affection!",
       description: "A badge that proves your commitment to excellence."
+    },
+    philosophical: {
+      unlock: "Achievement represents the eternal pursuit of perfection.",
+      description: "Recognition of your contemplative progress."
+    },
+    darkHumor: {
+      unlock: "Congratulations. Another meaningless digital trophy.",
+      description: "At least someone acknowledges your existential dread."
     }
   },
 
@@ -343,7 +427,9 @@ export const TONE_MESSAGES = {
       sarcastic: "Don't blame us when this goes badly.",
       poetic: "Close your eyes and let intuition guide you.",
       existential: "Drawing blind in a world already blind to meaning.",
-      romantic: "Trust your heart to guide your hand."
+      romantic: "Trust your heart to guide your hand.",
+      philosophical: "Remove sight to illuminate inner understanding.",
+      darkHumor: "Great, now you can fail without even seeing it."
     }
   },
 
@@ -355,7 +441,9 @@ export const TONE_MESSAGES = {
     sarcastic: ["Because apparently you needed more ways to mess up.", "Ooh, fancy new brush. Still won't fix your technique.", "New brush, same shaky hands."],
     poetic: ["A new instrument for your artistic symphony.", "Your brush collection grows like verses in a poem.", "Tools of beauty for creating beauty."],
     existential: ["Another meaningless tool in the void.", "New brushes cannot paint meaning into existence.", "More options in this absurd digital sandbox."],
-    romantic: ["A new brush to express your creative passion!", "Every stroke will be infused with more love.", "Your artistic romance deepens with new tools."]
+    romantic: ["A new brush to express your creative passion!", "Every stroke will be infused with more love.", "Your artistic romance deepens with new tools."],
+    philosophical: ["A tool is meaningless without contemplative purpose.", "New instruments for exploring geometric truth.", "Each brush represents a different path to understanding."],
+    darkHumor: ["Another tool for your collection of disappointments.", "Great, more ways to make terrible circles.", "New brush, same crushing sense of inadequacy."]
   }
 };
 

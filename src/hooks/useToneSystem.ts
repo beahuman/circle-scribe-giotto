@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { ToneType, TONE_THEMES, getMotivationalPhrase, getScoreMessage, getStreakMessage, getBadgeUnlockMessage, getModeUnlockMessage, isToneV2Unlocked, getToneMasteryLevel } from '@/utils/toneMessages';
 import { useAdaptiveFeedback } from '@/hooks/useAdaptiveFeedback';
+import { useToneLoyalty } from '@/hooks/useToneLoyalty';
 
 export const useToneSystem = () => {
   const [selectedTone, setSelectedTone] = useState<ToneType>(() => {
@@ -17,7 +18,9 @@ export const useToneSystem = () => {
       sarcastic: 0,
       poetic: 0,
       existential: 0,
-      romantic: 0
+      romantic: 0,
+      philosophical: 0,
+      darkHumor: 0
     };
   });
 
@@ -28,6 +31,7 @@ export const useToneSystem = () => {
 
   const { toast } = useToast();
   const { recordDrawing } = useAdaptiveFeedback();
+  const toneLoyalty = useToneLoyalty();
 
   // Save to localStorage whenever state changes
   useEffect(() => {
@@ -47,6 +51,10 @@ export const useToneSystem = () => {
   const incrementToneUsage = (tone: ToneType = selectedTone) => {
     setToneUsage(prev => {
       const newUsage = { ...prev, [tone]: prev[tone] + 1 };
+      
+      // Track for tone loyalty system
+      const totalDraws = Object.values(newUsage).reduce((sum, count) => sum + count, 0);
+      toneLoyalty.recordToneUsage(tone, totalDraws);
       
       // Check if this usage unlocks a theme
       const theme = TONE_THEMES[tone];
@@ -172,5 +180,7 @@ export const useToneSystem = () => {
     getToneMasteryLevelForTone,
     isToneV2UnlockedForTone,
     getPreviewMessage,
+    // Tone loyalty features
+    toneLoyalty,
   };
 };

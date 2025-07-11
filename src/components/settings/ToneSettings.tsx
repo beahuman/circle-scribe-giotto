@@ -10,7 +10,7 @@ import { useToneSystem } from '@/hooks/useToneSystem';
 import TonePreview from './TonePreview';
 
 const AVAILABLE_TONES: ToneType[] = ['calm', 'playful', 'formal', 'sarcastic'];
-const COMING_SOON_TONES: ToneType[] = ['poetic', 'existential', 'romantic'];
+const COMING_SOON_TONES: ToneType[] = ['poetic', 'existential'];
 
 const ToneSettings: React.FC = () => {
   const {
@@ -18,7 +18,8 @@ const ToneSettings: React.FC = () => {
     changeTone,
     getMostUsedTone,
     getTotalToneChanges,
-    toneUsage
+    toneUsage,
+    toneLoyalty
   } = useToneSystem();
 
   const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -61,10 +62,34 @@ const ToneSettings: React.FC = () => {
             ))}
           </div>
 
+          {/* Advanced Tones (Unlocked through loyalty) */}
+          {(['romantic', 'poetic', 'philosophical', 'darkHumor'] as const).some(tone => 
+            toneLoyalty.isAdvancedToneUnlocked(tone)
+          ) && (
+            <div className="mt-6">
+              <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
+                ✨ Advanced Tones
+                <Badge variant="outline" className="text-xs">Loyalty Unlocked</Badge>
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {(['romantic', 'poetic', 'philosophical', 'darkHumor'] as const)
+                  .filter(tone => toneLoyalty.isAdvancedToneUnlocked(tone))
+                  .map((tone) => (
+                    <TonePreview
+                      key={tone}
+                      tone={tone}
+                      isSelected={selectedTone === tone}
+                      onSelect={() => handleToneSelect(tone)}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
+
           {/* Coming Soon Tones */}
           <div className="mt-6">
             <h4 className="text-sm font-medium text-muted-foreground mb-3">Coming Soon</h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {COMING_SOON_TONES.map((tone) => (
                 <div
                   key={tone}
