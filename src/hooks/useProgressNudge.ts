@@ -1,18 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocalProgress } from './useLocalProgress';
 import { useToast } from '@/hooks/use-toast';
-
-export interface ProgressNudgeState {
-  showNavBadge: boolean;
-  showPostScoreCTA: boolean;
-  showStreakToast: boolean;
-  showProgressTour: boolean;
-  hasViewedProgress: boolean;
-  hasCompletedFirstDaily: boolean;
-  hasCompletedSecondDraw: boolean;
-  hasHitThreeDayStreak: boolean;
-  milestoneType?: 'new_best' | 'streak_broken' | 'score_improvement' | 'unlock_milestone' | null;
-}
+import { ProgressNudgeState, MilestoneType } from '@/types/progressNudge';
+import { createProgressNudgeMessages } from '@/utils/progressNudgeMessages';
+import { hasCompletedDailyCalibration, getCurrentStreak, shouldShowProgressNudges } from '@/utils/progressNudgeUtils';
+import { checkMilestoneForScore } from '@/utils/progressNudgeMilestones';
 
 export const useProgressNudge = () => {
   const { stats, gameResults } = useLocalProgress();
@@ -49,7 +41,8 @@ export const useProgressNudge = () => {
 
   const checkNudgeTriggers = () => {
     const totalGames = stats.totalGames;
-    const currentStreak = getCurrentStreak();
+    const currentStreak = getCurrentStreak(gameResults);
+    const { showFirstDailyToast, showFirstProgressNudgeToast, showStreakToast } = createProgressNudgeMessages();
     
     setNudgeState(prev => {
       let newState = { ...prev };
@@ -79,54 +72,6 @@ export const useProgressNudge = () => {
     });
   };
 
-  const hasCompletedDailyCalibration = (): boolean => {
-    // Check if user has completed at least one daily calibration
-    // This would need to be integrated with the daily calibration system
-    const dailyCompletions = localStorage.getItem('dailyCalibrationCompleted');
-    return dailyCompletions === 'true';
-  };
-
-  const getCurrentStreak = (): number => {
-    // Calculate current streak based on recent game results
-    const today = new Date().toDateString();
-    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString();
-    const dayBeforeYesterday = new Date(Date.now() - 48 * 60 * 60 * 1000).toDateString();
-    
-    const recentDays = gameResults
-      .map(result => new Date(result.timestamp).toDateString())
-      .filter((date, index, array) => array.indexOf(date) === index);
-    
-    let streak = 0;
-    if (recentDays.includes(today)) streak = 1;
-    if (recentDays.includes(yesterday)) streak = Math.max(streak, 2);
-    if (recentDays.includes(dayBeforeYesterday)) streak = Math.max(streak, 3);
-    
-    return streak;
-  };
-
-  const showFirstDailyToast = () => {
-    toast({
-      title: "Nice start! 🎯",
-      description: "Your journey is being tracked. See your progress →",
-      duration: 4000,
-    });
-  };
-
-  const showFirstProgressNudgeToast = () => {
-    toast({
-      title: "Growing already! 🌱",
-      description: "Your progress is being tracked. Ready to see the journey?",
-      duration: 4000,
-    });
-  };
-
-  const showStreakToast = () => {
-    toast({
-      title: "3 Days. That's a pattern. 🔥",
-      description: "See what you're building in your progress page",
-      duration: 5000,
-    });
-  };
 
   const markProgressViewed = () => {
     setNudgeState(prev => ({
@@ -190,37 +135,7 @@ export const useProgressNudge = () => {
     localStorage.removeItem('progressNudgeState');
   };
 
-  const shouldShowProgressNudges = (): boolean => {
-    const setting = localStorage.getItem('showProgressNudges');
-    return setting !== 'false'; // Default to true
-  };
-
-  // Check for milestone-based progress CTA triggers
-  const checkMilestoneForScore = (currentScore: number): 'new_best' | 'score_improvement' | 'streak_broken' | null => {
-    if (gameResults.length === 0) return null;
-    
-    // Check for new best score
-    if (currentScore > stats.bestScore) {
-      return 'new_best';
-    }
-    
-    // Check for score improvement (better than last attempt)
-    const lastScore = gameResults[0]?.score || 0;
-    if (currentScore > lastScore && currentScore >= 70) { // Show only for decent scores
-      return 'score_improvement';
-    }
-    
-    // Check for streak broken (previous games had better scores)
-    const recentScores = gameResults.slice(0, 3).map(r => r.score);
-    const averageRecent = recentScores.length > 0 ? recentScores.reduce((a, b) => a + b, 0) / recentScores.length : 0;
-    if (currentScore < averageRecent * 0.8 && averageRecent > 60) { // Significant drop
-      return 'streak_broken';
-    }
-    
-    return null;
-  };
-
-  const triggerMilestoneCTA = (milestoneType: 'new_best' | 'score_improvement' | 'streak_broken' | 'unlock_milestone') => {
+  const triggerMilestoneCTA = (milestoneType: MilestoneType) => {
     setNudgeState(prev => ({
       ...prev,
       showPostScoreCTA: true,
@@ -236,7 +151,7 @@ export const useProgressNudge = () => {
     dismissPostScoreCTA,
     resetNudges,
     shouldShowProgressNudges,
-    checkMilestoneForScore,
+    checkMilestoneForScore: (currentScore: number) => checkMilestoneForScore(currentScore, gameResults, stats),
     triggerMilestoneCTA,
   };
 };
