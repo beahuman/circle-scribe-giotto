@@ -10,7 +10,7 @@ import { useToneSystem } from '@/hooks/useToneSystem';
 import TonePreview from './TonePreview';
 
 const AVAILABLE_TONES: ToneType[] = ['calm', 'playful', 'formal', 'sarcastic'];
-const COMING_SOON_TONES: ToneType[] = ['poetic', 'existential'];
+const COMING_SOON_TONES: ToneType[] = ['existential'];
 
 const ToneSettings: React.FC = () => {
   const {
@@ -19,7 +19,8 @@ const ToneSettings: React.FC = () => {
     getMostUsedTone,
     getTotalToneChanges,
     toneUsage,
-    toneLoyalty
+    toneLoyalty,
+    toneMastery
   } = useToneSystem();
 
   const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -62,8 +63,35 @@ const ToneSettings: React.FC = () => {
             ))}
           </div>
 
-          {/* Advanced Tones (Unlocked through loyalty) */}
-          {(['romantic', 'poetic', 'philosophical', 'darkHumor'] as const).some(tone => 
+          {/* Tone Variants (Unlocked through mastery) */}
+          {AVAILABLE_TONES.some(tone => toneMastery.isToneVariantUnlocked(tone)) && (
+            <div className="mt-6">
+              <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
+                ✨ Tone Variants
+                <Badge variant="outline" className="text-xs">Mastery Unlocked</Badge>
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {AVAILABLE_TONES
+                  .filter(tone => toneMastery.isToneVariantUnlocked(tone))
+                  .map((baseTone) => {
+                    const variant = toneMastery.getUnlockedToneVariant(baseTone);
+                    if (!variant) return null;
+                    return (
+                      <TonePreview
+                        key={variant}
+                        tone={variant}
+                        isSelected={selectedTone === variant}
+                        onSelect={() => handleToneSelect(variant)}
+                        isVariant={true}
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+          )}
+
+          {/* Advanced Tones (Legacy - if any still unlocked through loyalty) */}
+          {(['poetic'] as const).some(tone => 
             toneLoyalty.isAdvancedToneUnlocked(tone)
           ) && (
             <div className="mt-6">
@@ -72,7 +100,7 @@ const ToneSettings: React.FC = () => {
                 <Badge variant="outline" className="text-xs">Loyalty Unlocked</Badge>
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {(['romantic', 'poetic', 'philosophical', 'darkHumor'] as const)
+                {(['poetic'] as const)
                   .filter(tone => toneLoyalty.isAdvancedToneUnlocked(tone))
                   .map((tone) => (
                     <TonePreview

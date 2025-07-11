@@ -9,12 +9,14 @@ interface TonePreviewProps {
   tone: ToneType;
   isSelected: boolean;
   onSelect: () => void;
+  isVariant?: boolean;
 }
 
 const TonePreview: React.FC<TonePreviewProps> = ({
   tone,
   isSelected,
-  onSelect
+  onSelect,
+  isVariant = false
 }) => {
   const { 
     toneUsage, 
@@ -53,10 +55,16 @@ const TonePreview: React.FC<TonePreviewProps> = ({
             </p>
           </div>
           <div className="flex flex-col items-end gap-1">
-            <Badge variant={getMasteryColor() as any} className="text-xs">
-              {getMasteryLabel()}
-            </Badge>
-            {hasV2 && (
+            {isVariant ? (
+              <Badge variant="secondary" className="text-xs">
+                Variant ✨
+              </Badge>
+            ) : (
+              <Badge variant={getMasteryColor() as any} className="text-xs">
+                {getMasteryLabel()}
+              </Badge>
+            )}
+            {hasV2 && !isVariant && (
               <Badge variant="outline" className="text-xs">
                 Volume 2 ✨
               </Badge>
@@ -80,7 +88,7 @@ const TonePreview: React.FC<TonePreviewProps> = ({
             size="sm"
             variant={isSelected ? "default" : "outline"}
             onClick={onSelect}
-            disabled={masteryLevel === 0}
+            disabled={!isVariant && masteryLevel === 0}
           >
             {isSelected ? "Selected" : "Select"}
           </Button>

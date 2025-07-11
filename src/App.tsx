@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import TonePackUnlockBanner from "@/components/TonePackUnlockBanner";
+import ToneVariantUnlockModal from "@/components/modal/ToneVariantUnlockModal";
+import { useToneMastery } from "@/hooks/useToneMastery";
 import Launch from "./pages/Launch";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -25,6 +27,8 @@ import BottomNav from "@/components/BottomNav";
 // Create the client outside of the component
 const queryClient = new QueryClient();
 const App = () => {
+  const toneMastery = useToneMastery();
+  
   return <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
@@ -32,6 +36,14 @@ const App = () => {
         <BrowserRouter>
           <AuthProvider>
             <TonePackUnlockBanner />
+            {toneMastery.pendingVariantUnlock && (
+              <ToneVariantUnlockModal
+                baseTone={toneMastery.pendingVariantUnlock.baseTone}
+                variant={toneMastery.pendingVariantUnlock.variant}
+                isOpen={true}
+                onClose={toneMastery.clearPendingVariantUnlock}
+              />
+            )}
             <div className="min-h-screen overflow-y-auto pb-16 bg-white">
               <Routes>
                 <Route path="/launch" element={<Launch />} />

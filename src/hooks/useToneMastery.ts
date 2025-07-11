@@ -8,6 +8,7 @@ interface ToneMasteryData {
     unlockedMilestones: number[];
     volumeTwoUnlocked: boolean;
     masteryBadgeEarned: boolean;
+    variantUnlocked: boolean;
   };
 }
 
@@ -29,6 +30,8 @@ export const useToneMastery = () => {
     return saved ? JSON.parse(saved) : {};
   });
 
+  const [pendingVariantUnlock, setPendingVariantUnlock] = useState<{baseTone: ToneType, variant: ToneType} | null>(null);
+
   const { toast } = useToast();
 
   // Save to localStorage whenever state changes
@@ -42,7 +45,8 @@ export const useToneMastery = () => {
         loyaltyPoints: 0,
         unlockedMilestones: [],
         volumeTwoUnlocked: false,
-        masteryBadgeEarned: false
+        masteryBadgeEarned: false,
+        variantUnlocked: false
       };
 
       const newPoints = currentData.loyaltyPoints + 1;
@@ -55,6 +59,12 @@ export const useToneMastery = () => {
           
           if (milestone.reward === 'volume_two') {
             updatedData.volumeTwoUnlocked = true;
+          }
+
+          // Check for tone variant unlock at 20 points
+          if (milestone.reward === 'variant_unlock' && newPoints >= 20 && !currentData.variantUnlocked) {
+            updatedData.variantUnlocked = true;
+            showToneVariantUnlock(tone);
           }
 
           // Show unlock notification
@@ -78,7 +88,8 @@ export const useToneMastery = () => {
         loyaltyPoints: 0,
         unlockedMilestones: [],
         volumeTwoUnlocked: false,
-        masteryBadgeEarned: false
+        masteryBadgeEarned: false,
+        variantUnlocked: false
       };
 
       const newPoints = Math.max(0, currentData.loyaltyPoints - 3);
@@ -156,6 +167,27 @@ export const useToneMastery = () => {
     });
   };
 
+  const showToneVariantUnlock = (tone: ToneType) => {
+    const variantMapping = {
+      playful: 'romantic',
+      calm: 'poetic', 
+      formal: 'philosophical',
+      sarcastic: 'darkHumor'
+    } as const;
+
+    const variant = variantMapping[tone as keyof typeof variantMapping];
+    if (!variant) return;
+
+    // Set pending unlock to trigger modal
+    setPendingVariantUnlock({ baseTone: tone, variant });
+
+    toast({
+      title: `✨ New Tone Variant Unlocked!`,
+      description: `You've stayed true to your voice. ${variant.charAt(0).toUpperCase() + variant.slice(1)} tone unlocked.`,
+      duration: 6000,
+    });
+  };
+
   const getToneMasteryLevel = (tone: ToneType): number => {
     const data = masteryData[tone];
     if (!data) return 0;
@@ -167,7 +199,7 @@ export const useToneMastery = () => {
   };
 
   const getToneLoyaltyProgress = (tone: ToneType) => {
-    const data = masteryData[tone] || { loyaltyPoints: 0, unlockedMilestones: [], volumeTwoUnlocked: false, masteryBadgeEarned: false };
+    const data = masteryData[tone] || { loyaltyPoints: 0, unlockedMilestones: [], volumeTwoUnlocked: false, masteryBadgeEarned: false, variantUnlocked: false };
     const points = data.loyaltyPoints;
     
     // Find next milestone
@@ -221,6 +253,29 @@ export const useToneMastery = () => {
     return maxTone ? { tone: maxTone, points: maxPoints } : null;
   };
 
+  const getUnlockedToneVariant = (baseTone: ToneType): ToneType | null => {
+    const variantMapping = {
+      playful: 'romantic',
+      calm: 'poetic', 
+      formal: 'philosophical',
+      sarcastic: 'darkHumor'
+    } as const;
+
+    const variant = variantMapping[baseTone as keyof typeof variantMapping];
+    if (!variant) return null;
+
+    const masteryLevel = getToneMasteryLevel(baseTone);
+    return masteryLevel >= 3 ? variant : null;
+  };
+
+  const isToneVariantUnlocked = (baseTone: ToneType): boolean => {
+    return getUnlockedToneVariant(baseTone) !== null;
+  };
+
+  const clearPendingVariantUnlock = () => {
+    setPendingVariantUnlock(null);
+  };
+
   const resetToneMastery = () => {
     setMasteryData({});
     toast({
@@ -232,6 +287,7 @@ export const useToneMastery = () => {
 
   return {
     masteryData,
+    pendingVariantUnlock,
     addLoyaltyPoint,
     penalizeToneSwitch,
     getToneMasteryLevel,
@@ -241,6 +297,9 @@ export const useToneMastery = () => {
     isMasteryBadgeEarned,
     getTotalMasteryPoints,
     getMostMasteredTone,
+    getUnlockedToneVariant,
+    isToneVariantUnlocked,
+    clearPendingVariantUnlock,
     resetToneMastery,
     MASTERY_MILESTONES
   };
