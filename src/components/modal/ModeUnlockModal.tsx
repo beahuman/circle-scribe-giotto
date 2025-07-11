@@ -3,99 +3,277 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Award, Brush } from 'lucide-react';
+import { Sparkles, Award, Brush, Circle, Eye, Shuffle, Target } from 'lucide-react';
 import { UnlockTrigger } from '@/hooks/useModeUnlockSystem';
+import { useToneSystem } from '@/hooks/useToneSystem';
 
 interface ModeUnlockModalProps {
   isOpen: boolean;
   trigger: UnlockTrigger | null;
-  message: string;
   onTryNow: () => void;
   onMaybeLater: () => void;
 }
 
+const getModeIcon = (modeId: string) => {
+  switch (modeId) {
+    case 'blind-draw':
+      return Eye;
+    case 'spiral-mode':
+      return Circle;
+    case 'offset-mode':
+      return Target;
+    case 'perception-gauntlet':
+      return Shuffle;
+    default:
+      return Sparkles;
+  }
+};
+
+const getToneAwareMessage = (trigger: UnlockTrigger, tone: string): { header: string; description: string } => {
+  const modeId = trigger.id;
+  
+  switch (tone) {
+    case 'playful':
+      switch (modeId) {
+        case 'blind-draw':
+          return {
+            header: "Whoa! You just unlocked Blind Draw Mode.",
+            description: "Think of it like drawing with your eyes closed... because that's exactly what it is!"
+          };
+        case 'spiral-mode':
+          return {
+            header: "Whoa! You just unlocked Spiral Mode.",
+            description: "Think of it like a loopy challenge… ready to spin?"
+          };
+        case 'offset-mode':
+          return {
+            header: "Sweet! Offset Mode is yours now.",
+            description: "The circle's playing hide and seek – can you find it?"
+          };
+        case 'perception-gauntlet':
+          return {
+            header: "No way! Perception Gauntlet unlocked!",
+            description: "This is the big leagues – blind AND offset together!"
+          };
+        default:
+          return {
+            header: `Awesome! ${trigger.name} unlocked!`,
+            description: "Let's see what you can do with this new challenge!"
+          };
+      }
+      
+    case 'calm':
+      switch (modeId) {
+        case 'blind-draw':
+          return {
+            header: "You've earned Blind Draw Mode. It reflects pure intention.",
+            description: "Draw without sight. Trust your inner compass."
+          };
+        case 'spiral-mode':
+          return {
+            header: "You've earned Spiral Mode. It reflects the path inward.",
+            description: "Draw slow. Breathe slower."
+          };
+        case 'offset-mode':
+          return {
+            header: "Offset Mode opens to you. Balance seeks balance.",
+            description: "The circle waits elsewhere. Find your center first."
+          };
+        case 'perception-gauntlet':
+          return {
+            header: "The Gauntlet awaits. This is mastery's edge.",
+            description: "All techniques converge here. Be present."
+          };
+        default:
+          return {
+            header: `${trigger.name} flows to you naturally.`,
+            description: "Each step forward deepens understanding."
+          };
+      }
+      
+    case 'formal':
+      switch (modeId) {
+        case 'blind-draw':
+          return {
+            header: "Blind Draw Mode unlocked. Memory training protocol activated.",
+            description: "This variation eliminates visual feedback to strengthen spatial memory."
+          };
+        case 'spiral-mode':
+          return {
+            header: "Spiral Mode unlocked. This variation tests circular consistency under pressure.",
+            description: "Continue now or review your unlocks later."
+          };
+        case 'offset-mode':
+          return {
+            header: "Offset Mode unlocked. Perceptual alignment challenge enabled.",
+            description: "Reference circle positioned off-center to test spatial calibration."
+          };
+        case 'perception-gauntlet':
+          return {
+            header: "Perception Gauntlet unlocked. Advanced training protocol.",
+            description: "Combined blind and offset mechanics for comprehensive assessment."
+          };
+        default:
+          return {
+            header: `${trigger.name} module unlocked.`,
+            description: "New training parameters are now available."
+          };
+      }
+      
+    case 'sarcastic':
+      switch (modeId) {
+        case 'blind-draw':
+          return {
+            header: "Blind Draw Mode? Oh great, now we're drawing blind.",
+            description: "What could possibly go wrong with no visual feedback?"
+          };
+        case 'spiral-mode':
+          return {
+            header: "Spiral Mode? Oh great, now it gets weird.",
+            description: "Don't blame me when your hand starts spinning."
+          };
+        case 'offset-mode':
+          return {
+            header: "Offset Mode unlocked. Because regular circles were too easy?",
+            description: "Now the target's playing hard to get. Good luck with that."
+          };
+        case 'perception-gauntlet':
+          return {
+            header: "Perception Gauntlet? Someone's feeling confident.",
+            description: "Blind AND offset. What's next, drawing upside down?"
+          };
+        default:
+          return {
+            header: `${trigger.name}? Well, this should be interesting.`,
+            description: "Hope you're ready for things to get complicated."
+          };
+      }
+      
+    default:
+      return {
+        header: `${trigger.name} unlocked!`,
+        description: trigger.description
+      };
+  }
+};
+
 const ModeUnlockModal: React.FC<ModeUnlockModalProps> = ({
   isOpen,
   trigger,
-  message,
   onTryNow,
   onMaybeLater
 }) => {
+  const { selectedTone } = useToneSystem();
+  
   if (!trigger) return null;
+
+  const IconComponent = getModeIcon(trigger.id);
+  const { header, description } = getToneAwareMessage(trigger, selectedTone);
 
   return (
     <Dialog open={isOpen} onOpenChange={onMaybeLater}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md border-0 bg-gradient-to-br from-background via-background to-muted/20">
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-center space-y-6"
+              initial={{ scale: 0.8, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="text-center space-y-6 py-2"
             >
-              {/* Celebration Icon */}
+              {/* Animated Mode Icon with Glow */}
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="mx-auto w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/40 rounded-full flex items-center justify-center"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ 
+                  delay: 0.2, 
+                  type: "spring", 
+                  stiffness: 150,
+                  damping: 12
+                }}
+                className="relative mx-auto w-20 h-20"
               >
-                <Sparkles className="w-8 h-8 text-primary" />
+                {/* Glowing background ring */}
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                  className="absolute inset-0 bg-gradient-to-br from-primary/30 to-primary-glow/40 rounded-full blur-xl"
+                />
+                {/* Brushstroke ring animation */}
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="absolute inset-2 border-2 border-primary/60 rounded-full"
+                  style={{
+                    background: `conic-gradient(from 0deg, transparent, hsl(var(--primary)), transparent)`
+                  }}
+                />
+                {/* Main icon */}
+                <div className="relative w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 rounded-full flex items-center justify-center">
+                  <IconComponent className="w-10 h-10 text-primary" />
+                </div>
               </motion.div>
 
-              {/* Mode Name */}
-              <div className="space-y-2">
-                <motion.h2
+              {/* Giotto's Message */}
+              <div className="space-y-3">
+                <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-2xl font-bold text-foreground"
+                  transition={{ delay: 0.5 }}
+                  className="space-y-2"
                 >
-                  {trigger.name}
-                </motion.h2>
+                  <p className="text-xs text-muted-foreground font-medium tracking-wide">GIOTTO SAYS</p>
+                  <h2 className="text-xl font-bold text-foreground leading-tight">
+                    {header}
+                  </h2>
+                </motion.div>
+                
                 <motion.p
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="text-muted-foreground"
+                  transition={{ delay: 0.6 }}
+                  className="text-muted-foreground leading-relaxed"
                 >
-                  {trigger.description}
+                  {description}
                 </motion.p>
               </div>
 
-              {/* Unlock Message */}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="bg-primary/10 border border-primary/20 rounded-lg p-4"
-              >
-                <p className="text-primary font-medium">{message}</p>
-              </motion.div>
-
-              {/* Rewards */}
+              {/* Rewards Showcase */}
               {(trigger.rewardBadge || trigger.rewardBrush) && (
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                  className="space-y-3"
+                  transition={{ delay: 0.7 }}
+                  className="space-y-3 p-4 bg-primary/5 border border-primary/20 rounded-lg"
                 >
-                  <p className="text-sm text-muted-foreground">Rewards unlocked:</p>
-                  <div className="flex items-center justify-center gap-3">
+                  <p className="text-sm text-primary font-medium">Unlocked Rewards</p>
+                  <div className="flex items-center justify-center gap-3 flex-wrap">
                     {trigger.rewardBadge && (
-                      <Badge variant="secondary" className="flex items-center gap-1">
-                        <Award className="w-3 h-3" />
-                        {trigger.rewardBadge}
-                      </Badge>
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.8, type: "spring" }}
+                      >
+                        <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1">
+                          <Award className="w-4 h-4" />
+                          {trigger.rewardBadge}
+                        </Badge>
+                      </motion.div>
                     )}
                     {trigger.rewardBrush && (
-                      <Badge variant="outline" className="flex items-center gap-1">
-                        <Brush className="w-3 h-3" />
-                        {trigger.rewardBrush}
-                      </Badge>
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.9, type: "spring" }}
+                      >
+                        <Badge variant="outline" className="flex items-center gap-2 px-3 py-1">
+                          <Brush className="w-4 h-4" />
+                          {trigger.rewardBrush}
+                        </Badge>
+                      </motion.div>
                     )}
                   </div>
                 </motion.div>
@@ -105,21 +283,21 @@ const ModeUnlockModal: React.FC<ModeUnlockModalProps> = ({
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.7 }}
-                className="flex gap-3 pt-4"
+                transition={{ delay: 1.0 }}
+                className="flex gap-3 pt-2"
               >
                 <Button 
-                  variant="outline" 
+                  variant="ghost" 
                   onClick={onMaybeLater}
-                  className="flex-1"
+                  className="flex-1 text-muted-foreground hover:text-foreground"
                 >
-                  Maybe Later
+                  Save for Later
                 </Button>
                 <Button 
                   onClick={onTryNow}
-                  className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                  className="flex-1 bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 shadow-lg"
                 >
-                  Try It Now
+                  Try {trigger.name.split(' ')[0]} Now
                 </Button>
               </motion.div>
             </motion.div>

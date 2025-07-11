@@ -182,7 +182,6 @@ const PracticeModesMenu: React.FC<PracticeModesMenuProps> = ({
       <ModeUnlockModal
         isOpen={!!pendingUnlock}
         trigger={pendingUnlock}
-        message={pendingUnlock ? getUnlockMessage(pendingUnlock) : ''}
         onTryNow={handleTryNewMode}
         onMaybeLater={handleUnlockModalClose}
       />

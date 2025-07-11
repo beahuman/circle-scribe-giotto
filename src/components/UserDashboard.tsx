@@ -10,6 +10,7 @@ import ProgressGraph from './ProgressGraph';
 import SubMetricCharts from './dashboard/SubMetricCharts';
 import StreakCalendar from './dashboard/StreakCalendar';
 import ProgressComparison from './dashboard/ProgressComparison';
+import UnlockedModesGallery from './progress/UnlockedModesGallery';
 import LogoHeader from './common/LogoHeader';
 
 interface UserDashboardProps {
@@ -91,10 +92,11 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onBack }) => {
 
         {/* Dashboard Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="metrics">Metrics</TabsTrigger>
             <TabsTrigger value="badges">Badges</TabsTrigger>
+            <TabsTrigger value="modes">Modes</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
           </TabsList>
 
@@ -121,6 +123,10 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onBack }) => {
                 <BadgeShowcase />
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="modes" className="space-y-6">
+            <UnlockedModesGallery />
           </TabsContent>
 
           <TabsContent value="calendar" className="space-y-6">
