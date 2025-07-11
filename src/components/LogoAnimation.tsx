@@ -4,9 +4,10 @@ import Lottie from 'lottie-react';
 
 interface LogoAnimationProps {
   className?: string;
+  size?: number; // Size in pixels
 }
 
-const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '' }) => {
+const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '', size }) => {
   const [animationData, setAnimationData] = useState<any>(null);
   
   useEffect(() => {
@@ -87,21 +88,35 @@ const LogoAnimation: React.FC<LogoAnimationProps> = ({ className = '' }) => {
       });
   }, []);
 
+  const dimensions = size ? `${size}px` : '240px';
+  
   if (!animationData) {
     return (
-      <div className={`w-[240px] h-[240px] flex items-center justify-center ${className}`}>
-        <div className="w-24 h-24 border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
+      <div 
+        className={`flex items-center justify-center ${className}`}
+        style={{ width: dimensions, height: dimensions }}
+      >
+        <div 
+          className="border-4 border-primary rounded-full animate-spin border-t-transparent"
+          style={{ 
+            width: size ? `${size * 0.4}px` : '96px',
+            height: size ? `${size * 0.4}px` : '96px'
+          }}
+        />
       </div>
     );
   }
 
   return (
-    <div className={`w-[240px] ${className}`}>
+    <div 
+      className={`flex items-center justify-center ${className}`}
+      style={{ width: dimensions, height: dimensions }}
+    >
       <Lottie 
         animationData={animationData}
         loop={true}
         autoplay={true}
-        className="w-full h-auto"
+        style={{ width: dimensions, height: dimensions }}
       />
     </div>
   );

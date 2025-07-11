@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Brain, Circle, Info } from 'lucide-react';
+import { Brain, Info } from 'lucide-react';
+import LogoAnimation from '../LogoAnimation';
 
 interface WhyCirclesContentProps {
   onContinue: () => void;
@@ -26,29 +27,9 @@ const WhyCirclesContent: React.FC<WhyCirclesContentProps> = ({
       >
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center space-y-4">
-            <motion.div
-              animate={{ 
-                rotate: [0, 180, 360],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ 
-                duration: 3, 
-                repeat: Infinity, 
-                ease: "easeInOut" 
-              }}
-              className="w-20 h-20 mx-auto relative"
-            >
-              <Circle 
-                className="w-full h-full text-primary absolute" 
-                strokeWidth={2}
-                fill="none"
-              />
-              <Circle 
-                className="w-16 h-16 text-primary/50 absolute top-2 left-2" 
-                strokeWidth={1}
-                fill="none"
-              />
-            </motion.div>
+            <div className="w-20 h-20 mx-auto">
+              <LogoAnimation size={80} />
+            </div>
             
             <CardTitle className="text-xl font-bold">
               Why Circles?

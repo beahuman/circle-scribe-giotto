@@ -7,20 +7,26 @@ interface LogoHeaderProps {
   size?: 'small' | 'medium' | 'large';
   clickable?: boolean;
   className?: string;
+  customSize?: number; // Custom size in pixels
 }
 
 const LogoHeader: React.FC<LogoHeaderProps> = ({ 
   position = 'center', 
   size = 'medium',
   clickable = true,
-  className = ''
+  className = '',
+  customSize
 }) => {
   const navigate = useNavigate();
 
-  const sizeClasses = {
-    small: 'w-16 h-16',
-    medium: 'w-24 h-24', 
-    large: 'w-32 h-32'
+  const getSizePixels = () => {
+    if (customSize) return customSize;
+    switch (size) {
+      case 'small': return 64;
+      case 'medium': return 96;
+      case 'large': return 128;
+      default: return 96;
+    }
   };
 
   const positionClasses = {
@@ -34,9 +40,11 @@ const LogoHeader: React.FC<LogoHeaderProps> = ({
     }
   };
 
+  const logoSize = getSizePixels();
+  
   return (
     <div 
-      className={`${sizeClasses[size]} ${positionClasses[position]} ${clickable ? 'logo-clickable' : ''} ${className}`}
+      className={`${positionClasses[position]} ${clickable ? 'logo-clickable cursor-pointer' : ''} ${className}`}
       onClick={handleClick}
       role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}
@@ -46,8 +54,9 @@ const LogoHeader: React.FC<LogoHeaderProps> = ({
           handleClick();
         }
       } : undefined}
+      style={{ width: `${logoSize}px`, height: `${logoSize}px` }}
     >
-      <LogoAnimation />
+      <LogoAnimation size={logoSize} />
     </div>
   );
 };

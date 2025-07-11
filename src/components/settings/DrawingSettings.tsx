@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Slider } from "@/components/ui/slider";
-import { Circle } from 'lucide-react';
+import LogoAnimation from '../LogoAnimation';
 
 interface DrawingSettingsProps {
   drawingPrecision: number;
@@ -12,7 +12,7 @@ const DrawingSettings = ({ drawingPrecision, onPrecisionChange }: DrawingSetting
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 text-lg font-medium">
-        <Circle size={18} className="text-primary" />
+        <LogoAnimation size={18} />
         Drawing Precision
       </div>
       <p className="text-sm text-muted-foreground -mt-2">Adjust the smoothness of circle drawing</p>

@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, CircleDot, LineChart, Grid3X3, Settings } from 'lucide-react';
+import { Home, LineChart, Grid3X3, Settings } from 'lucide-react';
+import LogoAnimation from './LogoAnimation';
 import { useProgressNudge } from '@/hooks/useProgressNudge';
 import ProgressNudgeBadge from './onboarding/ProgressNudgeBadge';
 
@@ -67,7 +68,9 @@ const BottomNav: React.FC<BottomNavProps> = ({
             WebkitTapHighlightColor: 'transparent'
           }}
         >
-          <CircleDot className="h-5 w-5 mb-1" />
+          <div className="mb-1">
+            <LogoAnimation size={20} />
+          </div>
           <span>Draw</span>
         </button>
         
