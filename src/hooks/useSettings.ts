@@ -1,197 +1,13 @@
-import { useState } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import { useBasicSettings } from './useBasicSettings';
+import { useGameSettings } from './useGameSettings';
+import { useDailyReturnSettings } from './useDailyReturnSettings';
+import { useToneNotificationSettings } from './useToneNotificationSettings';
 
 export const useSettings = () => {
-  const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-  const [difficultyLevel, setDifficultyLevel] = useState(() => {
-    return Number(localStorage.getItem('difficultyLevel')) || 50;
-  });
-  const [drawingPrecision, setDrawingPrecision] = useState(() => {
-    return Number(localStorage.getItem('drawingPrecision')) || 50;
-  });
-  const [displayDuration, setDisplayDuration] = useState(() => {
-    return Number(localStorage.getItem('displayDuration')) || 3;
-  });
-  const [showGhostCircle, setShowGhostCircle] = useState(() => {
-    return localStorage.getItem('showGhostCircle') === 'true';
-  });
-  const [penaltyModeEnabled, setPenaltyModeEnabled] = useState(() => {
-    return localStorage.getItem('penaltyModeEnabled') === 'true';
-  });
-  const [showSubmetrics, setShowSubmetrics] = useState(() => {
-    return localStorage.getItem('showSubmetrics') === 'true';
-  });
-  
-  const [mirrorOffsetEnabled, setMirrorOffsetEnabled] = useState(() => {
-    return localStorage.getItem('mirrorOffsetEnabled') === 'true';
-  });
-  
-  const [adaptiveScoreScreen, setAdaptiveScoreScreen] = useState(() => {
-    const saved = localStorage.getItem('adaptiveScoreScreen');
-    return saved !== null ? saved === 'true' : true; // Default to true
-  });
-  
-  const [ghostTrailOverlay, setGhostTrailOverlay] = useState(() => {
-    const saved = localStorage.getItem('ghostTrailOverlay');
-    return saved !== null ? saved === 'true' : true; // Default to true
-  });
-  
-  const [dailyNotifications, setDailyNotifications] = useState(() => {
-    const saved = localStorage.getItem('dailyNotifications');
-    return saved !== null ? saved === 'true' : false; // Default to false
-  });
-  
-  const [streakMilestoneNotifications, setStreakMilestoneNotifications] = useState(() => {
-    const saved = localStorage.getItem('streakMilestoneNotifications');
-    return saved !== null ? saved === 'true' : false; // Default to false
-  });
-  
-  const [dailyRewards, setDailyRewards] = useState(() => {
-    const saved = localStorage.getItem('dailyRewards');
-    return saved !== null ? saved === 'true' : true; // Default to true
-  });
-  
-  const [habitCues, setHabitCues] = useState(() => {
-    const saved = localStorage.getItem('habitCues');
-    return saved !== null ? saved === 'true' : true; // Default to true
-  });
-  
-  const [reminderTime, setReminderTime] = useState(() => {
-    return localStorage.getItem('reminderTime') || 'evening';
-  });
-  
-  const [toneBasedNotifications, setToneBasedNotifications] = useState(() => {
-    const saved = localStorage.getItem('toneBasedNotifications');
-    return saved !== null ? saved === 'true' : false;
-  });
-  
-  const [dailyToneReminders, setDailyToneReminders] = useState(() => {
-    const saved = localStorage.getItem('dailyToneReminders');
-    return saved !== null ? saved === 'true' : false;
-  });
-  
-  const [streakToneReminders, setStreakToneReminders] = useState(() => {
-    const saved = localStorage.getItem('streakToneReminders');
-    return saved !== null ? saved === 'true' : false;
-  });
-  
-  const [inactivityToneReminders, setInactivityToneReminders] = useState(() => {
-    const saved = localStorage.getItem('inactivityToneReminders');
-    return saved !== null ? saved === 'true' : false;
-  });
-  
-  const [doNotDisturbStart, setDoNotDisturbStart] = useState(() => {
-    const saved = localStorage.getItem('doNotDisturbStart');
-    return saved !== null ? parseInt(saved) : 22; // 10 PM
-  });
-  
-  const [doNotDisturbEnd, setDoNotDisturbEnd] = useState(() => {
-    const saved = localStorage.getItem('doNotDisturbEnd');
-    return saved !== null ? parseInt(saved) : 8; // 8 AM
-  });
-  
-  const { toast } = useToast();
-
-  const handleNotificationToggle = (checked: boolean) => {
-    setNotifications(checked);
-    toast({
-      title: "Notification Settings",
-      description: checked ? "Notifications enabled" : "Notifications disabled"
-    });
-  };
-
-  const handleDarkModeToggle = (checked: boolean) => {
-    setDarkMode(checked);
-    toast({
-      title: "Appearance",
-      description: checked ? "Dark mode enabled" : "Light mode enabled"
-    });
-  };
-
-  const handleDifficultyChange = (value: number[]) => {
-    const newValue = value[0];
-    setDifficultyLevel(newValue);
-    localStorage.setItem('difficultyLevel', String(newValue));
-    toast({
-      title: "Difficulty Updated",
-      description: `Difficulty level set to ${newValue}%`
-    });
-  };
-
-  const handlePrecisionChange = (value: number[]) => {
-    const newValue = value[0];
-    setDrawingPrecision(newValue);
-    localStorage.setItem('drawingPrecision', String(newValue));
-    toast({
-      title: "Drawing Precision Updated",
-      description: `Drawing precision set to ${newValue}%`
-    });
-  };
-
-  const handleDurationChange = (value: number[]) => {
-    const newValue = value[0];
-    setDisplayDuration(newValue);
-    localStorage.setItem('displayDuration', String(newValue));
-    toast({
-      title: "Display Duration Updated",
-      description: `Circle will display for ${newValue} seconds`
-    });
-  };
-  
-  const handleGhostCircleToggle = (checked: boolean) => {
-    setShowGhostCircle(checked);
-    localStorage.setItem('showGhostCircle', String(checked));
-    toast({
-      title: "Ghost Circle",
-      description: checked ? "Ghost circle enabled" : "Ghost circle disabled"
-    });
-  };
-
-  const handlePenaltyModeToggle = (checked: boolean) => {
-    setPenaltyModeEnabled(checked);
-    localStorage.setItem('penaltyModeEnabled', String(checked));
-    toast({
-      title: "Penalty Mode",
-      description: checked ? "Penalty mode enabled - good luck!" : "Penalty mode disabled"
-    });
-  };
-
-  const handleSubmetricsToggle = (checked: boolean) => {
-    setShowSubmetrics(checked);
-    localStorage.setItem('showSubmetrics', String(checked));
-    toast({
-      title: "Visual Analytics",
-      description: checked ? "Submetrics overlay enabled" : "Submetrics overlay disabled"
-    });
-  };
-
-  const handleMirrorOffsetToggle = (checked: boolean) => {
-    setMirrorOffsetEnabled(checked);
-    localStorage.setItem('mirrorOffsetEnabled', String(checked));
-    toast({
-      title: "Mirror-Offset Mode",
-      description: checked ? "Mirror-offset mode enabled" : "Mirror-offset mode disabled"
-    });
-  };
-
-  const handleAdaptiveScoreScreenToggle = (checked: boolean) => {
-    setAdaptiveScoreScreen(checked);
-    localStorage.setItem('adaptiveScoreScreen', String(checked));
-    toast({
-      title: "Adaptive Score Screen",
-      description: checked ? "Dynamic score screen enabled" : "Traditional score screen enabled"
-    });
-  };
-
-  const handleGhostTrailOverlayToggle = (checked: boolean) => {
-    setGhostTrailOverlay(checked);
-    localStorage.setItem('ghostTrailOverlay', String(checked));
-    toast({
-      title: "Ghost Trail Overlay",
-      description: checked ? "Ghost trail comparison enabled" : "Ghost trail comparison disabled"
-    });
-  };
+  const basicSettings = useBasicSettings();
+  const gameSettings = useGameSettings();
+  const dailyReturnSettings = useDailyReturnSettings();
+  const toneNotificationSettings = useToneNotificationSettings();
 
   const updateSettings = (newSettings: { [key: string]: any }) => {
     Object.entries(newSettings).forEach(([key, value]) => {
@@ -202,174 +18,44 @@ export const useSettings = () => {
     });
   };
 
-  const handleDailyNotificationsToggle = (checked: boolean) => {
-    setDailyNotifications(checked);
-    localStorage.setItem('dailyNotifications', String(checked));
-    toast({
-      title: "Daily Notifications",
-      description: checked ? "Daily draw reminders enabled" : "Daily draw reminders disabled"
-    });
-  };
-
-  const handleStreakMilestoneNotificationsToggle = (checked: boolean) => {
-    setStreakMilestoneNotifications(checked);
-    localStorage.setItem('streakMilestoneNotifications', String(checked));
-    toast({
-      title: "Streak Milestone Notifications",
-      description: checked ? "Streak milestone notifications enabled" : "Streak milestone notifications disabled"
-    });
-  };
-
-  const handleDailyRewardsToggle = (checked: boolean) => {
-    setDailyRewards(checked);
-    localStorage.setItem('dailyRewards', String(checked));
-    toast({
-      title: "Daily Rewards",
-      description: checked ? "Daily completion rewards enabled" : "Daily completion rewards disabled"
-    });
-  };
-
-  const handleHabitCuesToggle = (checked: boolean) => {
-    setHabitCues(checked);
-    localStorage.setItem('habitCues', String(checked));
-    toast({
-      title: "Habit Cues",
-      description: checked ? "Gentle daily reminders enabled" : "Gentle daily reminders disabled"
-    });
-  };
-
-  const handleReminderTimeChange = (time: string) => {
-    setReminderTime(time);
-    localStorage.setItem('reminderTime', time);
-    toast({
-      title: "Reminder Time",
-      description: `Daily reminder time set to ${time}`
-    });
-  };
-
-  const handleToneBasedNotificationsToggle = (checked: boolean) => {
-    setToneBasedNotifications(checked);
-    localStorage.setItem('toneBasedNotifications', String(checked));
-    toast({
-      title: "Tone-Based Notifications",
-      description: checked ? "Giotto's personality notifications enabled" : "Tone-based notifications disabled"
-    });
-  };
-
-  const handleDailyToneRemindersToggle = (checked: boolean) => {
-    setDailyToneReminders(checked);
-    localStorage.setItem('dailyToneReminders', String(checked));
-    toast({
-      title: "Daily Tone Reminders",
-      description: checked ? "Personality-driven daily reminders enabled" : "Daily tone reminders disabled"
-    });
-  };
-
-  const handleStreakToneRemindersToggle = (checked: boolean) => {
-    setStreakToneReminders(checked);
-    localStorage.setItem('streakToneReminders', String(checked));
-    toast({
-      title: "Streak Tone Reminders",
-      description: checked ? "Tone-aware streak notifications enabled" : "Streak tone reminders disabled"
-    });
-  };
-
-  const handleInactivityToneRemindersToggle = (checked: boolean) => {
-    setInactivityToneReminders(checked);
-    localStorage.setItem('inactivityToneReminders', String(checked));
-    toast({
-      title: "Inactivity Tone Reminders",
-      description: checked ? "Gentle tone-based check-ins enabled" : "Inactivity tone reminders disabled"
-    });
-  };
-
-  const handleDoNotDisturbStartChange = (hour: number) => {
-    setDoNotDisturbStart(hour);
-    localStorage.setItem('doNotDisturbStart', String(hour));
-    toast({
-      title: "Do Not Disturb",
-      description: `Quiet time starts at ${hour.toString().padStart(2, '0')}:00`
-    });
-  };
-
-  const handleDoNotDisturbEndChange = (hour: number) => {
-    setDoNotDisturbEnd(hour);
-    localStorage.setItem('doNotDisturbEnd', String(hour));
-    toast({
-      title: "Do Not Disturb",
-      description: `Quiet time ends at ${hour.toString().padStart(2, '0')}:00`
-    });
-  };
-
   const settings = {
     feedbackTone: (localStorage.getItem('feedbackTone') as 'playful' | 'calm' | 'formal' | 'sarcastic') || 'playful',
-    showSubmetrics,
-    difficultyLevel,
-    displayDuration,
-    penaltyModeEnabled,
-    showGhostCircle,
-    mirrorOffsetEnabled,
-    adaptiveScoreScreen,
-    ghostTrailOverlay,
-    dailyNotifications,
-    streakMilestoneNotifications,
-    dailyRewards,
-    habitCues,
-    reminderTime,
-    toneBasedNotifications,
-    dailyToneReminders,
-    streakToneReminders,
-    inactivityToneReminders,
-    doNotDisturbStart,
-    doNotDisturbEnd
+    showSubmetrics: gameSettings.showSubmetrics,
+    difficultyLevel: gameSettings.difficultyLevel,
+    displayDuration: gameSettings.displayDuration,
+    penaltyModeEnabled: gameSettings.penaltyModeEnabled,
+    showGhostCircle: gameSettings.showGhostCircle,
+    mirrorOffsetEnabled: gameSettings.mirrorOffsetEnabled,
+    adaptiveScoreScreen: gameSettings.adaptiveScoreScreen,
+    ghostTrailOverlay: gameSettings.ghostTrailOverlay,
+    dailyNotifications: dailyReturnSettings.dailyNotifications,
+    streakMilestoneNotifications: dailyReturnSettings.streakMilestoneNotifications,
+    dailyRewards: dailyReturnSettings.dailyRewards,
+    habitCues: dailyReturnSettings.habitCues,
+    reminderTime: dailyReturnSettings.reminderTime,
+    toneBasedNotifications: toneNotificationSettings.toneBasedNotifications,
+    dailyToneReminders: toneNotificationSettings.dailyToneReminders,
+    streakToneReminders: toneNotificationSettings.streakToneReminders,
+    inactivityToneReminders: toneNotificationSettings.inactivityToneReminders,
+    doNotDisturbStart: toneNotificationSettings.doNotDisturbStart,
+    doNotDisturbEnd: toneNotificationSettings.doNotDisturbEnd
   };
 
   return {
-    notifications,
-    darkMode,
-    difficultyLevel,
-    drawingPrecision,
-    displayDuration,
-    showGhostCircle,
-    penaltyModeEnabled,
-    showSubmetrics,
-    mirrorOffsetEnabled,
-    adaptiveScoreScreen,
-    ghostTrailOverlay,
-    dailyNotifications,
-    streakMilestoneNotifications,
-    dailyRewards,
-    habitCues,
-    reminderTime,
-    toneBasedNotifications,
-    dailyToneReminders,
-    streakToneReminders,
-    inactivityToneReminders,
-    doNotDisturbStart,
-    doNotDisturbEnd,
+    // Basic settings
+    ...basicSettings,
+    
+    // Game settings
+    ...gameSettings,
+    
+    // Daily return settings
+    ...dailyReturnSettings,
+    
+    // Tone notification settings
+    ...toneNotificationSettings,
+    
+    // Combined settings object and utilities
     settings,
     updateSettings,
-    handleNotificationToggle,
-    handleDarkModeToggle,
-    handleDifficultyChange,
-    handlePrecisionChange,
-    handleDurationChange,
-    handleGhostCircleToggle,
-    handlePenaltyModeToggle,
-    handleSubmetricsToggle,
-    handleMirrorOffsetToggle,
-    handleAdaptiveScoreScreenToggle,
-    handleGhostTrailOverlayToggle,
-    handleDailyNotificationsToggle,
-    handleStreakMilestoneNotificationsToggle,
-    handleDailyRewardsToggle,
-    handleHabitCuesToggle,
-    handleReminderTimeChange,
-    handleToneBasedNotificationsToggle,
-    handleDailyToneRemindersToggle,
-    handleStreakToneRemindersToggle,
-    handleInactivityToneRemindersToggle,
-    handleDoNotDisturbStartChange,
-    handleDoNotDisturbEndChange,
   };
 };
