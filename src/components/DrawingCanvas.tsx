@@ -8,6 +8,7 @@ import CanvasRenderer from './drawing/CanvasRenderer';
 import QualityIndicator from './drawing/QualityIndicator';
 import InstructionOverlay from './drawing/InstructionOverlay';
 import { Point } from '@/types/shapes';
+import { useSensoryFeedback } from '@/hooks/useSensoryFeedback';
 
 interface DrawingCanvasProps {
   onComplete: (accuracy: number, points: Point[]) => void;
@@ -24,6 +25,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   targetCircle,
   difficultyLevel = 50
 }) => {
+  const { triggerFeedback } = useSensoryFeedback();
   const {
     isDrawing,
     points,
@@ -41,15 +43,12 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     
     const accuracy = calculateAccuracy(points, targetCircle);
     
-    // Immediate haptic feedback without delay
-    if ('navigator' in window && 'vibrate' in navigator) {
-      const pattern = accuracy > 80 ? [20] : accuracy > 50 ? [40, 30, 40] : [60, 30, 60, 30, 60];
-      navigator.vibrate(pattern);
-    }
+    // Trigger draw end feedback
+    triggerFeedback('draw-end');
     
     // Immediate callback - no artificial delay
     onComplete(accuracy, points);
-  }, [isDrawing, points, targetCircle, onComplete]);
+  }, [isDrawing, points, targetCircle, onComplete, triggerFeedback]);
 
   // Optimized touch handlers with preventDefault for better performance
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -62,7 +61,8 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     console.log('Touch start - Rect:', rect);
     console.log('Touch start - Adjusted:', { x, y });
     handleStart(x, y);
-  }, [handleStart]);
+    triggerFeedback('draw-start');
+  }, [handleStart, triggerFeedback]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     e.preventDefault(); // Critical for preventing browser interference
@@ -92,7 +92,8 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
     console.log('Mouse down - Rect:', rect);
     console.log('Mouse down - Adjusted:', { x, y });
     handleStart(x, y);
-  }, [handleStart]);
+    triggerFeedback('draw-start');
+  }, [handleStart, triggerFeedback]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDrawing) {

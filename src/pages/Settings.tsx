@@ -20,6 +20,7 @@ import ToneSettings from '@/components/settings/ToneSettings';
 import BrushSettings from '@/components/settings/BrushSettings';
 import OffsetModeSettings from '@/components/settings/OffsetModeSettings';
 import InfinitePracticeSettings from '@/components/settings/InfinitePracticeSettings';
+import SensoryFeedbackSettings from '@/components/settings/SensoryFeedbackSettings';
 import { useSettings } from '@/hooks/useSettings';
 import { useModeUnlockSystem } from '@/hooks/useModeUnlockSystem';
 import { useToast } from '@/hooks/use-toast';
@@ -193,6 +194,14 @@ const Settings = () => {
 
         <motion.div variants={fadeVariants}>
           <ToneSettings />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <Separator className="bg-purple-300/20" />
+        </motion.div>
+
+        <motion.div variants={fadeVariants}>
+          <SensoryFeedbackSettings />
         </motion.div>
 
         <motion.div variants={fadeVariants}>

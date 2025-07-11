@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, Award, Brush, Circle, Eye, Shuffle, Target } from 'lucide-react';
 import { UnlockTrigger } from '@/hooks/useModeUnlockSystem';
 import { useToneSystem } from '@/hooks/useToneSystem';
+import { useSensoryFeedback } from '@/hooks/useSensoryFeedback';
 
 interface ModeUnlockModalProps {
   isOpen: boolean;
@@ -164,6 +165,15 @@ const ModeUnlockModal: React.FC<ModeUnlockModalProps> = ({
   onMaybeLater
 }) => {
   const { selectedTone } = useToneSystem();
+  const { triggerFeedback } = useSensoryFeedback();
+  
+  // Trigger feedback when modal opens
+  React.useEffect(() => {
+    if (isOpen && trigger) {
+      // Small delay to let the modal render first
+      setTimeout(() => triggerFeedback('mode-unlock'), 100);
+    }
+  }, [isOpen, trigger, triggerFeedback]);
   
   if (!trigger) return null;
 

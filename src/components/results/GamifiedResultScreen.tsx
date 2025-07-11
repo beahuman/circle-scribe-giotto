@@ -23,6 +23,7 @@ import DailyChallengeResult from '../DailyChallengeResult';
 import LogoHeader from '../common/LogoHeader';
 import ModeRepetitionNudge from './ModeRepetitionNudge';
 import { useModeRepetitionNudge, GameModeType } from '@/hooks/useModeRepetitionNudge';
+import { useSensoryFeedback } from '@/hooks/useSensoryFeedback';
 
 interface GamifiedResultScreenProps {
   accuracy: number;
@@ -68,6 +69,7 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
   const { todaysChallenge } = useDailyChallenges();
   const { settings, updateSettings } = useSettings();
   const { toast } = useToast();
+  const { triggerFeedback } = useSensoryFeedback();
   
   // Get evolving score screen data
   const evolution = useEvolvingScoreScreen(
@@ -163,10 +165,20 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
     const result = playerProgress.addXp(roundedAccuracy);
     setProgressResult(result);
     
+    // Trigger score reveal feedback after a brief delay for animation
+    setTimeout(() => {
+      triggerFeedback('score-reveal');
+      
+      // Additional feedback for high scores
+      if (roundedAccuracy >= 85) {
+        setTimeout(() => triggerFeedback('high-score'), 200);
+      }
+    }, 600); // Delay to match score animation
+    
     if (result.didLevelUp && 'navigator' in window && 'vibrate' in navigator) {
       navigator.vibrate([100, 50, 100, 50, 100]);
     }
-  }, [roundedAccuracy, playerProgress]);
+  }, [roundedAccuracy, playerProgress, triggerFeedback]);
 
   // Check for milestone-based progress CTA triggers
   useEffect(() => {
