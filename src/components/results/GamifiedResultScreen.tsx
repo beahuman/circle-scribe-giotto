@@ -21,6 +21,8 @@ import { useProgressNudge } from '@/hooks/useProgressNudge';
 import { useToast } from '@/hooks/use-toast';
 import DailyChallengeResult from '../DailyChallengeResult';
 import LogoHeader from '../common/LogoHeader';
+import ModeRepetitionNudge from './ModeRepetitionNudge';
+import { useModeRepetitionNudge, GameModeType } from '@/hooks/useModeRepetitionNudge';
 
 interface GamifiedResultScreenProps {
   accuracy: number;
@@ -78,6 +80,16 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
   // Progress nudge system
   const { nudgeState, shouldShowProgressNudges, dismissPostScoreCTA, checkMilestoneForScore, triggerMilestoneCTA } = useProgressNudge();
   
+  // Mode repetition nudge system
+  const { 
+    repetitionState, 
+    trackModePlay, 
+    shouldShowNudge, 
+    markNudgeShown, 
+    getSuggestedMode, 
+    getModeDisplayName 
+  } = useModeRepetitionNudge();
+  
   const [progressResult, setProgressResult] = useState({ xpGained: 0, didLevelUp: false, newLevel: 1 });
   const [showAdvancedOverlay, setShowAdvancedOverlay] = useState(false);
   const [showNeuroscienceModal, setShowNeuroscienceModal] = useState(false);
@@ -87,6 +99,23 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
 
   // Get feedback tone from settings
   const feedbackTone: FeedbackTone = (settings.feedbackTone as FeedbackTone) || 'playful';
+
+  // Determine current game mode
+  const getCurrentMode = (): GameModeType => {
+    if (isDailyMode) return 'daily';
+    if (isDailyChallengeMode) return 'daily-challenge';
+    if (isPenaltyMode) return 'penalty';
+    // Check URL params for other modes
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+    if (mode === 'blind-draw') return 'blind-draw';
+    if (mode === 'shapes') return 'shapes';
+    if (mode === 'infinite-practice') return 'infinite-practice';
+    if (mode === 'offset') return 'offset';
+    return 'practice'; // Default
+  };
+
+  const currentMode = getCurrentMode();
 
   // Determine medal based on score
   const getMedal = (score: number): MedalType => {
@@ -149,6 +178,11 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
     }
   }, [roundedAccuracy, checkMilestoneForScore, triggerMilestoneCTA, shouldShowProgressNudges, nudgeState.hasViewedProgress]);
 
+  // Track mode play for repetition detection
+  useEffect(() => {
+    trackModePlay(currentMode);
+  }, [currentMode, trackModePlay]);
+
   // Handle badge notifications
   const handleBadgeComplete = () => {
     if (currentBadgeIndex < earnedBadges.length - 1) {
@@ -168,6 +202,22 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
       description: `Switched to ${tone} feedback style`,
       duration: 2000
     });
+  };
+
+  // Handle mode switching from repetition nudge
+  const handleSwitchMode = (newMode: GameModeType) => {
+    const modeUrls = {
+      'practice': '/',
+      'daily': '/?mode=daily',
+      'blind-draw': '/?mode=blind-draw',
+      'shapes': '/?mode=shapes',
+      'infinite-practice': '/?mode=infinite-practice',
+      'offset': '/?mode=offset',
+      'penalty': '/?mode=penalty',
+      'daily-challenge': '/?mode=daily-challenge'
+    };
+
+    window.location.href = modeUrls[newMode] || '/';
   };
 
   // Check if we should show daily challenge results
@@ -356,6 +406,19 @@ const GamifiedResultScreen: React.FC<GamifiedResultScreenProps> = ({
         gameCount={stats.totalGames}
         milestoneType={nudgeState.milestoneType}
       />
+
+      {/* Mode Repetition Nudge */}
+      {shouldShowNudge() && getSuggestedMode() && (
+        <ModeRepetitionNudge
+          show={shouldShowNudge()}
+          onDismiss={markNudgeShown}
+          currentMode={currentMode}
+          suggestedMode={getSuggestedMode()!}
+          suggestedModeDisplayName={getModeDisplayName(getSuggestedMode()!)}
+          onSwitchMode={handleSwitchMode}
+          repetitionCount={repetitionState.repetitionCount}
+        />
+      )}
     </motion.div>
   );
 };
