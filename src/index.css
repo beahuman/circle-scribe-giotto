@@ -1,0 +1,485 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+:root {
+  /* Base System Colors (HSL format) */
+  --background: 250 100% 99%;
+  --foreground: 250 10% 10%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 250 10% 10%;
+  
+  /* Interactive States */
+  --card-hover: 250 30% 98%;
+  --card-active: 250 40% 96%;
+  --card-interactive: 250 60% 98%;
+  --card-interactive-hover: 250 70% 96%;
+  --card-interactive-active: 250 80% 94%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 250 10% 10%;
+
+  --primary: 250 60% 60%;
+  --primary-foreground: 250 10% 98%;
+  --primary-glow: 250 70% 70%;
+
+  --secondary: 250 20% 94%;
+  --secondary-foreground: 250 10% 25%;
+
+  --muted: 250 20% 94%;
+  --muted-foreground: 250 10% 40%;
+
+  --accent: 250 20% 94%;
+  --accent-foreground: 250 10% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 250 20% 90%;
+    --input: 250 20% 90%;
+    --ring: 250 60% 60%;
+
+    /* Border radius system - unified shape language */
+    --radius-sm: 0.25rem;  /* 4px - micro elements */
+    --radius-md: 0.5rem;   /* 8px - small components */
+    --radius-lg: 0.75rem;  /* 12px - buttons, cards, modals */
+    --radius-xl: 1rem;     /* 16px - large cards */
+    --radius-full: 9999px; /* badges, pills, streaks */
+    --radius: var(--radius-lg); /* default unified radius */
+    
+    /* Typography scale - Unified hierarchy */
+    --text-score: 4rem;           /* 64px - Primary Score */
+    --text-header: 2rem;          /* 32px - Section Titles */
+    --text-subheader: 1.5rem;     /* 24px - Secondary Titles */
+    --text-body: 1rem;            /* 16px - Body Text */
+    --text-body-lg: 1.125rem;     /* 18px - Large Body Text */
+    --text-small: 0.875rem;       /* 14px - Secondary Labels */
+    --text-caption: 0.8125rem;    /* 13px - Captions */
+    --text-placeholder: 0.875rem; /* 14px - Placeholder/Hints */
+    
+    /* Spacing scale (8pt grid system) */
+    --space-1: 0.25rem;   /* 4px */
+    --space-2: 0.5rem;    /* 8px */
+    --space-3: 0.75rem;   /* 12px */
+    --space-4: 1rem;      /* 16px - Standard spacing */
+    --space-5: 1.25rem;   /* 20px */
+    --space-6: 1.5rem;    /* 24px - Standard block spacing */
+    --space-8: 2rem;      /* 32px - Large sections */
+    --space-10: 2.5rem;   /* 40px */
+    --space-12: 3rem;     /* 48px */
+    --space-16: 4rem;     /* 64px */
+    --space-20: 5rem;     /* 80px */
+    --space-24: 6rem;     /* 96px */
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    
+    /* Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Tone-Specific Color System */
+    
+    /* Playful Tone - Warm oranges, coral, soft violets */
+    --tone-playful-primary: 330 65% 65%;
+    --tone-playful-secondary: 340 55% 85%;
+    --tone-playful-accent: 315 70% 70%;
+    --tone-playful-background: 330 30% 98%;
+    --tone-playful-surface: 335 25% 95%;
+    --tone-playful-text: 330 15% 20%;
+    --tone-playful-text-muted: 330 10% 45%;
+    
+    /* Meditative Tone - Soft neutrals, calming blues and greys */
+    --tone-meditative-primary: 210 25% 55%;
+    --tone-meditative-secondary: 210 20% 80%;
+    --tone-meditative-accent: 200 30% 60%;
+    --tone-meditative-background: 210 15% 98%;
+    --tone-meditative-surface: 210 12% 95%;
+    --tone-meditative-text: 210 20% 15%;
+    --tone-meditative-text-muted: 210 15% 45%;
+    
+    /* Formal Tone - Structured blues, monochrome greys */
+    --tone-formal-primary: 220 70% 50%;
+    --tone-formal-secondary: 220 15% 85%;
+    --tone-formal-accent: 215 80% 55%;
+    --tone-formal-background: 220 10% 98%;
+    --tone-formal-surface: 220 8% 96%;
+    --tone-formal-text: 220 25% 10%;
+    --tone-formal-text-muted: 220 15% 40%;
+    
+    /* Sarcastic Tone - Dry purples, acidic lime, muted reds */
+    --tone-sarcastic-primary: 285 60% 55%;
+    --tone-sarcastic-secondary: 285 25% 85%;
+    --tone-sarcastic-accent: 75 65% 60%;
+    --tone-sarcastic-background: 285 15% 98%;
+    --tone-sarcastic-surface: 285 12% 95%;
+    --tone-sarcastic-text: 285 20% 15%;
+    --tone-sarcastic-text-muted: 285 15% 45%;
+
+    /* Score Ring Colors by Performance */
+    --score-excellent: 142 76% 36%;  /* Green */
+    --score-good: 217 91% 60%;       /* Blue */
+    --score-fair: 45 93% 47%;        /* Yellow */
+    --score-poor: 0 84% 60%;         /* Red */
+    
+    /* Feedback State Colors */
+    --success: 142 76% 36%;
+    --warning: 45 93% 47%;
+    --error: 0 84% 60%;
+    --info: 217 91% 60%;
+  }
+
+  .dark {
+    --background: 250 10% 5%;
+    --foreground: 250 10% 98%;
+
+    --card: 250 10% 7%;
+    --card-foreground: 250 10% 98%;
+    
+    /* Interactive States - Dark Mode */
+    --card-hover: 250 15% 10%;
+    --card-active: 250 20% 12%;
+    --card-interactive: 250 25% 12%;
+    --card-interactive-hover: 250 30% 15%;
+    --card-interactive-active: 250 35% 18%;
+
+    --popover: 250 10% 7%;
+    --popover-foreground: 250 10% 98%;
+
+    --primary: 250 60% 60%;
+    --primary-foreground: 250 10% 98%;
+    --primary-glow: 250 70% 70%;
+
+    --secondary: 250 10% 15%;
+    --secondary-foreground: 250 10% 90%;
+
+    --muted: 250 10% 15%;
+    --muted-foreground: 250 10% 70%;
+
+    --accent: 250 10% 15%;
+    --accent-foreground: 250 10% 90%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 250 10% 98%;
+
+    --border: 250 10% 20%;
+    --input: 250 10% 20%;
+    --ring: 250 60% 60%;
+
+    /* Dark mode tone adaptations */
+    --tone-playful-background: 330 20% 8%;
+    --tone-playful-surface: 330 15% 12%;
+    --tone-playful-text: 330 15% 85%;
+    --tone-playful-text-muted: 330 10% 60%;
+    
+    --tone-meditative-background: 210 20% 8%;
+    --tone-meditative-surface: 210 15% 12%;
+    --tone-meditative-text: 210 15% 85%;
+    --tone-meditative-text-muted: 210 10% 60%;
+    
+    --tone-formal-background: 220 15% 8%;
+    --tone-formal-surface: 220 12% 12%;
+    --tone-formal-text: 220 20% 85%;
+    --tone-formal-text-muted: 220 15% 60%;
+    
+    --tone-sarcastic-background: 285 20% 8%;
+    --tone-sarcastic-surface: 285 15% 12%;
+    --tone-sarcastic-text: 285 15% 85%;
+    --tone-sarcastic-text-muted: 285 10% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    touch-action: none;
+    background-image: 
+      radial-gradient(circle at 100px 100px, rgba(155, 135, 245, 0.03) 0%, transparent 30%),
+      radial-gradient(circle at 80% 20%, rgba(155, 135, 245, 0.05) 0%, transparent 40%);
+  }
+
+  /* Landscape-specific responsive utilities */
+  @media screen and (orientation: landscape) and (max-height: 768px) {
+    .landscape\:max-h-screen { max-height: 100vh; }
+    .landscape\:overflow-hidden { overflow: hidden; }
+    .landscape\:grid { display: grid; }
+    .landscape\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .landscape\:col-span-1 { grid-column: span 1 / span 1; }
+    .landscape\:col-span-2 { grid-column: span 2 / span 2; }
+    .landscape\:gap-4 { gap: 1rem; }
+    .landscape\:gap-6 { gap: 1.5rem; }
+    .landscape\:gap-8 { gap: 2rem; }
+    .landscape\:space-y-0 > * + * { margin-top: 0; }
+    .landscape\:py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .landscape\:mb-4 { margin-bottom: 1rem; }
+    .landscape\:p-4 { padding: 1rem; }
+    .landscape\:hidden { display: none; }
+    .landscape\:contents { display: contents; }
+    .landscape\:items-center { align-items: center; }
+    .landscape\:max-w-2xl { max-width: 42rem; }
+    .landscape\:max-w-4xl { max-width: 56rem; }
+    .landscape\:pb-16 { padding-bottom: 4rem; }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px 1px rgba(155, 135, 245, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px 3px rgba(155, 135, 245, 0.8);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s infinite;
+}
+
+.game-card {
+  @apply bg-white rounded-lg shadow-md border border-primary/10 overflow-hidden;
+  background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9), rgba(240, 240, 255, 0.8));
+  backdrop-filter: blur(10px);
+}
+
+/* Typography utilities */
+.text-score {
+  font-size: var(--text-score);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.text-header {
+  font-size: var(--text-header);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.text-subheader {
+  font-size: var(--text-subheader);
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-caption {
+  font-size: var(--text-caption);
+  line-height: 1.4;
+  font-weight: 400;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Additional typography utilities */
+.text-button {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.text-label {
+  font-weight: 500;
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+
+.text-description {
+  font-weight: 400;
+  line-height: 1.5;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Spacing utilities */
+.space-y-grid > * + * {
+  margin-top: var(--space-6);
+}
+
+.space-y-tight > * + * {
+  margin-top: var(--space-4);
+}
+
+/* Component patterns */
+.logo-clickable {
+  @apply cursor-pointer transition-transform hover:scale-105 active:scale-95;
+}
+
+.card-elevated {
+  @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg rounded-lg;
+}
+
+/* Updated for new standardized radius system */
+
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.shadow-elegant {
+  box-shadow: var(--shadow-elegant);
+}
+
+.transition-smooth {
+  transition: var(--transition-smooth);
+}
+
+/* Standardized Border Radius System */
+.radius-card {
+  @apply rounded-xl;
+}
+
+.radius-element {
+  @apply rounded-lg;
+}
+
+.radius-button {
+  @apply rounded-md;
+}
+
+.radius-small {
+  @apply rounded-sm;
+}
+
+/* Card System Utilities */
+.card-padding-sm {
+  @apply p-3;
+}
+
+.card-padding-md {
+  @apply p-4;
+}
+
+.card-padding-lg {
+  @apply p-6;
+}
+
+/* Game-like button styles */
+.btn-game-primary {
+  @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground font-semibold py-3 px-6 rounded-md shadow-elegant transform transition-smooth hover:scale-105 active:scale-95;
+}
+
+.btn-game-secondary {
+  @apply bg-secondary text-secondary-foreground font-medium py-3 px-6 rounded-md shadow-md transform transition-smooth hover:scale-105 active:scale-95 border border-border;
+}
+
+/* Interaction State Utilities */
+.card-interactive {
+  @apply bg-[hsl(var(--card-interactive))] hover:bg-[hsl(var(--card-interactive-hover))] active:bg-[hsl(var(--card-interactive-active))] transition-colors duration-200 cursor-pointer;
+}
+
+.card-passive {
+  @apply bg-[hsl(var(--muted))] border-border/50 opacity-90;
+}
+
+.card-cta {
+  @apply bg-gradient-to-r from-primary/10 to-primary-glow/10 hover:from-primary/20 hover:to-primary-glow/20 border-primary/30 hover:border-primary/50 transition-all duration-200;
+}
+
+.card-info {
+  @apply bg-[hsl(var(--muted))] border-border/30 hover:bg-[hsl(var(--card-hover))] transition-colors duration-200;
+}
+
+.interactive-feedback {
+  @apply hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200;
+}
+
+.btn-cta {
+  @apply bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary text-primary-foreground shadow-elegant hover:shadow-glow transform transition-all duration-200 hover:scale-105 active:scale-95;
+}
+
+.btn-secondary {
+  @apply bg-[hsl(var(--card-interactive))] hover:bg-[hsl(var(--card-interactive-hover))] text-foreground border border-border hover:border-primary/20 transition-all duration-200;
+}
+
+/* Import SF Pro Rounded font */
+@font-face {
+  font-family: 'SF Pro Rounded';
+  src: url('/fonts/SF-Pro-Rounded-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Rounded';
+  src: url('/fonts/SF-Pro-Rounded-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Rounded';
+  src: url('/fonts/SF-Pro-Rounded-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
